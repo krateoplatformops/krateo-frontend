@@ -80,3 +80,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+env:
+  - name: VITE_BFF_API_BASE_URL
+    value: http://127.0.0.1:8443
+  - name: VITE_AUTHN_API_BASE_URL
+    value: http://127.0.0.1:8080
