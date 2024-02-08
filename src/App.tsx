@@ -55,7 +55,7 @@ function App() {
   }
 
   const getConfiguration = async () => {
-    const configFile = await fetch("/config.json");
+    const configFile = await fetch("/config/config.json");
     const configJson = await configFile.json();
     localStorage.setItem("K_config", JSON.stringify(configJson));
   }
