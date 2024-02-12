@@ -1,6 +1,6 @@
 {
   "api": {
-    "BFF_API_BASE_URL": "http://20.105.44.127:8080", 
-    "AUTHN_API_BASE_URL": "http://51.138.231.131:8080"
+    "BFF_API_BASE_URL": "http://localhost:30081", 
+    "AUTHN_API_BASE_URL": "http://localhost:30082"
   }
 }
