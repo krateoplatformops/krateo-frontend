@@ -41,6 +41,19 @@ function App() {
             icon: getIcon('templates'),
             menu: true,
           },
+          {
+            label: "Projects",
+            path: "/projects",
+            icon: getIcon('projects'),
+            menu: true,
+          },
+          
+          {
+            label: "Projects",
+            path: "/projects/:projectId/:deploymentId",
+            icon: getIcon('projects'),
+            menu: false,
+          },
         ],
         notifications: [
           {

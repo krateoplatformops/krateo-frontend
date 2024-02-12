@@ -2,21 +2,25 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
 
 export type DataListType = {
-  element: string,
-  props:{
-    icon: string,
-    color: string,
-    title: string,
-    status: string,
-    date: string,
-    content: string,
-    tags: string,
-    actions: {
-      name: string,
-      enabled: boolean,
-      path: string,
-      verb: string
-    }[]
+  kind: string,
+  spec: {
+    app: {
+      props:{
+        icon: string,
+        color: string,
+        title: string,
+        status: string,
+        date: string,
+        content: string,
+        tags: string,
+        actions: {
+          name: string,
+          enabled: boolean,
+          path: string,
+          verb: string
+        }[]
+      }
+    }
   }
 }
 
@@ -62,8 +66,8 @@ export const dataListSlice = createSlice({
       state.filteredData = state.data.filter(el => {
         let valid = true;
         action.payload.forEach(filter => {
-          const index = Object.keys(el.props).indexOf(filter.fieldName);
-          const valueToCompare: string = Object.values(el.props)[index] as string;
+          const index = Object.keys(el.spec.app.props).indexOf(filter.fieldName);
+          const valueToCompare: string = Object.values(el.spec.app.props)[index] as string;
           if (index > -1) {
             switch (filter.fieldType) {
               case "text":

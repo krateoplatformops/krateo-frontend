@@ -1217,79 +1217,377 @@ const Page = ({clientId, url}: PageType) => {
     // deployment details (page with tabs)
     if (window.location.pathname.match(/^\/projects\/[0-9]+\/[0-9]+$/g)) {
       return {
-        component: "Tabs",
-        content: [
-          {
-            component: "TabPane",
-            props: {
-              label: "Overview"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Relations"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Resources"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Documentation"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Kubernetes"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Pipeline"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Events"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Values"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Terminal"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Keptn"
-            },
-            content: []
-          },
-        ]
+        "kind": "Tabs",
+        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+        "metadata": {
+          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbc",
+        },
+        "spec": {
+          "app": {
+            "props": {}
+          }
+        },
+        "status": {
+          "content": {
+            "items": [
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd1",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Overview"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                      {
+                        "kind": "Row",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbb00",
+                        },
+                        "status": {
+                          "content": {
+                            "kind": "ColumnList",
+                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                            "metadata": {
+                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbc01",
+                            },
+                            "items": [
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd02",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "6"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "Panel",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf001",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Overview",
+                                              "content": {
+                                                "kind": "Paragraph",
+                                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                "metadata": {
+                                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf002001",
+                                                },
+                                                "spec": {
+                                                  "app": {
+                                                    "props": {
+                                                      "text": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                },
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd08",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "18"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "Panel",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf002",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Links",
+                                              "content": {
+                                                "kind": "DataList",
+                                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                "metadata": {
+                                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf0020",
+                                                },
+                                                "spec": {
+                                                  "app": {
+                                                    "props": {
+                                                      "asGrid": false,
+                                                      "data": [
+                                                        {
+                                                          "kind": "RichElement",
+                                                          "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                          "metadata": {
+                                                            "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf0021",
+                                                          },
+                                                          "spec": {
+                                                            "app": {
+                                                              "props": {
+                                                                "icon": "server",
+                                                                "color": "blue",
+                                                                "title": "Lorem ipsum dolor sit amet",
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "kind": "RichElement",
+                                                          "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                          "metadata": {
+                                                            "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf0021",
+                                                          },
+                                                          "spec": {
+                                                            "app": {
+                                                              "props": {
+                                                                "icon": "server",
+                                                                "color": "blue",
+                                                                "title": "Lorem ipsum dolor sit amet",
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                        {
+                                                          "kind": "RichElement",
+                                                          "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                          "metadata": {
+                                                            "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf0021",
+                                                          },
+                                                          "spec": {
+                                                            "app": {
+                                                              "props": {
+                                                                "icon": "server",
+                                                                "color": "blue",
+                                                                "title": "Lorem ipsum dolor sit amet",
+                                                              }
+                                                            }
+                                                          }
+                                                        },
+                                                      ]
+                                                    }
+                                                  },
+                                                },
+                                              },
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  },
+                                },
+                              },
+                            ],
+                          }
+                        }
+                      },
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd2",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Relations"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd3",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Resources"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd4",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Documentation"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd5",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Kubernetes"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd6",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Pipeline"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd7",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Events"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd8",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Values"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd9",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Terminal"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd0",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Keptn"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": []
+                  }
+                }
+              },
+            ]
+          }
+        }  
       }
     }
 
@@ -1823,7 +2121,7 @@ const Page = ({clientId, url}: PageType) => {
       setContentPage(getContent(data, 1)); // root
     }
 
-    if (window.location.pathname === "/") {
+    if (window.location.pathname !== "/templates") {
       // mock data for root only
       const response = fetchPage(clientId, url);
       createPage(response);

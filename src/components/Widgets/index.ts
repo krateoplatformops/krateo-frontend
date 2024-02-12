@@ -8,6 +8,9 @@ import Widget2 from "./Widget2/Widget2";
 import FormGenerator from "./FormGenerator/FormGenerator";
 import ButtonPanel from "./ButtonPanel/ButtonPanel";
 import DataList from "./DataList/DataList";
+import Panel from "./Panel/Panel";
+import RichElement from "./RichElement/RichElement";
+import Paragraph from "./Paragraph/Paragraph";
 
 const widgets = {
   "ChartPie": ChartPie,
@@ -18,6 +21,9 @@ const widgets = {
   "FormGenerator": FormGenerator,
   "ButtonPanel": ButtonPanel,
   "DataList": DataList,
+  "Panel": Panel,
+  "RichElement": RichElement,
+  "Paragraph": Paragraph,
   "Widget1": Widget1,
   "Widget2": Widget2,
 }

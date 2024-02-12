@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { DataListType, selectDataList, setDataList } from "../../../features/dataList/dataListSlice";
 import { useSelector } from "react-redux";
 
-const DataList = ({prefix, data}: {prefix: string, data: DataListType[]}) => {
+const DataList = ({prefix, data, asGrid = true}: {prefix: string, data: DataListType[], asGrid?: boolean}) => {
   const dispatch = useAppDispatch();
   const datalist = useSelector(selectDataList);
   console.log(prefix);
@@ -17,7 +17,7 @@ const DataList = ({prefix, data}: {prefix: string, data: DataListType[]}) => {
 
   return (
     <List
-      grid={{
+      grid={asGrid ? {
         gutter: 16,
         xs: 1,
         sm: 1,
@@ -25,13 +25,13 @@ const DataList = ({prefix, data}: {prefix: string, data: DataListType[]}) => {
         lg: 3,
         xl: 3,
         xxl: 4,
-      }}
+      } : {gutter: 16}}
       dataSource={datalist}
       renderItem={(item) => {
-        const Component = widgets[item.element];
+        const Component = widgets[item.kind];
         return (
           <List.Item>
-            <Component {...item.props} />
+            <Component {...item.spec.app.props} />
           </List.Item>
         )
       }}
