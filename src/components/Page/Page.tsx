@@ -62,7 +62,7 @@ const Page = ({clientId, url}: PageType) => {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               "title": "Lorem Ipsum",
                               "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
@@ -105,7 +105,7 @@ const Page = ({clientId, url}: PageType) => {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               "title": "Lorem Ipsum",
                               "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
@@ -148,7 +148,7 @@ const Page = ({clientId, url}: PageType) => {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbq",
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               title: "Templates",
                               tooltip: "this is a beautiful chart",
@@ -187,7 +187,7 @@ const Page = ({clientId, url}: PageType) => {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwx4",
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               title: "Templates Trend",
                               tooltip: "this is a beautiful chart",
@@ -222,7 +222,7 @@ const Page = ({clientId, url}: PageType) => {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbw",
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               title: "Templates Trend",
                               tooltip: "this is a beautiful chart",
@@ -257,7 +257,7 @@ const Page = ({clientId, url}: PageType) => {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwx3",
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               title: "Most used Templates",
                               tooltip: "this is a beautiful chart",
@@ -324,7 +324,7 @@ const Page = ({clientId, url}: PageType) => {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwll",
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               title: "Less used Templates",
                               tooltip: "this is a beautiful chart",
@@ -391,7 +391,7 @@ const Page = ({clientId, url}: PageType) => {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwx1",
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               button: {
                                 label: "Filters",
@@ -515,8 +515,8 @@ const Page = ({clientId, url}: PageType) => {
                             content: [{
                               component: "Widget",
                               element: "ChartBars",
-                              props: { 
-                                title: "Most used Templates", 
+                              props: {
+                                title: "Most used Templates",
                                 tooltip: "Lorem ipsum dolor sit amet",
                                 data: [
                                   {
@@ -560,8 +560,8 @@ const Page = ({clientId, url}: PageType) => {
                               component: "Widget",
                               element: "ChartBars",
                               props: {
-                                title: "Less used Templates", 
-                                tooltip: "Lorem ipsum dolor sit amet", 
+                                title: "Less used Templates",
+                                tooltip: "Lorem ipsum dolor sit amet",
                                 data: [
                                   {
                                     label: "Lorem ipsum 1",
@@ -762,7 +762,7 @@ const Page = ({clientId, url}: PageType) => {
                                           rules: [],
                                           placeholder: "https://",
                                         },
-                                        
+
                                       ]
                                     }
                                   }
@@ -911,8 +911,8 @@ const Page = ({clientId, url}: PageType) => {
                             content: [{
                               component: "Widget",
                               element: "ChartBars",
-                              props: { 
-                                title: "Deployments", 
+                              props: {
+                                title: "Deployments",
                                 tooltip: "Lorem ipsum dolor sit amet",
                                 data: [
                                   {
@@ -1461,7 +1461,7 @@ const Page = ({clientId, url}: PageType) => {
                           }
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               "title": "Lorem Ipsum",
                               "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
@@ -1623,7 +1623,7 @@ const Page = ({clientId, url}: PageType) => {
                           ]
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               "title": "id labore ex et quam laborum -\u003e Eliseo@gardner.biz",
                               "content": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
@@ -1732,7 +1732,7 @@ const Page = ({clientId, url}: PageType) => {
                           ]
                         },
                         "status": {
-                          "cards": [
+                          "content": [
                             {
                               "title": "id labore ex et quam laborum -\u003e Eliseo@gardner.biz",
                               "content": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
@@ -1786,10 +1786,10 @@ const Page = ({clientId, url}: PageType) => {
           return <TabPane key={data.metadata.uid} tab={data.spec.app.props.label} className={styles.tabpane}>{ getContent(data.status.content.items, index+1) }</TabPane>
         case "Toolbar":
           return <Toolbar key={data.metadata.uid}>{ getContent(data.status.content.items, index+1) }</Toolbar>
-        default: 
+        default:
           if (data.apiVersion?.indexOf("widgets") === 0) {
             const Component = widgets[data.kind];
-            return data.status.cards.map((el, i) => <Component key={`widget_${data.metadata.uid}_$${i}`} {...el} />) 
+            return data.status.content.map((el, i) => <Component key={`widget_${data.metadata.uid}_$${i}`} {...el} />)
           } else {
             // null -> exit recoursive loop
             return <></>
