@@ -13,7 +13,7 @@ const Page = ({clientId, url}: PageType) => {
   const ls = localStorage.getItem("user");
   const username = ls && JSON.parse(ls)?.user.username;
   const group = ls && JSON.parse(ls)?.groups[0]
-  const {data, isLoading, isSuccess} = useGetPageContentQuery({clientId, url, username, group});
+  const {data, isLoading, isSuccess, isError} = useGetPageContentQuery({clientId, url, username, group});
 
   const fetchPage = (clientId: string, url: string) => {
     console.log(clientId, url);
@@ -1837,7 +1837,7 @@ const Page = ({clientId, url}: PageType) => {
       {
         isLoading && <Skeleton />
       }
-      { isSuccess && contentPage }
+      { (isSuccess || isError) && contentPage }
     </section>
   );
 }
