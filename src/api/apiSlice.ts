@@ -5,7 +5,6 @@ const baseUrl = import.meta.env.VITE_GATEWAY_API_BASE_URL;
 
 export const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,
-  credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
     const kubeConfig = (getState()  as RootState).auth?.data;
     if (kubeConfig) {

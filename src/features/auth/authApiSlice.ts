@@ -23,14 +23,12 @@ export const authApiSlice = apiSlice.injectEndpoints({
     getAuthModes: builder.query<AuthModeType[], string>({
       query: () => ({
         url: `${getBaseUrl()}/strategies`,
-        credentials: "omit",
         headers: {},
       }),
     }),
     authentication: builder.query<AuthResponseType, {body: LoginFormType, url: string}>({
       query: (data) => ({
         url: `${getBaseUrl()}${data.url}`,
-        credentials: "omit",
         headers: {
           Authorization: `Basic ${btoa(`${data.body.username}:${data.body.password}`)}`
         },
@@ -39,7 +37,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
     socialAuthentication: builder.query<AuthResponseType, AuthRequestType>({
       query: (body) => ({
         url: `${getBaseUrl()}${body.url}?name=${body.name}`,
-        credentials: "omit",
         headers: {
           'X-Auth-Code': body.code,
         }
