@@ -399,62 +399,22 @@ const Page = ({clientId, url}: PageType) => {
                                 badge: true,
                               },
                               panel: {
-                                title: "Filters",
-                                description: "Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-                                size: "default",
+                                title: "This is the title of the panel",
+                                description: "This is the panel description",
+                                size: "large",
+                                type: "form",
+                                buttons: [
+                                  { label: "Clear", type: "text", action: "reset" },
+                                  { label: "Submit", type: "primary", action: "submit" },
+                                ],
                                 content: {
                                   element: "FormGenerator",
                                   props: { // pass the data to render fields
-                                    title: "Form Name",
-                                    description: "lorem ipsum dolor sit amet, lorem ipsum dolor sit amet.",
+                                    title: "This is the title of the form",
+                                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
                                     endpoint: null, // endpoint to call submitting values in POST
                                     prefix: "TemplateList", // label to connect data list
-                                    fields: [
-                                      {
-                                        name: "title",
-                                        type: "text",
-                                        label: "Title",
-                                        rules: [],
-                                        placeholder: "type a title",
-                                      },
-                                      {
-                                        name: "content",
-                                        type: "text",
-                                        label: "Content",
-                                        rules: [],
-                                        placeholder: "type a text",
-                                      },
-                                      {
-                                        name: "status",
-                                        type: "radioGroup",
-                                        label: "Status",
-                                        rules: [],
-                                        placeholder: "",
-                                        extra: {
-                                          options: [
-                                            {
-                                              label: "active",
-                                              value: "",
-                                            },
-                                            {
-                                              label: "archived",
-                                              value: "archived",
-                                            },
-                                          ]
-                                        }
-                                      },
-                                      {
-                                        name: "date",
-                                        type: "datetime",
-                                        label: "archived date",
-                                        rules: [],
-                                        placeholder: "",
-                                        initialValue: "",
-                                        extra: {
-                                          format: "DD MMM YYYY",
-                                        }
-                                      },
-                                    ]
+                                    fieldsEndpoint: "/apis/widgets.ui.krateo.io/v1alpha1/formtemplates/fireworksapp"
                                   }
                                 }
                               }

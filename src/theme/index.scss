@@ -7,7 +7,6 @@ body {
   margin: 0;
   background-color: $background-color;
   font-family: 'Roboto', sans-serif;
-  overflow: hidden;
 
   .ant-tooltip .ant-badge{
     padding-right: 10px;
@@ -21,4 +20,16 @@ body {
   .ant-layout {
     background: transparent;
   }
+}
+
+*::-webkit-scrollbar {
+  width: 3px;
+}
+
+*::-webkit-scrollbar-track {
+  display: none;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #ccc;
 }

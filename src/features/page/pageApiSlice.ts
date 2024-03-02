@@ -32,10 +32,14 @@ export const pageApiSlice = apiSlice.injectEndpoints({
       // query: ({clientID, path}) => `/apis/widgets.ui.krateo.io/v1alpha1/cardtemplates?sub=cyberjoker&orgs=devs&namespace=dev-system`,
       query: ({username, group}) => `${getBaseUrl()}/apis/layout.ui.krateo.io/v1alpha1/rows/two?sub=${username}&orgs=${group}&namespace=demo-system`,
     }),
+    // getFormContent: builder.query({
+    //   query: ({username, group}) => `${getBaseUrl()}/apis/widgets.ui.krateo.io/v1alpha1/formtemplates/fireworksapp?sub=${username}&orgs=${group}&namespace=demo-system`,
+    // }),
   }),
 })
 
 // Export the auto-generated hook
 export const {
   useGetPageContentQuery,
+  // useGetFormContentQuery
  } = pageApiSlice
