@@ -16,6 +16,7 @@
       top: 0;
       bottom: 0;
       overflow: hidden;
+      width: 100%;
     }
   }
 
@@ -33,6 +34,10 @@
         .labelField {
           row-gap: 0;
         }
+
+        .breadcrumbDots {
+          text-wrap: nowrap;
+        }
       }
 
       :global label::before {
@@ -41,13 +46,19 @@
     }
   }
 
-  .labelWrapper {
+  .anchorLabelWrapper {
     padding: 0 20px;
     height: 100%;
     overflow-y: scroll;
 
     :global .ant-anchor-link-title-active {
       font-weight: 600;
+    }
+
+    .anchorObjectLabel {
+      color: #ccc;
+      cursor: default;
+      font-weight: 400;
     }
   }
 }

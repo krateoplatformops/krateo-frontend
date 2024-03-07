@@ -8,41 +8,9 @@ import ListEditor from "../ListEditor/ListEditor";
 import styles from "./styles.module.scss";
 import Skeleton from "../../Skeleton/Skeleton";
 
-// type FieldType = {
-// 	name: string,
-// 	type: "text" | "number" | "select" | "radioGroup" | "checkboxGroup" | "checkbox" | "textArea" | "datetime",
-// 	label: string,
-// 	required?: boolean,
-// 	rules: {
-// 		pattern: RegExp,
-// 		message: string
-// 	}[],
-// 	placeholder: string,
-// 	initialValue?: string | number | boolean | string[] | number[] | boolean[],
-// 	extra?: {
-// 		addonBefore?: string,
-// 		options?: {
-// 			label: string,
-// 			value: string | number | boolean,
-// 		}[],
-// 		format?: string,
-// 		minDate?: string,
-// 		maxDate?: string,
-// 		accepted?: string,
-// 		multiple?: boolean,
-// 		maxSize?: number,
-// 		maxCount?: number
-// 	}
-// 	conditions?: {
-// 		type: "hidden" | "visible" | "enabled" | "disabled" | "value",
-// 		extFieldname: string,
-// 		extValues: string[] | number[] | boolean[],
-// 	}[]
-// }
-
 const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, prefix, onClose }) => {
 
-	const [postContent, { isLoading: postLoading }] = usePostContentMutation();
+	const [postContent, { isLoading: postLoading, isError: postError }] = usePostContentMutation();
 	const messageKey = 'formGeneratorMessageKey';
 	const [messageApi, contextHolder] = message.useMessage();
 	const dispatch = useAppDispatch();
@@ -72,7 +40,7 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 					// return field
           const required = Array.isArray(node?.required) && node.required.indexOf(k) > -1;
 					fieldsData.push({type: node.properties[k].type, name: currentName});
-					return renderField(currentName, node.properties[k], required);
+					return renderField(k, currentName, node.properties[k], required);
 				}
 			})
 		}
@@ -101,32 +69,35 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 		return defaultValues;
 	}
 
-    const renderLabel = (path: string, label: string) => {
-        return (
-            <Space size="small" direction="vertical" className={styles.labelField}>
-                <Typography.Text strong>{label}</Typography.Text>
-                <Space title={path.split(".").join(" > ")}>
-                {
-                    path.split(".").map((el, index) => {
-                        if (index < path.split(".").length -1) {
-                            if (index === 2 && path.split(".").length > 4) {
-                                return <Typography.Text>... <span> &rsaquo; </span></Typography.Text>
-                            } else if (index > 2 && index < path.split(".").length -1 && path.split(".").length > 4) {
-                                return ""
-                            } else {
-                                return <Typography.Text ellipsis>{el} <span> &rsaquo; </span></Typography.Text>
-                            }
-                        } else {
-                            return <Typography.Text ellipsis>{el}</Typography.Text>
-                        }
-                    })
-                }
-                </Space>
-            </Space>
-        )
-    }
+	const renderLabel = (path: string, label: string) => {
+		const breadcrumb = path.split(".");
+		breadcrumb.splice(-1);
 
-	const renderField = (name: string, node: any, required: boolean) => {
+		return (
+			<Space size="small" direction="vertical" className={styles.labelField}>
+				<Typography.Text strong>{label}</Typography.Text>
+				<Space title={breadcrumb.join(" > ")}>
+				{
+					breadcrumb.map((el, index) => {
+						if (index < breadcrumb.length -1) {
+							if (index === 2 && breadcrumb.length > 3) {
+								return <Typography.Text className={styles.breadcrumbDots}>... <span> &rsaquo; </span></Typography.Text>
+							} else if (index > 2 && index < breadcrumb.length -1 && breadcrumb.length > 3) {
+								return ""
+							} else {
+								return <Typography.Text ellipsis>{el} <span> &rsaquo; </span></Typography.Text>
+							}
+						} else {
+							return <Typography.Text ellipsis>{el}</Typography.Text>
+						}
+					})
+				}
+				</Space>
+			</Space>
+		)
+	}
+
+	const renderField = (label: string, name: string, node: any, required: boolean) => {
 		const rules: any[] = [];
 		if (required) {
 			rules.push({required: true, message: "Insert a value"})
@@ -141,7 +112,7 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 					<div id={name} className={styles.formField}>
 							<Form.Item
 									key={name}
-									label={renderLabel(name, "lorem ipsum")} // node.title
+									label={renderLabel(name, label)}
 									name={name}
 									rules={rules}
 							>
@@ -168,7 +139,7 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 				return (
 					<div id={name} className={styles.formField}>
 							<Space direction="vertical" style={{width: '100%'}}>
-									<div>{renderLabel(name, "lorem ipsum")}</div> {/* node.title */}
+									<div>{renderLabel(name, label)}</div>
 									<Form.Item
 											key={name}
 											name={name} 
@@ -186,7 +157,7 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 					<div id={name} className={styles.formField}>
 							<Form.Item
 									key={name}
-									label={renderLabel(name, "lorem ipsum")} // node.title
+									label={renderLabel(name, label)}
 									name={name}
 									rules={rules}
 							>
@@ -200,7 +171,7 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 					<div id={name} className={styles.formField}>
 							<Form.Item
 									key={name}
-									label={renderLabel(name, "lorem ipsum")} // node.title
+									label={renderLabel(name, label)}
 									name={name}
 									rules={rules}
 							>
@@ -216,21 +187,21 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 		return Object.keys(node.properties).map(k => {
 							const currentName = name ? `${name}.${k}` : k;
 			if (node.properties[k].type === "object") {
-									// create children
-									return {
-											key: currentName,
-											title: <span style={{color: '#ccc', cursor: 'default'}}>{currentName}</span>,
-											children: parseData(node.properties[k], currentName)
-									}
+				// create children
+				return {
+					key: currentName,
+					title: <span className={styles.anchorObjectLabel}>{k}</span>,
+					children: parseData(node.properties[k], currentName),
+				}
 			} else {
 				// return obj
-									return {
-											key: currentName,
-											href: `#${currentName}`,
-											title: currentName, // node.properties[k].title
-									}
-							}
-					})
+				return {
+						key: currentName,
+						href: `#${currentName}`,
+						title: k
+				}
+			}
+		})
 	}
 
 	return [...parseData(formData, "")];
@@ -247,14 +218,10 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 		// send all data values to specific endpoint as POST
 		if (endpoint) {
 			// call endpoint
-			try {
-				postContent({
-					endpoint: endpoint,
-					body: values,
-				})
-			} catch (err) {
-				messageApi.open({key: messageKey, type: 'error', content: 'The operation couldn\'t be completed'});
-			}	
+			postContent({
+				endpoint: endpoint,
+				body: values,
+			})
 		}
 
 		// save all data values on Redux to use them with another linked component (same prefix) 
@@ -270,8 +237,13 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
       // close panel
 			onClose()
 		}
-	
 	}
+
+	useEffect(() => {
+		if (postError) {
+			messageApi.open({key: messageKey, type: 'error', content: 'The operation couldn\'t be completed'});
+		}
+	}, [messageApi, postError]);
 
 	useEffect(() => {
     if (isLoading || postLoading) {
@@ -305,11 +277,11 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 								</div>
 						</Col>
 
-						<Col span={12} className={styles.labelWrapper}>
+						<Col span={12} className={styles.anchorLabelWrapper}>
 								<Anchor
-										affix={false}
-										getContainer={() => document.getElementById("anchor-content") as HTMLDivElement}
-										items={getAnchorList()}
+									affix={false}
+									getContainer={() => document.getElementById("anchor-content") as HTMLDivElement}
+									items={getAnchorList()}
 								/>
 						</Col>
 				</Row>

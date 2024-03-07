@@ -15,7 +15,7 @@ export default defineConfig({
       "/apis": {
         // target: "http://20.105.26.194:8080/apis",
         // target: "http://20.105.44.127:8080/apis",
-        target: "http://68.219.40.93:8081/apis",
+        target: "http://4.209.37.15:8081/apis",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/apis/, ''),
       }

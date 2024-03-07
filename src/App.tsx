@@ -41,6 +41,12 @@ function App() {
             icon: getIcon('templates'),
             menu: true,
           },
+          {
+            label: "Form",
+            path: "/form",
+            icon: getIcon('projects'),
+            menu: true,
+          },
         ],
         notifications: [
           {
