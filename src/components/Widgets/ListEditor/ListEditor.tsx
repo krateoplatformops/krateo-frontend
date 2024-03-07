@@ -1,6 +1,6 @@
 import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { Button, Input, List, Space, Typography } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type ListEditorType = {
   data?: string[],
