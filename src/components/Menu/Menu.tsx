@@ -8,6 +8,7 @@ const Menu = ({data}) => {
   const [items, setItems] = useState<MenuProps['items']>([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const [currentRoute, setCurrentRoute] = useState(location.pathname);
 
   useEffect(() => {
     const menuItems: MenuProps['items'] = data.map((el) => (
@@ -20,6 +21,14 @@ const Menu = ({data}) => {
     if (menuItems)
       setItems(menuItems);
   }, [data])
+
+  useEffect(() => {
+    data?.forEach((el) => {
+      if (location.pathname.indexOf(el.path) > -1) {
+        setCurrentRoute(el.path);
+      }
+    })
+  }, [data, items, location])
 
   const changeRoute = (key: string) => {
     navigate(key);
@@ -34,6 +43,7 @@ const Menu = ({data}) => {
         onClick={(e) => changeRoute(e.key)}
         mode="inline"
         items={items}
+        selectedKeys={[currentRoute]}
       />
     </section>
   )

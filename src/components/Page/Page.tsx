@@ -68,7 +68,27 @@ const Page = ({clientId, url}: PageType) => {
                               "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
                               "icon": "server",
                               "color": "red",
-                              "tags": "lorem,ipsum"
+                              "tags": "lorem,ipsum",
+                              "panel": {
+                                title: "This is the title of the panel",
+                                description: "This is the panel description",
+                                size: "large",
+                                type: "form",
+                                buttons: [
+                                  { label: "Clear", type: "text", action: "reset" },
+                                  { label: "Submit", type: "primary", action: "submit" },
+                                ],
+                                content: {
+                                  element: "FormGenerator",
+                                  props: { // pass the data to render fields
+                                    title: "This is the title of the form",
+                                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                                    endpoint: "/testsubmit", // endpoint to call submitting values in POST
+                                    prefix: undefined, // "TemplateList" label to connect data list
+                                    fieldsEndpoint: "/apis/widgets.ui.krateo.io/formtemplates/fireworksapp"
+                                  }
+                                }
+                              }
                             }
                           ]
                         }
@@ -786,7 +806,7 @@ const Page = ({clientId, url}: PageType) => {
                   "content": {
                     "items": [
                       {
-                        "kind": "ButtonPanel",
+                        "kind": "Button",
                         "apiVersion": "widgets.ui.krateo.io/v1alpha1jh",
                         "metadata": {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwx1",
@@ -794,11 +814,9 @@ const Page = ({clientId, url}: PageType) => {
                         "status": {
                           "content": [
                             {
-                              button: {
-                                label: "Filters",
-                                icon: "filter",
-                                badge: true,
-                              },
+                              label: "Filters",
+                              icon: "filter",
+                              badge: true,
                               panel: {
                                 title: "This is the title of the panel",
                                 description: "This is the panel description",
@@ -819,6 +837,23 @@ const Page = ({clientId, url}: PageType) => {
                                   }
                                 }
                               }
+                            }
+                          ]
+                        },
+                      },
+                      {
+                        "kind": "Button",
+                        "apiVersion": "widgets.ui.krateo.io/v1alpha1jh",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwx1f",
+                        },
+                        "status": {
+                          "content": [
+                            {
+                              label: "Go to home",
+                              icon: "dashboard",
+                              badge: true,
+                              route: "/"
                             }
                           ]
                         },
@@ -1813,7 +1848,7 @@ const Page = ({clientId, url}: PageType) => {
     } else if (data && isSuccess) {
       createPage(data);
     }
-  }, [data, getContent, isSuccess]);
+  }, [clientId, data, getContent, isSuccess, url]);
 
   return (
     <section className={styles.page}>
