@@ -1,22 +1,21 @@
-import { ReactElement, useCallback, useEffect, useState } from "react";
+import { ReactElement, useCallback } from "react";
 import widgets from "../Widgets/index";
 import { Col, Row, Tabs } from "antd";
 import TabPane from "antd/es/tabs/TabPane";
-import { useGetPageContentQuery } from "../../features/page/pageApiSlice";
 import { PageType } from "./type";
 import styles from "./styles.module.scss";
 import Toolbar from "../Toolbar/Toolbar";
 import Skeleton from "../Skeleton/Skeleton";
+import { useGetContentQuery } from "../../features/common/commonApiSlice";
 
-const Page = ({clientId, url}: PageType) => {
-  const [contentPage, setContentPage] = useState(<></>);
+const Page = ({clientId, endpoint}: PageType) => {
   const ls = localStorage.getItem("user");
   const username = ls && JSON.parse(ls)?.user.username;
-  const group = ls && JSON.parse(ls)?.groups[0]
-  const {data, isLoading, isSuccess, isError} = useGetPageContentQuery({clientId, url, username, group});
+  const group = ls && JSON.parse(ls)?.groups[0];
+  const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint, username, group});
 
-  const fetchPage = (clientId: string, url: string) => {
-    console.log(clientId, url);
+  const fetchPage = (clientId: string, endpoint: string) => {
+    console.log(clientId, endpoint);
 
     // Catalog page
     if (window.location.pathname === "/") {
@@ -867,7 +866,6 @@ const Page = ({clientId, url}: PageType) => {
         }
       }
     }
-
 
     // projects list
     if (window.location.pathname.match(/^\/projects$/g)) {
@@ -1825,37 +1823,27 @@ const Page = ({clientId, url}: PageType) => {
     }
   }, []);
 
-  // mock data
-  // useEffect(() => {
-  //   const createPage = (data) => {
-  //     setContentPage(getContent(data, 1)); // root
-  //   }
-
-  //   const response = fetchPage(clientId, url);
-  //   createPage(response);
-  // }, [clientId, getContent, url]);
-
-  // api data
-  useEffect(() => {
-    const createPage = (data) => {
-      setContentPage(getContent(data, 1)); // root
-    }
-
+  // get data by API
+  const getContentPage = () => {
     if ((window.location.pathname === "/") || (window.location.pathname === "/form")) {
       // mock data for some pages
-      const response = fetchPage(clientId, url);
-      createPage(response);
+      const response = fetchPage(clientId, endpoint);
+      console.log("use mock", window.location.pathname)
+      return getContent(response, 1);
     } else if (data && isSuccess) {
-      createPage(data);
+      console.log("use data")
+      return getContent(data, 1);
+    } else {
+      return <></>
     }
-  }, [clientId, data, getContent, isSuccess, url]);
+  }
 
   return (
     <section className={styles.page}>
       {
         isLoading && <Skeleton />
       }
-      { (isSuccess || isError) && contentPage }
+      { (isSuccess || isError) && getContentPage() }
     </section>
   );
 }

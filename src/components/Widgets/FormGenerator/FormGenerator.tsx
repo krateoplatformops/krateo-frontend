@@ -19,7 +19,7 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 	const ls = localStorage.getItem("user");
 	const username = ls && JSON.parse(ls)?.user.username;
 	const group = ls && JSON.parse(ls)?.groups[0]
-	const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint: `${fieldsEndpoint}?sub=${username}&orgs=${group}&namespace=demo-system`});
+	const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint: fieldsEndpoint, username, group});
 	const [formData, setFormData] = useState();
 	const fieldsData: {type: string, name: string}[] = [];
 
