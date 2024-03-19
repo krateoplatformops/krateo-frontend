@@ -870,442 +870,856 @@ const Page = ({clientId, endpoint}: PageType) => {
     // projects list
     if (window.location.pathname.match(/^\/projects$/g)) {
       return {
-        component: "Tabs",
-        content: [
-          {
-            component: "TabPane",
-            props: {
-              label: "Charts"
+        "kind": "Tabs",
+        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+        "metadata": {
+          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbbt1",
+        },
+        "status": {
+          "content": {
+            "kind": "TabList",
+            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+            "metadata": {
+              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbct2",
             },
-            content: [
+            "items": [
               {
-                component: "Row",
-                content: [
-                  {
-                    component: "Col",
-                    props: 5,
-                    content: [
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt3",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Chart"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
                       {
-                        component: "Row",
-                        content: [
-                          {
-                            component: "Col",
-                            props:  2,
-                            content: [{
-                              component: "Widget",
-                              element: "ChartPie",
-                              props: {
-                                title: "Projects",
-                                tooltip: "this is a beautiful chart",
-                                label: "",
-                                value: 428,
-                                total: 695,
-                                status: "default"
-                              }
-                            }],
-                          },
-                          {
-                            component: "Col",
-                            props:  4,
-                            content: [{
-                              component: "Widget",
-                              element: "ChartLine",
-                              props: {
-                                title: "Projects Trend",
-                                tooltip: "this is a beautiful line chart",
-                              }
-                            }],
-                          }
-                        ],
-                      },
-                      {
-                        component: "Row",
-                        content: [
-                          {
-                            component: "Col",
-                            props: 2,
-                            content: [{
-                              component: "Widget",
-                              element: "ChartBars",
-                              props: {
-                                title: "Deployments",
-                                tooltip: "Lorem ipsum dolor sit amet",
-                                data: [
-                                  {
-                                    label: "Lorem ipsum 1",
-                                    value: "82",
-                                    percentage: 23,
-                                    color: "normal"
-                                  },
-                                  {
-                                    label: "Lorem ipsum 2",
-                                    value: "124",
-                                    percentage: 68,
-                                    color: "normal"
-                                  },
-                                  {
-                                    label: "Lorem ipsum 3",
-                                    value: "75",
-                                    percentage: 16,
-                                    color: "normal"
-                                  },
-                                  {
-                                    label: "Lorem ipsum 4",
-                                    value: "93",
-                                    percentage: 43,
-                                    color: "normal"
-                                  },
-                                  {
-                                    label: "Lorem ipsum 5",
-                                    value: "93",
-                                    percentage: 43,
-                                    color: "normal"
-                                  },
-                                ]
-                              }
-                            }],
-                          },
-                          {
-                            component: "Col",
-                            props:  4,
-                            content: [{
-                              component: "Widget",
-                              element: "ChartLine",
-                              props: {
-                                title: "Deployments Trend",
-                                tooltip: "this is a beautiful line chart",
-                              }
-                            }],
-                          }
-                        ],
-                      },
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Data"
-            },
-            content: [
-              {
-                component:"Row",
-                content:[
-                  {
-                    component:"Col",
-                    props: 5,
-                    content:[
-                        {
-                          component:"Toolbar",
-                          content:[]
+                        "kind": "Row",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbb",
                         },
-                        {
-                          component:"Widget",
-                          element:"DataList",
-                          props:{
-                              prefix:"ProjectsList", // label to connect filters
-                              data:[
-                                {
-                                  element:"CardTemplate",
-                                  props:{
-                                    id: 1461651842254,
-                                    icon:"server",
-                                    color:"blue",
-                                    title:"Project #1",
-                                    status:"",
-                                    date:"",
-                                    content:"<p>lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
-                                    tags:"",
-                                    actions:[
-                                        {
-                                          name:"remove",
-                                          enabled:true,
-                                          path:"/lorem-ipsum",
-                                          verb:"DELETE"
-                                        }
+                        "status": {
+                          "content": {
+                            "kind": "ColumnList",
+                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                            "metadata": {
+                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbc",
+                            },
+                            "items": [
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbg",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "8"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "ChartPie",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbq",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              title: "Projects",
+                                              tooltip: "this is a beautiful chart",
+                                              label: "used",
+                                              value: 428,
+                                              total: 695,
+                                              status: "default"
+                                            }
+                                          ]
+                                        },
+                                      },
                                     ]
                                   }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabb1",
                                 },
-                              ]
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "16"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "ChartLine",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbw",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              title: "Projects Trend",
+                                              tooltip: "this is a beautiful chart",
+                                            }
+                                          ]
+                                        },
+                                      },
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "8"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "ChartMultipleBars",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1jh",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwx4",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              title: "Deployments",
+                                              tooltip: "this is a beautiful chart",
+                                            }
+                                          ]
+                                        },
+                                      },
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabb1",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "16"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "ChartLine",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbw",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              title: "Deployments Trend",
+                                              tooltip: "this is a beautiful chart",
+                                            }
+                                          ]
+                                        },
+                                      },
+                                    ]
+                                  }
+                                }
+                              },
+                            ]
                           }
                         }
+                      }
                     ]
                   }
-                ]
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt9",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Data"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                      {
+                        "kind": "Row",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbb",
+                        },
+                        "status": {
+                          "content": {
+                            "kind": "ColumnList",
+                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                            "metadata": {
+                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbc",
+                            },
+                            "items": [
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "12"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "kind": "CardTemplateList",
+                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                    "metadata": {
+                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbe",
+                                    },
+                                    "items": [
+                                      {
+                                        "kind": "CardTemplate",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Project #1",
+                                              "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                                              "icon": "server",
+                                              "color": "red",
+                                              "tags": "lorem,ipsum",
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "12"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "kind": "CardTemplateList",
+                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                    "metadata": {
+                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbh",
+                                    },
+                                    "items": [
+                                      {
+                                        "kind": "CardTemplate",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Project #2",
+                                              "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                                              "color": "blue",
+                                              "icon": "code-branch",
+                                              "tags": "lorem,ipsum",
+                                              "route": "/projects/12345",
+                                              "allowedActions": ["remove"],
+                                              "actions": [{
+                                                "name": "remove",
+                                                "verb": "DELETE",
+                                              }]
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "12"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "kind": "CardTemplateList",
+                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                    "metadata": {
+                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbe",
+                                    },
+                                    "items": [
+                                      {
+                                        "kind": "CardTemplate",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Project #3",
+                                              "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                                              "icon": "server",
+                                              "color": "blue",
+                                              "tags": "lorem,ipsum",
+                                              "route": "/projects/12345",
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "12"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "kind": "CardTemplateList",
+                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                    "metadata": {
+                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbh",
+                                    },
+                                    "items": [
+                                      {
+                                        "kind": "CardTemplate",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Project #4",
+                                              "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                                              "color": "blue",
+                                              "icon": "code-branch",
+                                              "tags": "lorem,ipsum",
+                                              "route": "/projects/12345",
+                                              "allowedActions": ["remove"],
+                                              "actions": [{
+                                                "name": "remove",
+                                                "verb": "DELETE",
+                                              }]
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
               }
             ]
           }
-        ]
+        }
       }
     }
 
     // project details -> deployments list
     if (window.location.pathname.match(/^\/projects\/[0-9]+$/g)) {
       return {
-        component:"Row",
-        content:[
-          {
-            component:"Col",
-            props: 5,
-            content:[
-                {
-                  component:"Toolbar",
-                  content:[
-                    {
-                      component: "Widget",
-                      element: "ButtonPanel",
-                      props: {
-                        button: {
-                          label: "Filters",
-                          icon: "filter",
-                          badge: true,
-                        },
-                        panel: {
-                          title: "Filters",
-                          description: "Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-                          size: "default",
-                          content: {
-                            element: "FormGenerator",
-                            props: { // pass the data to render fields
-                              title: "Form Name",
-                              description: "lorem ipsum dolor sit amet, lorem ipsum dolor sit amet.",
-                              endpoint: null, // endpoint to call submitting values in POST
-                              prefix: "TemplateList", // label to connect data list
-                              fields: [
-                                {
-                                  name: "title",
-                                  type: "text",
-                                  label: "Title",
-                                  rules: [],
-                                  placeholder: "type a title",
-                                },
-                                {
-                                  name: "content",
-                                  type: "text",
-                                  label: "Content",
-                                  rules: [],
-                                  placeholder: "type a text",
-                                },
-                                {
-                                  name: "status",
-                                  type: "radioGroup",
-                                  label: "Status",
-                                  rules: [],
-                                  placeholder: "",
-                                  extra: {
-                                    options: [
-                                      {
-                                        label: "active",
-                                        value: "",
-                                      },
-                                      {
-                                        label: "archived",
-                                        value: "archived",
-                                      },
-                                    ]
-                                  }
-                                },
-                                {
-                                  name: "date",
-                                  type: "datetime",
-                                  label: "archived date",
-                                  rules: [],
-                                  placeholder: "",
-                                  initialValue: "",
-                                  extra: {
-                                    format: "DD MMM YYYY",
-                                  }
-                                },
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    },
-                    {
-                      component: "Widget",
-                      element: "ButtonPanel",
-                      props: {
-                        button: {
-                          label: "New Deployment",
-                          icon: "circle-plus",
-                          type: "primary"
-                        },
-                        panel: {
-                          title: "New Deployment",
-                          description: "Lorem ipsum dolor sit amet, lorem ipsum dolor sit amet",
-                          size: "default",
-                          content: {
-                            element: "FormGenerator",
-                            props: {
-                              title: "Form Name",
-                              description: "lorem ipsum dolor sit amet, lorem ipsum dolor sit amet.",
-                              endpoint: "/createDeployment", // endpoint to call submitting values in POST
-                              prefix: "", // label to connect data list
-                              fields: [
-                              ]
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
+        "kind": "Row",
+        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+        "metadata": {
+          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbb",
+        },
+        "status": {
+          "content": {
+            "kind": "ColumnList",
+            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+            "metadata": {
+              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbc",
+            },
+            "items": [
+              {
+                "kind": "Column",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
                 },
-                {
-                  component:"Widget",
-                  element:"DataList",
-                  props:{
-                      prefix:"DeploymentList", // label to connect filters
-                      data:[
-                        {
-                          element:"CardTemplate",
-                          props:{
-                            id: 65461328,
-                            icon:"server",
-                            color:"blue",
-                            title:"Deployment #1",
-                            status:"",
-                            date:"",
-                            content:"<p>lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
-                            tags:"",
-                            actions:[
-                                {
-                                  name:"remove",
-                                  enabled:true,
-                                  path:"/lorem-ipsum",
-                                  verb:"DELETE"
-                                }
-                            ]
-                          }
+                "spec": {
+                  "app": {
+                    "props": {
+                      "width": "12"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "kind": "CardTemplateList",
+                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                    "metadata": {
+                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbe",
+                    },
+                    "items": [
+                      {
+                        "kind": "CardTemplate",
+                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
                         },
-                        {
-                            element:"CardTemplate",
-                            props:{
-                              id: 2,
-                              icon:"fa-code-branch",
-                              color:"red",
-                              title:"Deployment #2",
-                              status:"archived",
-                              date:"Sep 15th 2023 08:15:43",
-                              content:"<p>lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
-                              tags:"Lorem ipsum #1,Lorem ipsum #2",
-                              actions:[
-                                  {
-                                    name:"remove",
-                                    enabled:false
-                                  }
-                              ]
+                        "status": {
+                          "content": [
+                            {
+                              "title": "Deployment #1",
+                              "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                              "icon": "server",
+                              "color": "red",
+                              "tags": "lorem,ipsum",
                             }
-                        },
-                        {
-                          element:"CardTemplate",
-                          props:{
-                              id: 3,
-                              icon:"server",
-                              color:"blue",
-                              title:"Deployment #3",
-                              status:"",
-                              date:"",
-                              content:"<p>lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>",
-                              tags:"",
-                              actions:[
-                                {
-                                    name:"remove",
-                                    enabled:true,
-                                    path:"/lorem-ipsum",
-                                    verb:"DELETE"
-                                }
-                              ]
-                          }
-                        },
-                      ]
+                          ]
+                        }
+                      }
+                    ]
                   }
                 }
+              },
+              {
+                "kind": "Column",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "width": "12"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "kind": "CardTemplateList",
+                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                    "metadata": {
+                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbh",
+                    },
+                    "items": [
+                      {
+                        "kind": "CardTemplate",
+                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
+                        },
+                        "status": {
+                          "content": [
+                            {
+                              "title": "Deployment #2",
+                              "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                              "color": "blue",
+                              "icon": "code-branch",
+                              "tags": "lorem,ipsum",
+                              "route": "/projects/12345/67890",
+                              "allowedActions": ["remove"],
+                              "actions": [{
+                                "name": "remove",
+                                "verb": "DELETE",
+                              }]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "Column",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "width": "12"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "kind": "CardTemplateList",
+                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                    "metadata": {
+                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbe",
+                    },
+                    "items": [
+                      {
+                        "kind": "CardTemplate",
+                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
+                        },
+                        "status": {
+                          "content": [
+                            {
+                              "title": "Deployment #3",
+                              "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                              "icon": "server",
+                              "color": "blue",
+                              "tags": "lorem,ipsum",
+                              "route": "/projects/12345/67890",
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "Column",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "width": "12"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "kind": "CardTemplateList",
+                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                    "metadata": {
+                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbh",
+                    },
+                    "items": [
+                      {
+                        "kind": "CardTemplate",
+                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
+                        },
+                        "status": {
+                          "content": [
+                            {
+                              "title": "Deployment #4",
+                              "content": "Nulla quam lectus, venenatis at nunc nec, suscipit convallis sapien. \nSuspendisse id venenatis orci, a semper ante. \nMauris convallis sagittis tincidunt. \nAenean egestas auctor interdum.",
+                              "color": "blue",
+                              "icon": "code-branch",
+                              "tags": "lorem,ipsum",
+                              "route": "/projects/12345/67890",
+                              "allowedActions": ["remove"],
+                              "actions": [{
+                                "name": "remove",
+                                "verb": "DELETE",
+                              }]
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
             ]
           }
-        ]
+        }
       }
     }
 
     // deployment details (page with tabs)
     if (window.location.pathname.match(/^\/projects\/[0-9]+\/[0-9]+$/g)) {
       return {
-        component: "Tabs",
-        content: [
-          {
-            component: "TabPane",
-            props: {
-              label: "Overview"
+        "kind": "Tabs",
+        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+        "metadata": {
+          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbbt1",
+        },
+        "status": {
+          "content": {
+            "kind": "TabList",
+            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+            "metadata": {
+              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbct2",
             },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Relations"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Resources"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Documentation"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Kubernetes"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Pipeline"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Events"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Values"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Terminal"
-            },
-            content: []
-          },
-          {
-            component: "TabPane",
-            props: {
-              label: "Keptn"
-            },
-            content: []
-          },
-        ]
+            "items": [
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt31",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Overview"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt32",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Relations"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt33",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Resources"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt34",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Documentation"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt35",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Kubernetes"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt36",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Pipeline"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt37",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Events"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt38",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Values"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt39",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Terminal"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+              {
+                "kind": "TabPane",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt40",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "label": "Keptn"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                    ]
+                  }
+                }
+              },
+            ]
+          }
+        }
       }
     }
 
@@ -1797,7 +2211,7 @@ const Page = ({clientId, endpoint}: PageType) => {
         case "Column":
           return <Col key={data.metadata.uid} { ...getColProps(data.spec.app.props.width) } className={styles.col}>{ getContent(data.status.content.items, index+1) }</Col>
         case "Tabs":
-          return <Tabs key={data.metadata.uid} {...data.spec.app.props} className={styles.tabs}>{ getContent(data.status.content.items, index+1) }</Tabs>
+          return <Tabs key={data.metadata.uid} className={styles.tabs}>{ getContent(data.status.content.items, index+1) }</Tabs>
         case "TabPane":
           return <TabPane key={data.metadata.uid} tab={data.spec.app.props.label} className={styles.tabpane}>{ getContent(data.status.content.items, index+1) }</TabPane>
         case "Toolbar":
@@ -1825,13 +2239,18 @@ const Page = ({clientId, endpoint}: PageType) => {
 
   // get data by API
   const getContentPage = () => {
-    if ((window.location.pathname === "/") || (window.location.pathname === "/form")) {
+    if ((window.location.pathname === "/") || 
+        (window.location.pathname === "/form") ||
+        (window.location.pathname === "/projects") ||
+        (window.location.pathname.match(/^\/projects\/[0-9]+$/g)) ||
+        (window.location.pathname.match(/^\/projects\/[0-9]+\/[0-9]+$/g))
+    ) {
       // mock data for some pages
       const response = fetchPage(clientId, endpoint);
       console.log("use mock", window.location.pathname)
       return getContent(response, 1);
     } else if (data && isSuccess) {
-      console.log("use data")
+      console.log("use real data")
       return getContent(data, 1);
     } else {
       return <></>

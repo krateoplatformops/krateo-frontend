@@ -43,9 +43,24 @@ function App() {
             menu: true,
           },
           {
+            label: "Project",
+            path: "/projects",
+            icon: getIcon('projects'),
+            endpoint: "/",
+            menu: true,
+          },
+          {
+            path: "/projects/:projectID",
+            menu: false,
+          },
+          {
+            path: "/projects/:projectID/:deploymentID",
+            menu: false,
+          },
+          {
             label: "Form",
             path: "/form",
-            icon: getIcon('projects'),
+            icon: getIcon('dashboard'),
             endpoint: "/",
             menu: true,
           },
