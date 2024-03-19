@@ -867,6 +867,58 @@ const Page = ({clientId, endpoint}: PageType) => {
       }
     }
 
+    // flow chart sample page
+    if (window.location.pathname.indexOf("/flow") > -1) {
+      return {
+        "kind": "Row",
+        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+        "metadata": {
+          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbbf",
+        },
+        "status": {
+          "content": {
+            "kind": "ColumnList",
+            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+            "metadata": {
+              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbcf",
+            },
+            "items": [
+              {
+                "kind": "Column",
+                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                "metadata": {
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13z2f",
+                },
+                "spec": {
+                  "app": {
+                    "props": {
+                      "width": "12"
+                    }
+                  },
+                },
+                "status": {
+                  "content": {
+                    "items": [
+                      {
+                        "kind": "ChartFlow",
+                        "apiVersion": "widgets.ui.krateo.io/v1alpha1jh",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwx1f",
+                        },
+                        "status": {
+                          "content": [{label: "flow chart"}]
+                        },
+                      },
+                    ]
+                  }
+                }
+              },
+            ]
+          }
+        }
+      }
+    }
+
     // projects list
     if (window.location.pathname.match(/^\/projects$/g)) {
       return {
@@ -1825,7 +1877,10 @@ const Page = ({clientId, endpoint}: PageType) => {
 
   // get data by API
   const getContentPage = () => {
-    if ((window.location.pathname === "/") || (window.location.pathname === "/form")) {
+    if ((window.location.pathname === "/") || 
+        (window.location.pathname === "/form") || 
+        (window.location.pathname === "/flow")
+      ) {
       // mock data for some pages
       const response = fetchPage(clientId, endpoint);
       console.log("use mock", window.location.pathname)

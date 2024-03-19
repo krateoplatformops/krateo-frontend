@@ -49,6 +49,13 @@ function App() {
             endpoint: "/",
             menu: true,
           },
+          {
+            label: "Flow",
+            path: "/flow",
+            icon: getIcon('projects'),
+            endpoint: "/",
+            menu: true,
+          },
         ],
         notifications: [
           {
