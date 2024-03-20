@@ -36,17 +36,17 @@ function App() {
             menu: true,
           },
           {
+            label: "Projects",
+            path: "/projects",
+            icon: getIcon('projects'),
+            endpoint: "/",
+            menu: true,
+          },
+          {
             label: "Templates",
             path: "/templates",
             icon: getIcon('templates'),
             endpoint: "/apis/layout.ui.krateo.io/rows/two",
-            menu: true,
-          },
-          {
-            label: "Project",
-            path: "/projects",
-            icon: getIcon('projects'),
-            endpoint: "/",
             menu: true,
           },
           {

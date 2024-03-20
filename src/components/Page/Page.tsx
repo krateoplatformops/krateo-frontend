@@ -1009,6 +1009,71 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "spec": {
                                   "app": {
                                     "props": {
+                                      "width": "24"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "Toolbar",
+                                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbettb1",
+                                        },
+                                        "status": {
+                                          "content": {
+                                            "items": [
+                                              {
+                                                "kind": "Button",
+                                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                "metadata": {
+                                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1",
+                                                },
+                                                "status": {
+                                                  "content": [
+                                                    {
+                                                      "label": "Filters",
+                                                      "icon": "filters",
+                                                      "type": "default",
+                                                    }
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "kind": "Button",
+                                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                "metadata": {
+                                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb2",
+                                                },
+                                                "status": {
+                                                  "content": [
+                                                    {
+                                                      "label": "New project",
+                                                      "icon": "plus",
+                                                      "type": "primary",
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
                                       "width": "12"
                                     }
                                   },
