@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { RouterProvider, createBrowserRouter, RouteObject } from "react-router-dom";
 import Skeleton from "./components/Skeleton/Skeleton";
 import Page from "./components/Page/Page"
@@ -24,8 +24,7 @@ function App() {
   const [messageApi, contextHolder] = message.useMessage();
   // const messageKey = 'appMessageKey';
 
-  const fetchPageData = (clientId: string) => {
-    console.log(clientId)
+  const fetchMockData = useCallback(() => {
     return (
       {
         routes: [
@@ -33,12 +32,36 @@ function App() {
             label: "Catalog",
             path: "/",
             icon: getIcon("dashboard"),
+            endpoint: "/",
+            menu: true,
+          },
+          {
+            label: "Projects",
+            path: "/projects",
+            icon: getIcon('projects'),
+            endpoint: "/",
             menu: true,
           },
           {
             label: "Templates",
             path: "/templates",
             icon: getIcon('templates'),
+            endpoint: "/apis/layout.ui.krateo.io/rows/two",
+            menu: true,
+          },
+          {
+            path: "/projects/:projectID",
+            menu: false,
+          },
+          {
+            path: "/projects/:projectID/:deploymentID",
+            menu: false,
+          },
+          {
+            label: "Form",
+            path: "/form",
+            icon: getIcon('dashboard'),
+            endpoint: "/",
             menu: true,
           },
           {
@@ -65,7 +88,7 @@ function App() {
         ]
       }
     )
-  }
+  }, []);
 
   const getConfiguration = async () => {
     const configFile = await fetch("/config/config.json");
@@ -76,15 +99,17 @@ function App() {
   useEffect(() => {
     if (clientId) {
       // get application data (after logged)
-      const result = fetchPageData(clientId);
+      const result = fetchMockData();
+
       createRoutes(clientId, result);
       getConfiguration();
     }
-  }, [clientId]);
+  }, [clientId, fetchMockData]);
 
   useEffect(() => {
     if (isError) {
-      // TEMPORARY DISABLED: messageApi.open({key: messageKey, type: 'error', content: catchError('application_data_missing')});
+      // TEMPORARY DISABLED: 
+      // messageApi.open({key: messageKey, type: 'error', content: catchError('application_data_missing')});
     }
   }, [isError, messageApi]);
 
@@ -93,7 +118,7 @@ function App() {
       {
         path: r.path !== "/" ? r.path : undefined,
         index: r.path === "/",
-        element: <Page clientId={clientId} url={r.path} />,
+        element: <Page clientId={clientId} endpoint={r.endpoint} />,
         handle: r.handle,
       }
     ));

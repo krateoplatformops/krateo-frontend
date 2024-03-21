@@ -1,0 +1,64 @@
+@import '../../../theme/global.scss';
+
+.formGenerator {
+  margin: 0 -20px 0 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .anchorWrapper {
+    position: relative;
+    height: 100%;
+
+    .anchorRow {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      overflow: hidden;
+      width: 100%;
+    }
+  }
+
+  .formWrapper {
+    height: 100%;
+
+    .form {
+      overflow: auto;
+      height: 100%;
+      padding: 0 40px 0 10px;
+
+      .formField {
+        margin-bottom: 40px;
+
+        .labelField {
+          row-gap: 0;
+        }
+
+        .breadcrumbDots {
+          text-wrap: nowrap;
+        }
+      }
+
+      :global label::before {
+        margin-top: -22px;
+      }
+    }
+  }
+
+  .anchorLabelWrapper {
+    padding: 0 20px;
+    height: 100%;
+    overflow-y: scroll;
+
+    :global .ant-anchor-link-title-active {
+      font-weight: 600;
+    }
+
+    .anchorObjectLabel {
+      color: #ccc;
+      cursor: default;
+      font-weight: 400;
+    }
+  }
+}

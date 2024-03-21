@@ -28,6 +28,10 @@
       padding: 10px;
     }
 
+    :global(.ant-col > div) {
+      margin-bottom: 20px;
+    }
+
     :global(.ant-col:has(.ant-col)) {
       padding: 0;
     }

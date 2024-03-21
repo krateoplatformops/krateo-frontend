@@ -6,7 +6,7 @@ import CardTemplate from "./CardTemplate/CardTemplate";
 import Widget1 from "./Widget1/Widget1";
 import Widget2 from "./Widget2/Widget2";
 import FormGenerator from "./FormGenerator/FormGenerator";
-import ButtonPanel from "./ButtonPanel/ButtonPanel";
+import Button from "./Button/Button";
 import DataList from "./DataList/DataList";
 import Panel from "./Panel/Panel";
 import RichElement from "./RichElement/RichElement";
@@ -19,7 +19,7 @@ const widgets = {
   "ChartMultipleBars": ChartMultipleBars,
   "CardTemplate": CardTemplate,
   "FormGenerator": FormGenerator,
-  "ButtonPanel": ButtonPanel,
+  "Button": Button,
   "DataList": DataList,
   "Panel": Panel,
   "RichElement": RichElement,

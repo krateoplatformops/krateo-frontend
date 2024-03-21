@@ -1,4 +1,4 @@
 export type PageType = {
   clientId: string;
-  url: string;
+  endpoint: string;
 }

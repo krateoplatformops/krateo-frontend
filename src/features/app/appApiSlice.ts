@@ -1,9 +1,10 @@
 import { apiSlice } from "../../api/apiSlice";
+import { getBaseUrl } from "../../utils/api";
 
 export const appApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAppData: builder.query({
-      query: (clientID) => `/appData/${clientID}`,
+      query: (clientID) => `${getBaseUrl()}appData/${clientID}`,
     }),
   }),
 })

@@ -11,7 +11,7 @@ npm install
 ## Start in local
 Launch application
 ```sh
-$ export "VITE_BFF_API_BASE_URL=http://20.105.28.126:8443" && export "VITE_AUTHN_API_BASE_URL=http://51.138.231.131:8080" && npm run dev
+$ export "VITE_BFF_API_BASE_URL=http://4.209.37.15:8081" && export "VITE_AUTHN_API_BASE_URL=http://51.138.231.131:8080" && npm run dev
 ```
 
 ## Deploying
