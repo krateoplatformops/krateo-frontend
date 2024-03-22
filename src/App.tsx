@@ -29,7 +29,7 @@ function App() {
       {
         routes: [
           {
-            label: "Catalog",
+            label: "Dashboard",
             path: "/",
             icon: getIcon("dashboard"),
             endpoint: "/",
@@ -63,19 +63,6 @@ function App() {
             icon: getIcon('dashboard'),
             endpoint: "/",
             menu: true,
-          },
-          {
-            label: "Projects",
-            path: "/projects",
-            icon: getIcon('projects'),
-            menu: true,
-          },
-          
-          {
-            label: "Projects",
-            path: "/projects/:projectId/:deploymentId",
-            icon: getIcon('projects'),
-            menu: false,
           },
         ],
         notifications: [

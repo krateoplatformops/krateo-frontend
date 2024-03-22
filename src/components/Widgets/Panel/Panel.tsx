@@ -3,7 +3,17 @@ import styles from "./styles.module.scss";
 import widgets from "..";
 
 const Panel = ({title, content}) => {
-  const Component = widgets[content.kind];
+  let panelContent;
+
+  if (Array.isArray(content)) {
+    panelContent = content.map(el => {
+      const Component = widgets[el.kind];
+      return <Component {...el.spec.app.props} />
+    })
+  } else {
+    const Component = widgets[content.kind];
+    panelContent = <Component {...content.spec.app.props} />
+  }
 
   return (
     <Card
@@ -16,7 +26,7 @@ const Panel = ({title, content}) => {
         </Space>
       }
     >
-      <Component {...content.spec.app.props} />
+      {panelContent}
     </Card>
   )
 }

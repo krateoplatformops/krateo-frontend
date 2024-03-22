@@ -1680,6 +1680,172 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "status": {
                   "content": {
                     "items": [
+                      {
+                        "kind": "Row",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbbov1",
+                        },
+                        "status": {
+                          "content": {
+                            "kind": "ColumnList",
+                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                            "metadata": {
+                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbcov2",
+                            },
+                            "items": [
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "6"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "Panel",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Overview",
+                                              "content": {
+                                                "kind": "Paragraph",
+                                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                "metadata": {
+                                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg1",
+                                                },
+                                                "spec": {
+                                                  "app": {
+                                                    "props": {
+                                                      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                    }
+                                                  },
+                                                },
+                                              }
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3556",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "18"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "Panel",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp155",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Links",
+                                              "content": [
+                                                {
+                                                  "kind": "RichElement",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg1552",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "icon": "server",
+                                                        "color": "blue",
+                                                        "description": "#1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                      }
+                                                    },
+                                                  },
+                                                },
+                                                {
+                                                  "kind": "RichElement",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg15529",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "icon": "server",
+                                                        "color": "blue",
+                                                        "description": "#2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                      }
+                                                    },
+                                                  },
+                                                },
+                                                {
+                                                  "kind": "RichElement",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg155234",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "icon": "code-branch",
+                                                        "color": "blue",
+                                                        "description": "#3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                      }
+                                                    },
+                                                  },
+                                                },
+                                                {
+                                                  "kind": "RichElement",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg15529246",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "icon": "code-branch",
+                                                        "color": "red",
+                                                        "description": "#4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                      }
+                                                    },
+                                                  },
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                            ]
+                          }
+                        }
+                      }
                     ]
                   }
                 }
@@ -1990,7 +2156,7 @@ const Page = ({clientId, endpoint}: PageType) => {
         default:
           if (data.apiVersion?.indexOf("widgets") === 0) {
             const Component = widgets[data.kind];
-            return data.status.content.map((el, i) => <Component key={`widget_${data.metadata.uid}_$${i}`} {...el} />)
+            return data.status.content.map((el, i) => <Component id={data.metadata.uid} key={`widget_${data.metadata.uid}_$${i}`} {...el} />)
           } else {
             // null -> exit recoursive loop
             return <></>
@@ -2000,7 +2166,7 @@ const Page = ({clientId, endpoint}: PageType) => {
 
     // recoursive function to scan page definition json
     // data is the array of elements, root is an object
-    if (!data.length) {
+    if (!data?.length) {
       // root element
       return renderComponent(data, i);
     } else {

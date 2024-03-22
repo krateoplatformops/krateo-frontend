@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getColorCode } from "../../../utils/colors";
 
 
-const RichElement = ({icon, color, title}) => {
+const RichElement = ({icon, color, title, description}) => {
 
 
   return (
@@ -12,6 +12,7 @@ const RichElement = ({icon, color, title}) => {
       <Avatar style={{ backgroundColor: getColorCode(color) }} size={64} icon={<FontAwesomeIcon icon={icon} />} />
       <div className={styles.details}>
         <Typography.Title className={styles.title} ellipsis level={2} title={title}>{title}</Typography.Title>
+        <Typography.Paragraph>{description}</Typography.Paragraph>
       </div>
     </Space>
   )
