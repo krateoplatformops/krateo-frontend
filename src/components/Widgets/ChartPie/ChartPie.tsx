@@ -1,11 +1,8 @@
 import { theme } from 'antd';
-import Panel from '../../Panel/Panel';
 import { RingProgress } from '@ant-design/plots';
 import styles from "./styles.module.scss";
 
 type ChartPieType = {
-  title: string;
-  tooltip?: string;
   label?: string;
   value: number;
   total: number;
@@ -14,7 +11,7 @@ type ChartPieType = {
 
 const { useToken } = theme;
 
-const ChartPie = ({title, tooltip, label, value, total, status}: ChartPieType) => {
+const ChartPie = ({label, value, total, status}: ChartPieType) => {
   const { token } = useToken();
 
   const getColor = () => {
@@ -33,8 +30,6 @@ const ChartPie = ({title, tooltip, label, value, total, status}: ChartPieType) =
   const config = {
     animation:false,
     autoFit: true,
-    // height: 100,
-    // width: '100%',
     percent: 1 / total * value,
     innerRadius: .85,
     radius: 1,
@@ -43,21 +38,14 @@ const ChartPie = ({title, tooltip, label, value, total, status}: ChartPieType) =
   }
   
   return (
-    <Panel
-      title={title}
-      tooltip={tooltip}
-      content={
-        <div className={styles.chart}>
-          <RingProgress {...config} />
-          <div className={styles.details}>
-            <div className={styles.label}>{label}</div>
-            <div className={styles.value}>{value}</div>
-            <div className={styles.total}>/{total}</div>
-          </div>
-        </div>
-      }
-      footer={[]}
-    />
+  <div className={styles.chart}>
+    <RingProgress {...config} />
+    <div className={styles.details}>
+      <div className={styles.label}>{label}</div>
+      <div className={styles.value}>{value}</div>
+      <div className={styles.total}>/{total}</div>
+    </div>
+  </div>
   )
 }
 

@@ -1,18 +1,15 @@
-import { ReactElement, useCallback } from "react";
-import widgets from "../Widgets/index";
-import { Col, Row, Tabs } from "antd";
-import TabPane from "antd/es/tabs/TabPane";
 import { PageType } from "./type";
 import styles from "./styles.module.scss";
-import Toolbar from "../Toolbar/Toolbar";
 import Skeleton from "../Skeleton/Skeleton";
 import { useGetContentQuery } from "../../features/common/commonApiSlice";
+import useParseData from "../../hooks/useParseData";
 
 const Page = ({clientId, endpoint}: PageType) => {
   const ls = localStorage.getItem("user");
   const username = ls && JSON.parse(ls)?.user.username;
   const group = ls && JSON.parse(ls)?.groups[0];
   const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint, username, group});
+  const [getContent] = useParseData()
 
   const fetchPage = (clientId: string, endpoint: string) => {
     console.log(clientId, endpoint);
@@ -161,24 +158,36 @@ const Page = ({clientId, endpoint}: PageType) => {
                   "content": {
                     "items": [
                       {
-                        "kind": "ChartPie",
+                        "kind": "Panel",
                         "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                         "metadata": {
-                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbq",
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1",
                         },
                         "status": {
                           "content": [
                             {
-                              title: "Templates",
-                              tooltip: "this is a beautiful chart",
-                              label: "used",
-                              value: 428,
-                              total: 695,
-                              status: "default"
+                              "title": "Templates",
+                              "content": {
+                                "kind": "ChartPie",
+                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbq",
+                                },
+                                "status": {
+                                  "content": [
+                                    {
+                                      label: "used",
+                                      value: 428,
+                                      total: 695,
+                                      status: "default"
+                                    }
+                                  ]
+                                },
+                              },
                             }
                           ]
-                        },
-                      },
+                        }
+                      }
                     ]
                   }
                 }
@@ -235,20 +244,29 @@ const Page = ({clientId, endpoint}: PageType) => {
                   "content": {
                     "items": [
                       {
-                        "kind": "ChartLine",
+                        "kind": "Panel",
                         "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                         "metadata": {
-                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbw",
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1",
                         },
                         "status": {
                           "content": [
                             {
-                              title: "Templates Trend",
-                              tooltip: "this is a beautiful chart",
+                              "title": "Templates trend",
+                              "content": {
+                                "kind": "ChartLine",
+                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwdt1",
+                                },
+                                "status": {
+                                  "content": [{}]
+                                },
+                              },
                             }
                           ]
-                        },
-                      },
+                        }
+                      }
                     ]
                   }
                 }
@@ -835,24 +853,36 @@ const Page = ({clientId, endpoint}: PageType) => {
                                   "content": {
                                     "items": [
                                       {
-                                        "kind": "ChartPie",
+                                        "kind": "Panel",
                                         "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                                         "metadata": {
-                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbq",
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1",
                                         },
                                         "status": {
                                           "content": [
                                             {
-                                              title: "Projects",
-                                              tooltip: "this is a beautiful chart",
-                                              label: "used",
-                                              value: 428,
-                                              total: 695,
-                                              status: "default"
+                                              "title": "Projects",
+                                              "content": {
+                                                "kind": "ChartPie",
+                                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                "metadata": {
+                                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbq",
+                                                },
+                                                "status": {
+                                                  "content": [
+                                                    {
+                                                      label: "used",
+                                                      value: 428,
+                                                      total: 695,
+                                                      status: "default"
+                                                    }
+                                                  ]
+                                                },
+                                              },
                                             }
                                           ]
-                                        },
-                                      },
+                                        }
+                                      }
                                     ]
                                   }
                                 }
@@ -874,20 +904,29 @@ const Page = ({clientId, endpoint}: PageType) => {
                                   "content": {
                                     "items": [
                                       {
-                                        "kind": "ChartLine",
+                                        "kind": "Panel",
                                         "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                                         "metadata": {
-                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbw",
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1",
                                         },
                                         "status": {
                                           "content": [
                                             {
-                                              title: "Projects Trend",
-                                              tooltip: "this is a beautiful chart",
+                                              "title": "Projects trend",
+                                              "content": {
+                                                "kind": "ChartLine",
+                                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                "metadata": {
+                                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbw",
+                                                },
+                                                "status": {
+                                                  "content": [{}]
+                                                },
+                                              },
                                             }
                                           ]
-                                        },
-                                      },
+                                        }
+                                      }
                                     ]
                                   }
                                 }
@@ -944,20 +983,29 @@ const Page = ({clientId, endpoint}: PageType) => {
                                   "content": {
                                     "items": [
                                       {
-                                        "kind": "ChartLine",
+                                        "kind": "Panel",
                                         "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                                         "metadata": {
-                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbw",
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1",
                                         },
                                         "status": {
                                           "content": [
                                             {
-                                              title: "Deployments Trend",
-                                              tooltip: "this is a beautiful chart",
+                                              "title": "Deployment trend",
+                                              "content": {
+                                                "kind": "ChartLine",
+                                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                "metadata": {
+                                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbwdt1",
+                                                },
+                                                "status": {
+                                                  "content": [{}]
+                                                },
+                                              },
                                             }
                                           ]
-                                        },
-                                      },
+                                        }
+                                      }
                                     ]
                                   }
                                 }
@@ -1939,13 +1987,381 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "spec": {
                   "app": {
                     "props": {
-                      "label": "Pipeline"
+                      "label": "Pipelines"
                     }
                   },
                 },
                 "status": {
                   "content": {
                     "items": [
+                      {
+                        "kind": "Row",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbbov1003",
+                        },
+                        "status": {
+                          "content": {
+                            "kind": "ColumnList",
+                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                            "metadata": {
+                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbcov2004",
+                            },
+                            "items": [
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "6"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "Panel",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Pipelines",
+                                              "content": [
+                                                {
+                                                  "kind": "Button",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b1",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "label": "Pipeline #1",
+                                                        "type": "link",
+                                                        "icon": "gears",
+                                                        "prefix": "pipelines",
+                                                        "content": [
+                                                          {
+                                                            "kind": "Panel",
+                                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                            "metadata": {
+                                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b1c1",
+                                                            },
+                                                            "status": {
+                                                              "content": [
+                                                                {
+                                                                  "title": "Pipeline #1",
+                                                                  "content": [
+                                                                    {
+                                                                      "kind": "Row",
+                                                                      "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                                      "metadata": {
+                                                                        "uid": "e14d5e2d-1170-4360-9b86-827d527dabbbov1003r1",
+                                                                      },
+                                                                      "status": {
+                                                                        "content": {
+                                                                          "kind": "ColumnList",
+                                                                          "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                                          "metadata": {
+                                                                            "uid": "e14d5e2d-1170-4360-9b86-827d527dabbcov2004c1",
+                                                                          },
+                                                                          "items": [
+                                                                            {
+                                                                              "kind": "Column",
+                                                                              "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                                              "metadata": {
+                                                                                "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005c2",
+                                                                              },
+                                                                              "spec": {
+                                                                                "app": {
+                                                                                  "props": {
+                                                                                    "width": "12"
+                                                                                  }
+                                                                                },
+                                                                              },
+                                                                              "status": {
+                                                                                "content": {
+                                                                                  "items": [
+                                                                                    {
+                                                                                      "kind": "ChartPie",
+                                                                                      "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                                      "metadata": {
+                                                                                        "uid": "e14d5e2d-1170-4360-9b86-827d527dabbq",
+                                                                                      },
+                                                                                      "status": {
+                                                                                        "content": [
+                                                                                          {
+                                                                                            label: "used",
+                                                                                            value: 428,
+                                                                                            total: 695,
+                                                                                            status: "default"
+                                                                                          }
+                                                                                        ]
+                                                                                      },
+                                                                                    },
+                                                                                    {
+                                                                                      "kind": "ChartLine",
+                                                                                      "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                                      "metadata": {
+                                                                                        "uid": "e14d5e2d-1170-4360-9b86-827d527dabbw",
+                                                                                      },
+                                                                                      "status": {
+                                                                                        "content": [{
+                                                                                          "hideAxis": true,
+                                                                                        }]
+                                                                                      },
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              }
+                                                                            },
+                                                                            {
+                                                                              "kind": "Column",
+                                                                              "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                                              "metadata": {
+                                                                                "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005c22",
+                                                                              },
+                                                                              "spec": {
+                                                                                "app": {
+                                                                                  "props": {
+                                                                                    "width": "12"
+                                                                                  }
+                                                                                },
+                                                                              },
+                                                                              "status": {
+                                                                                "content": {
+                                                                                  "items": [
+                                                                                    {
+                                                                                      "kind": "RichElement",
+                                                                                      "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                                      "metadata": {
+                                                                                        "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg1552",
+                                                                                      },
+                                                                                      "spec": {
+                                                                                        "app": {
+                                                                                          "props": {
+                                                                                            "icon": "server",
+                                                                                            "color": "blue",
+                                                                                            "description": "#1 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                                                          }
+                                                                                        },
+                                                                                      },
+                                                                                    },
+                                                                                    {
+                                                                                      "kind": "RichElement",
+                                                                                      "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                                      "metadata": {
+                                                                                        "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg15529",
+                                                                                      },
+                                                                                      "spec": {
+                                                                                        "app": {
+                                                                                          "props": {
+                                                                                            "icon": "server",
+                                                                                            "color": "blue",
+                                                                                            "description": "#2 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                                                          }
+                                                                                        },
+                                                                                      },
+                                                                                    },
+                                                                                    {
+                                                                                      "kind": "RichElement",
+                                                                                      "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                                      "metadata": {
+                                                                                        "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg155234",
+                                                                                      },
+                                                                                      "spec": {
+                                                                                        "app": {
+                                                                                          "props": {
+                                                                                            "icon": "code-branch",
+                                                                                            "color": "blue",
+                                                                                            "description": "#3 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                                                          }
+                                                                                        },
+                                                                                      },
+                                                                                    },
+                                                                                    {
+                                                                                      "kind": "RichElement",
+                                                                                      "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                                      "metadata": {
+                                                                                        "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg15529246",
+                                                                                      },
+                                                                                      "spec": {
+                                                                                        "app": {
+                                                                                          "props": {
+                                                                                            "icon": "code-branch",
+                                                                                            "color": "red",
+                                                                                            "description": "#4 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus semper eget ipsum quis bibendum. Vivamus ut diam eget augue bibendum consequat in pulvinar ligula. Donec cursus aliquet lacinia. Proin elit erat, imperdiet at varius sed, ultrices lacinia tellus. Cras libero risus, egestas ac nibh id, fringilla commodo urna."
+                                                                                          }
+                                                                                        },
+                                                                                      },
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              }
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "kind": "Button",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b2",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "label": "Pipeline #2",
+                                                        "type": "link",
+                                                        "icon": "gears",
+                                                        "prefix": "pipelines",
+                                                        "content": [
+                                                          {
+                                                            "kind": "Panel",
+                                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                            "metadata": {
+                                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b1c2",
+                                                            },
+                                                            "status": {
+                                                              "content": [
+                                                                {
+                                                                  "title": "Pipeline #2",
+                                                                  "content": [{
+                                                                    "kind": "Paragraph",
+                                                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                    "metadata": {
+                                                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg1008",
+                                                                    },
+                                                                    "spec": {
+                                                                      "app": {
+                                                                        "props": {
+                                                                          "text": "Nullam ut malesuada orci, sit amet pellentesque nisl. Donec quis ipsum in nibh tincidunt luctus nec vel purus. Aenean eget mattis odio, eu ornare quam. Fusce quam nulla, auctor in blandit vitae, consectetur eu tortor. Vestibulum tincidunt suscipit ex, ut lacinia mi porta in. Phasellus bibendum ipsum sit amet tincidunt feugiat. Morbi varius dictum nisl. Proin venenatis luctus libero eget tristique. Ut nec tortor turpis. Sed sagittis eu eros at fringilla. Cras rutrum molestie justo, sed consectetur augue vestibulum eu."
+                                                                        }
+                                                                      },
+                                                                    },
+                                                                  }]
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "kind": "Button",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b3",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "label": "Pipeline #3",
+                                                        "type": "link",
+                                                        "icon": "gears",
+                                                        "prefix": "pipelines",
+                                                        "content": [
+                                                          {
+                                                            "kind": "Panel",
+                                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                            "metadata": {
+                                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b1c3",
+                                                            },
+                                                            "status": {
+                                                              "content": [
+                                                                {
+                                                                  "title": "Pipeline #3",
+                                                                  "content": [{
+                                                                    "kind": "Paragraph",
+                                                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                    "metadata": {
+                                                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg10083",
+                                                                    },
+                                                                    "spec": {
+                                                                      "app": {
+                                                                        "props": {
+                                                                          "text": "Mauris sit amet gravida mi. Curabitur vulputate lectus eget nisl cursus scelerisque. Proin faucibus magna nec odio pharetra lacinia. Suspendisse a velit nec eros venenatis vulputate. Morbi sodales eros sed tempus feugiat. Nullam tincidunt libero et felis semper eleifend. Maecenas efficitur mauris urna. Donec posuere tempus diam in euismod. Sed rhoncus erat lorem. Nunc vestibulum ante at enim accumsan vulputate. Nullam sit amet turpis sed nibh maximus iaculis viverra ultricies sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare ex diam, nec pellentesque ex vulputate et."
+                                                                        }
+                                                                      },
+                                                                    },
+                                                                  }]
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "18"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "DynamicContent",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpdc1",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "prefix": "pipelines",
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
                     ]
                   }
                 }
@@ -2131,48 +2547,6 @@ const Page = ({clientId, endpoint}: PageType) => {
       }
     }
   }
-
-  const getColProps = (size) => {
-    if (isNaN(size)) {
-      return {xs: 24, md: 24}
-    } else {
-      return {xs: 24, md: parseInt(size)}
-    }
-  }
-
-  const getContent = useCallback((data, i): ReactElement => {
-    const renderComponent = (data, index) => {
-      switch (data.kind) {
-        case "Row":
-          return <Row key={data.metadata.uid} className={styles.row}>{ getContent(data.status.content.items, index+1) }</Row>
-        case "Column":
-          return <Col key={data.metadata.uid} { ...getColProps(data.spec.app.props.width) } className={styles.col}>{ getContent(data.status.content.items, index+1) }</Col>
-        case "Tabs":
-          return <Tabs key={data.metadata.uid} className={styles.tabs}>{ getContent(data.status.content.items, index+1) }</Tabs>
-        case "TabPane":
-          return <TabPane key={data.metadata.uid} tab={data.spec.app.props.label} className={styles.tabpane}>{ getContent(data.status.content.items, index+1) }</TabPane>
-        case "Toolbar":
-          return <Toolbar key={data.metadata.uid}>{ getContent(data.status.content.items, index+1) }</Toolbar>
-        default:
-          if (data.apiVersion?.indexOf("widgets") === 0) {
-            const Component = widgets[data.kind];
-            return data.status.content.map((el, i) => <Component id={data.metadata.uid} key={`widget_${data.metadata.uid}_$${i}`} {...el} />)
-          } else {
-            // null -> exit recoursive loop
-            return <></>
-          }
-      }
-    }
-
-    // recoursive function to scan page definition json
-    // data is the array of elements, root is an object
-    if (!data?.length) {
-      // root element
-      return renderComponent(data, i);
-    } else {
-      return data.map((el, index) => renderComponent(el, index));
-    }
-  }, []);
 
   // get data by API
   const getContentPage = () => {

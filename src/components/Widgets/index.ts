@@ -11,6 +11,7 @@ import DataList from "./DataList/DataList";
 import Panel from "./Panel/Panel";
 import RichElement from "./RichElement/RichElement";
 import Paragraph from "./Paragraph/Paragraph";
+import DynamicContent from "./DynamicContent/DynamicContent";
 
 const widgets = {
   "ChartPie": ChartPie,
@@ -23,6 +24,7 @@ const widgets = {
   "DataList": DataList,
   "Panel": Panel,
   "RichElement": RichElement,
+  "DynamicContent": DynamicContent,
   "Paragraph": Paragraph,
   "Widget1": Widget1,
   "Widget2": Widget2,
