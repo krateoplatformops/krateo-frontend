@@ -5,7 +5,7 @@ export const commonApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getContent: builder.query({
       query: (data) => ({
-        url: `${getBaseUrl()}${`${data.endpoint}?sub=${data.username}&orgs=${data.group}&namespace=demo-system`}`,
+        url: `${getBaseUrl()}${data.endpoint}`,
       }),
     }),
     postContent: builder.mutation({

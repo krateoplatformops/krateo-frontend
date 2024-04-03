@@ -1,18 +1,18 @@
 import { Card, Space, Typography } from "antd";
+import useParseData from "../../../hooks/useParseData";
 import styles from "./styles.module.scss";
-import widgets from "..";
 
 const Panel = ({title, content}) => {
+  const [getContent] = useParseData()
+
   let panelContent;
 
   if (Array.isArray(content)) {
     panelContent = content.map(el => {
-      const Component = widgets[el.kind];
-      return <Component {...el.spec.app.props} />
+      return getContent(el, 1);
     })
   } else {
-    const Component = widgets[content.kind];
-    panelContent = <Component {...content.spec.app.props} />
+    panelContent = getContent(content, 1);
   }
 
   return (

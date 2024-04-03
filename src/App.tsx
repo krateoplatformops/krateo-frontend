@@ -46,7 +46,7 @@ function App() {
             label: "Templates",
             path: "/templates",
             icon: getIcon('templates'),
-            endpoint: "/apis/layout.ui.krateo.io/rows/two",
+            endpoint: "/apis/layout.ui.krateo.io/rows/two?sub=cyberjoker&orgs=devs&namespace=demo-system",
             menu: true,
           },
           {

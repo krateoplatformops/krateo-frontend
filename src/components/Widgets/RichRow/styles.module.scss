@@ -1,0 +1,10 @@
+@import '../../../theme/global.scss';
+
+  .richRow {
+    width: 100%;
+    border-bottom: solid 1px $border-color;
+
+    .subtext {
+      color: $gray-color;
+    }
+  }

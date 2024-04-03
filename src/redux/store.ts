@@ -3,6 +3,7 @@ import authSlice from '../features/auth/authSlice';
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiSlice } from "../api/apiSlice";
 import dataListSlice from "../features/dataList/dataListSlice";
+import dynamicContentSlice from "../features/dynamicContent/dynamicContentSlice";
 
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authSlice,
     dataList: dataListSlice,
+    dynamicContent: dynamicContentSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
