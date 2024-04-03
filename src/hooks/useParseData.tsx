@@ -33,9 +33,9 @@ const useParseData = () => {
           if (data.apiVersion?.indexOf("widgets") === 0) {
             const Component = widgets[data.kind];
             if (data.status?.content) {
-              return data.status.content.map((el, i) => <Component id={data.metadata.uid} key={`widget_${data.metadata.uid}_${i}`} {...el} />)
+              return data.status.content.map((el, i) => <Component id={`${data.metadata.uid}_${i}`} key={`widget_${data.metadata.uid}_${i}`} actions={data.status.actions} {...el} />)
             } else {
-              return <Component id={data.metadata.uid} key={`widget_${data.metadata.uid}`} {...data.spec.app.props} />
+              return <Component id={data.metadata.uid} key={`widget_${data.metadata.uid}`} actions={data.status?.actions} {...data.spec.app.props} />
             }
           } else {
             // null -> exit recoursive loop

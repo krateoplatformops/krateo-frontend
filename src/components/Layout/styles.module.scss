@@ -32,7 +32,7 @@
       margin-bottom: 20px;
     }
 
-    :global(.ant-col:has(.ant-col)) {
+    :global(.ant-col:has(> .ant-col)) {
       padding: 0;
     }
   }

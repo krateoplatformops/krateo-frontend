@@ -10,6 +10,7 @@ import Button from "./Button/Button";
 import DataList from "./DataList/DataList";
 import Panel from "./Panel/Panel";
 import RichElement from "./RichElement/RichElement";
+import RichRow from "./RichRow/RichRow";
 import Paragraph from "./Paragraph/Paragraph";
 import DynamicContent from "./DynamicContent/DynamicContent";
 
@@ -24,6 +25,7 @@ const widgets = {
   "DataList": DataList,
   "Panel": Panel,
   "RichElement": RichElement,
+  "RichRow": RichRow,
   "DynamicContent": DynamicContent,
   "Paragraph": Paragraph,
   "Widget1": Widget1,

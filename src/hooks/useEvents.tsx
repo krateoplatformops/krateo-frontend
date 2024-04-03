@@ -36,7 +36,7 @@ const useEvents = (props) => {
     } else if (prefix) {
       // case 3: change component content
       if (endpoint) {
-        // load content
+        // load content to show in dynamicData
         await getContent({endpoint, username, group}).unwrap()
         if (data && isSuccess)
         dispatch(setDynamicContent({prefix: prefix, status: "success", content: data}))
