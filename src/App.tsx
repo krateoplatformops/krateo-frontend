@@ -57,13 +57,13 @@ function App() {
             path: "/projects/:projectID/:deploymentID",
             menu: false,
           },
-          {
-            label: "Form",
-            path: "/form",
-            icon: getIcon('dashboard'),
-            endpoint: "/",
-            menu: true,
-          },
+          // {
+          //   label: "Form",
+          //   path: "/form",
+          //   icon: getIcon('dashboard'),
+          //   endpoint: "/",
+          //   menu: true,
+          // },
         ],
         notifications: [
           {

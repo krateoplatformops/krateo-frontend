@@ -44,6 +44,16 @@
         margin-top: -22px;
       }
     }
+
+    .metadataFields {
+      .breadcrumb {
+        display: none;
+      }
+
+      :global label::before {
+        margin-top: 0px;
+      }
+    }
   }
 
   .anchorLabelWrapper {

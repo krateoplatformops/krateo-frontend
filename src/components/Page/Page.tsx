@@ -2771,6 +2771,145 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "status": {
                   "content": {
                     "items": [
+                      {
+                        "kind": "Toolbar",
+                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg155244edltb",
+                        },
+                        "status": {
+                          "content": {
+                            "items": [
+                              {
+                                "kind": "Button",
+                                "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ff",
+                                },
+                                "status": {
+                                  "content": [
+                                    {
+                                      label: "Filters",
+                                      icon: "filter",
+                                      badge: true,
+                                      panel: {
+                                        title: "Filters",
+                                        description: "This is the panel description",
+                                        size: "large",
+                                        type: "form",
+                                        buttons: [
+                                          { label: "Clear", type: "text", action: "reset" },
+                                          { label: "Submit", type: "primary", action: "submit" },
+                                        ],
+                                        content: {
+                                          element: "FormGenerator",
+                                          props: { // pass the data to render fields
+                                            title: "This is the title of the form",
+                                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                                            endpoint: undefined,
+                                            prefix: "ProjectList",
+                                            fieldsEndpoint: "/apis/widgets.ui.krateo.io/formtemplates/fireworksapp"
+                                          }
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              },
+                            ]
+                          }
+                        }
+                      },
+                      {
+                        "kind": "Panel",
+                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp155",
+                        },
+                        "status": {
+                          "content": [
+                            {
+                              "title": "",
+                              "content": [
+                                {
+                                  "kind": "DataList",
+                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                  "metadata": {
+                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg155244edl",
+                                  },
+                                  "spec": {
+                                    "app": {
+                                      "props": {
+                                        "prefix": "deployment-events",
+                                        "asGrid": false,
+                                        "data": [
+                                          {
+                                            "kind": "RichRow",
+                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                            "metadata": {
+                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg155244e",
+                                            },
+                                            "spec": {
+                                              "app": {
+                                                "props": {
+                                                  "color": "green",
+                                                  "icon": "check",
+                                                  "primaryText": "Lorem ipsum dolor sit amet, consectetur adipiscing",
+                                                  "subPrimaryText": "Lorem ipsum dolor sit amet",
+                                                  "secondaryText": "11 days ago",
+                                                  "subSecondaryText": "Sep 15th 2024 08:15:43"
+                                                }
+                                              },
+                                            },
+                                          },
+                                          {
+                                            "kind": "RichRow",
+                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                            "metadata": {
+                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg155244e2",
+                                            },
+                                            "spec": {
+                                              "app": {
+                                                "props": {
+                                                  "color": "red",
+                                                  "icon": "xmark",
+                                                  "primaryText": "Lorem ipsum dolor sit amet, consectetur adipiscing",
+                                                  "subPrimaryText": "Lorem ipsum dolor sit amet",
+                                                  "secondaryText": "11 days ago",
+                                                  "subSecondaryText": "Sep 15th 2024 08:15:43"
+                                                }
+                                              },
+                                            },
+                                          },
+                                          {
+                                            "kind": "RichRow",
+                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                            "metadata": {
+                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg155244e",
+                                            },
+                                            "spec": {
+                                              "app": {
+                                                "props": {
+                                                  "color": "orange",
+                                                  "icon": "rotate",
+                                                  "primaryText": "Lorem ipsum dolor sit amet, consectetur adipiscing",
+                                                  "subPrimaryText": "Lorem ipsum dolor sit amet",
+                                                  "secondaryText": "11 days ago",
+                                                  "subSecondaryText": "Sep 15th 2024 08:15:43"
+                                                }
+                                              },
+                                            },
+                                          },
+                                        ]
+                                      }
+                                    }
+                                  },
+                                }                   
+                              ]
+                            }
+                          ]
+                        }
+                      }
                     ]
                   }
                 }

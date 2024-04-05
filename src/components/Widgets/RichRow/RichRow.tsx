@@ -1,15 +1,16 @@
 import { Avatar, Flex, Space, Typography } from "antd";
 import styles from "./styles.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getColorCode } from "../../../utils/colors";
 
 
-const RichRow = ({color, subPrimaryText, primaryText, subSecondaryText, secondaryText}) => {
+const RichRow = ({color, icon, subPrimaryText, primaryText, subSecondaryText, secondaryText}) => {
 
 
   return (
     <Flex justify="space-between" className={styles.richRow}>
       <Space size="large">
-        <Avatar style={{ backgroundColor: getColorCode(color) }} size={20} />
+        <Avatar style={{ backgroundColor: getColorCode(color) }} size={icon ? 24 : 18} icon={<FontAwesomeIcon icon={icon} />} />
         <div className={styles.primary}>
           <Typography.Text className={styles.subtext}>{subPrimaryText}</Typography.Text>
           <Typography.Paragraph>{primaryText}</Typography.Paragraph>

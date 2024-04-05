@@ -13,7 +13,7 @@ import catchError from "../../../utils/catchError";
 const CardTemplate = (props) => {
   const {id, icon, color, title, status, date, content, tags, actions} = props;
   // add props to open panel and get form fields
-  const [manageEvent, elementEvent] = useEvents({
+  const { manageEvent, elementEvent } = useEvents({
     ...props, 
     panel: {
       type: "form", 

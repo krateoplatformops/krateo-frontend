@@ -51,7 +51,7 @@ const useEvents = (props) => {
     elementEvent = <DrawerPanel panel={panel} isOpen={isOpen} onClose={() => setIsOpen(false)} />
   }
 
-  return [manageEvent, elementEvent]
+  return { manageEvent: manageEvent, elementEvent: elementEvent }
 }
 
 export default useEvents;
