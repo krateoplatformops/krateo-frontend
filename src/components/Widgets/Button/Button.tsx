@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { getColorCode } from "../../../utils/colors";
 import { useSelector } from "react-redux";
-import { selectFilters } from "../../../features/dataList/dataListSlice";
+import { DataListFilterType, selectFilters } from "../../../features/dataList/dataListSlice";
 import styles from "./styles.module.scss";
 import useEvents from "../../../hooks/useEvents";
+import { RootState } from "../../../redux/store";
 
 type ButtonType = {
   endPoint?: string,
@@ -14,11 +15,12 @@ type ButtonType = {
   badge?: string,
   type?: "default" | "text" | "link" | "primary" | "dashed",
   action?: "default" | "submit" | "reset",
+  prefix?: string,
 }
 
 const Button = (props: ButtonType) => {
-  const {type, icon, label, badge} = props;
-  const [manageEvent, elementEvent] = useEvents(props)
+  const {type, icon, label, badge, prefix} = props;
+  const {manageEvent, elementEvent} = useEvents(props)
 
   const btnComp = (
     <ButtonAnt
@@ -29,13 +31,14 @@ const Button = (props: ButtonType) => {
       {label}
     </ButtonAnt>
   )
-  const filters = useSelector(selectFilters);
+  let filters: DataListFilterType[] | undefined = [];
+  filters = useSelector((state: RootState) => selectFilters(state, prefix || ""));
 
   return (
     <div className={styles.button}>
       {elementEvent}
-      { badge ?
-        <Badge count={filters.length} color={getColorCode("darkBlue")}>
+      { badge && prefix ?
+        <Badge count={filters?.length} color={getColorCode("darkBlue")}>
           {btnComp}
         </Badge>
         :

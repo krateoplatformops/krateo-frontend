@@ -31,12 +31,22 @@ const useParseData = () => {
           return <Toolbar key={data.metadata.uid}>{ getContent(data.status.content.items, index+1) }</Toolbar>
         default:
           if (data.apiVersion?.indexOf("widgets") === 0) {
-            const Component = widgets[data.kind];
-            if (data.status?.content) {
+            if (data.status?.content) { // eg: CardTemplate (currently)
+              const Component = widgets[data.kind];
               return data.status.content.map((el, i) => <Component id={`${data.metadata.uid}_${i}`} key={`widget_${data.metadata.uid}_${i}`} actions={data.status.actions} {...el} />)
+            } else if (data.items) { // eg: CardTemplateList
+              return data.items.map((el) => {
+                const Component = widgets[el.kind];
+                return <Component id={el.metadata.uid} key={el.metadata.uid} actions={el.status.content.actions} {...el} />
+              })
             } else {
+              const Component = widgets[data.kind];
               return <Component id={data.metadata.uid} key={`widget_${data.metadata.uid}`} actions={data.status?.actions} {...data.spec.app.props} />
             }
+
+
+
+
           } else {
             // null -> exit recoursive loop
             return <></>

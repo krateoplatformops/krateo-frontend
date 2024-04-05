@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Anchor, Col, Form, Input, Radio, Result, Row, Select, Slider, Space, Switch, Typography, message } from "antd";
+import { Anchor, Col, Form, FormInstance, Input, Radio, Result, Row, Select, Slider, Space, Switch, Typography, message } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -8,9 +8,18 @@ import ListEditor from "../ListEditor/ListEditor";
 import styles from "./styles.module.scss";
 import Skeleton from "../../Skeleton/Skeleton";
 
-const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, prefix, onClose }) => {
+type FormGeneratorType = {
+	title?: string,
+	description?: string,
+	fieldsEndpoint?: string,
+	form: FormInstance<any>,
+	prefix?: string,
+	onClose: () => void
+}
 
-	const [postContent, { isLoading: postLoading, isError: postError }] = usePostContentMutation();
+const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClose }: FormGeneratorType) => {
+
+	const [postContent, { isLoading: postLoading, isSuccess: postSuccess, isError: postError }] = usePostContentMutation();
 	const messageKey = 'formGeneratorMessageKey';
 	const [messageApi, contextHolder] = message.useMessage();
 	const dispatch = useAppDispatch();
@@ -20,31 +29,38 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 	const username = ls && JSON.parse(ls)?.user.username;
 	const group = ls && JSON.parse(ls)?.groups[0]
 	const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint: fieldsEndpoint, username, group});
-	const [formData, setFormData] = useState();
+	const [formData, setFormData] = useState<any>();
+	const [formEndpoint, setFormEndpoint] = useState();
 	const fieldsData: {type: string, name: string}[] = [];
 
 	useEffect(() => {
-			if (data) {
-					setFormData(data.status.content.schema.properties.spec); //set root node
-			}
+		if (data) {
+			setFormData(data.status.content.schema.properties); // set root node (/spec /metadata)
+			setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
+		}
 	}, [data])
 
+	const parseData = (node, name) => {
+		return Object.keys(node.properties).map(k => {
+			const currentName = name ? `${name}.${k}` : k;
+			if (node.properties[k].type === "object") {
+				return parseData(node.properties[k], currentName)
+			} else {
+				// return field
+				const required = Array.isArray(node?.required) && node.required.indexOf(k) > -1;
+				fieldsData.push({type: node.properties[k].type, name: currentName});
+				return renderField(k, currentName, node.properties[k], required);
+			}
+		})
+	}
+
+	const renderMetadataFields = () => {
+		const fieldsList = parseData({ properties: {metadata: formData.metadata}, required: [], type: 'object' }, "");
+		return fieldsList;
+	}
+
 	const renderFields = () => {
-		
-		const parseData = (node, name) => {
-			return Object.keys(node.properties).map(k => {
-                const currentName = name ? `${name}.${k}` : k;
-				if (node.properties[k].type === "object") {
-					return parseData(node.properties[k], currentName)
-				} else {
-					// return field
-          const required = Array.isArray(node?.required) && node.required.indexOf(k) > -1;
-					fieldsData.push({type: node.properties[k].type, name: currentName});
-					return renderField(k, currentName, node.properties[k], required);
-				}
-			})
-		}
-		const fieldsList = parseData(formData, "");
+		const fieldsList = parseData(formData.spec, "");
 		return fieldsList;
 	}
 
@@ -65,7 +81,7 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 			})
 		}
 
-		parseData(formData);
+		parseData(formData.spec);
 		return defaultValues;
 	}
 
@@ -76,7 +92,7 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 		return (
 			<Space size="small" direction="vertical" className={styles.labelField}>
 				<Typography.Text strong>{label}</Typography.Text>
-				<Space title={breadcrumb.join(" > ")}>
+				<Space title={breadcrumb.join(" > ")} className={styles.breadcrumb}>
 				{
 					breadcrumb.map((el, index) => {
 						if (index < breadcrumb.length -1) {
@@ -110,104 +126,105 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 			case "string":
 				return (
 					<div id={name} className={styles.formField}>
-							<Form.Item
-									key={name}
-									label={renderLabel(name, label)}
-									name={name}
-									rules={rules}
-							>
-									{node.enum ? (
-											node.enum > 4 ? (
-													<Select
-															placeholder={node.description ? node.description : undefined}
-															options={node.enum.map(opt => ({value: opt, label: opt}))}
-															allowClear
-													/>
-											)
-													:
-													<Radio.Group>{node.enum.map((el) => <Radio key={`radio_${el}`} value={el}>{el}</Radio>)}</Radio.Group>
-											) : 
-											<Input
-													placeholder={node.description ? node.description : undefined}
-											/>
-									}
-							</Form.Item>
+						<Form.Item
+							key={name}
+							label={renderLabel(name, label)}
+							name={name.split(".")}
+							rules={rules}
+						>
+							{node.enum ? (
+								node.enum > 4 ? (
+									<Select
+										placeholder={node.description ? node.description : undefined}
+										options={node.enum.map(opt => ({value: opt, label: opt}))}
+										allowClear
+									/>
+								)
+									:
+									<Radio.Group>{node.enum.map((el) => <Radio key={`radio_${el}`} value={el}>{el}</Radio>)}</Radio.Group>
+								) : 
+								<Input
+									placeholder={node.description ? node.description : undefined}
+								/>
+							}
+						</Form.Item>
 					</div>
 				)
 
 			case "boolean": 
+				form.setFieldValue(name.split("."), false);
 				return (
 					<div id={name} className={styles.formField}>
-							<Space direction="vertical" style={{width: '100%'}}>
-									<div>{renderLabel(name, label)}</div>
-									<Form.Item
-											key={name}
-											name={name} 
-											valuePropName="checked"
-											rules={rules}
-									>
-											<Switch />
-									</Form.Item>
-							</Space>
+						<Space direction="vertical" style={{width: '100%'}}>
+							<Form.Item
+								key={name}
+								label={renderLabel(name, label)}
+								name={name.split(".")}
+								valuePropName="checked"
+								rules={rules}
+							>
+								<Switch />
+							</Form.Item>
+						</Space>
 					</div>
 				)
 
 			case "array":
 				return (
 					<div id={name} className={styles.formField}>
-							<Form.Item
-									key={name}
-									label={renderLabel(name, label)}
-									name={name}
-									rules={rules}
-							>
-									<ListEditor onChange={(values) => {form.setFieldValue(name, values)}} />
-							</Form.Item>
+						<Form.Item
+							key={name}
+							label={renderLabel(name, label)}
+							name={name.split(".")}
+							rules={rules}
+						>
+							<ListEditor onChange={(values) => {form.setFieldValue(name, values)}} />
+						</Form.Item>
 					</div>
 				)
 
 			case "integer":
+				form.setFieldValue(name.split("."), (node.minimum || 0));
 				return (
 					<div id={name} className={styles.formField}>
-							<Form.Item
-									key={name}
-									label={renderLabel(name, label)}
-									name={name}
-									rules={rules}
-							>
-									<Slider step={1} min={node.minimum ? node.minimum : 0} max={node.maximum ? node.maximum : 100} />
-							</Form.Item>
+						<Form.Item
+							key={name}
+							label={renderLabel(name, label)}
+							name={name.split(".")}
+							rules={rules}
+						>
+							<Slider step={1} min={node.minimum ? node.minimum : 0} max={node.maximum ? node.maximum : 100} />
+						</Form.Item>
 					</div>
 				)
 		}
 	}
 
 	const getAnchorList = () => {
-			const parseData = (node, name) => {
-		return Object.keys(node.properties).map(k => {
-							const currentName = name ? `${name}.${k}` : k;
-			if (node.properties[k].type === "object") {
-				// create children
-				return {
-					key: currentName,
-					title: <span className={styles.anchorObjectLabel}>{k}</span>,
-					children: parseData(node.properties[k], currentName),
-				}
-			} else {
-				// return obj
-				return {
+		const parseData = (node, name) => {
+			return Object.keys(node.properties).map(k => {
+								const currentName = name ? `${name}.${k}` : k;
+				if (node.properties[k].type === "object") {
+					// create children
+					return {
+						key: currentName,
+						title: <span className={styles.anchorObjectLabel}>{k}</span>,
+						children: parseData(node.properties[k], currentName),
+					}
+				} else {
+					// return obj
+					return {
 						key: currentName,
 						href: `#${currentName}`,
 						title: k
+					}
 				}
-			}
-		})
+			})
+		}
+		return [...parseData(formData.spec, "")];
 	}
 
-	return [...parseData(formData, "")];
-	}
-
-	const onSubmit = (values: object) => {
+	const onSubmit = async (values: object) => {
 		// convert all dayjs date to ISOstring
 		Object.keys(values).forEach(k => {
 			if (dayjs.isDayjs(values[k])) {
@@ -216,27 +233,37 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 		});
 
 		// send all data values to specific endpoint as POST
-		if (endpoint) {
-			// call endpoint
-			postContent({
-				endpoint: endpoint,
-				body: values,
-			})
+		if (formEndpoint) {
+
+			// update endpoint
+			const postEndpoint = `${formEndpoint}&${(new URLSearchParams(values['metadata']).toString())}`;
+
+			// remove metadata from values
+			delete values['metadata']
+
+			// submit values
+			if (!postLoading && !postError && !postSuccess) {
+				await postContent({
+					endpoint: postEndpoint,
+					body: values,
+				})
+			}
 		}
 
 		// save all data values on Redux to use them with another linked component (same prefix) 
 		if (prefix) {
-			// apply filters
+			// save data on redux
 			let filters: DataListFilterType[] = [];
 			fieldsData.forEach((field, index) => {
 				if (Object.values(values)[index] !== undefined) {
 					filters = [...filters, {fieldType: field.type, fieldName: field.name, fieldValue: Object.values(values)[index]}]
 				}
 			})
-			dispatch(setFilters(filters))
-      // close panel
-			onClose()
+			dispatch(setFilters({filters, prefix}))
 		}
+
+		// close panel
+		onClose()
 	}
 
 	useEffect(() => {
@@ -244,6 +271,12 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 			messageApi.open({key: messageKey, type: 'error', content: 'The operation couldn\'t be completed'});
 		}
 	}, [messageApi, postError]);
+
+	useEffect(() => {
+		if (postSuccess) {
+			messageApi.open({key: messageKey, type: 'success', content: 'Operation successful'});
+		}
+	}, [messageApi, postSuccess]);
 
 	useEffect(() => {
     if (isLoading || postLoading) {
@@ -272,6 +305,9 @@ const FormGenerator = ({title, description, endpoint, fieldsEndpoint, form, pref
 											autoComplete="off"
 											initialValues={generateInitialValues()}
 										>
+											<div className={styles.metadataFields}>
+												{ renderMetadataFields() }
+											</div>
 											{ renderFields() }
 										</Form>
 								</div>

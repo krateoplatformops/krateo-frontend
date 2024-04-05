@@ -18,12 +18,13 @@ const Panel = ({title, content}) => {
   return (
     <Card
       className={styles.card}
-      title={
+      title={(title && title !== "") ?
         <Space size="large" className={styles.header}>
           <div className={styles.details}>
             <Typography.Title className={styles.title} ellipsis level={2} title={title}>{title}</Typography.Title>
           </div>
         </Space>
+        : undefined
       }
     >
       {panelContent}
