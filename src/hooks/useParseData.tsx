@@ -43,10 +43,6 @@ const useParseData = () => {
               const Component = widgets[data.kind];
               return <Component id={data.metadata.uid} key={`widget_${data.metadata.uid}`} actions={data.status?.actions} {...data.spec.app.props} />
             }
-
-
-
-
           } else {
             // null -> exit recoursive loop
             return <></>
