@@ -1,8 +1,9 @@
-import { Card, Space, Typography } from "antd";
+import { Card, Tooltip, Typography } from "antd";
 import useParseData from "../../../hooks/useParseData";
 import styles from "./styles.module.scss";
+import { QuestionCircleOutlined } from "@ant-design/icons";
 
-const Panel = ({title, content}) => {
+const Panel = ({title, tooltip, buttons, content}) => {
   const [getContent] = useParseData()
 
   let panelContent;
@@ -19,13 +20,13 @@ const Panel = ({title, content}) => {
     <Card
       className={styles.card}
       title={(title && title !== "") ?
-        <Space size="large" className={styles.header}>
-          <div className={styles.details}>
-            <Typography.Title className={styles.title} ellipsis level={2} title={title}>{title}</Typography.Title>
-          </div>
-        </Space>
+        <Typography.Title className={styles.title} ellipsis level={2} title={title}>{title}</Typography.Title>
         : undefined
       }
+      extra={
+        tooltip && <Tooltip className={styles.tooltip} title={tooltip}><QuestionCircleOutlined /></Tooltip>
+      }
+      actions={buttons ? [getContent(buttons, "")] : []}
     >
       {panelContent}
     </Card>

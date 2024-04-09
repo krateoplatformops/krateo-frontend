@@ -1959,6 +1959,266 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "status": {
                   "content": {
                     "items": [
+                      {
+                        "kind": "Row",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                        "metadata": {
+                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbbov1003r1",
+                        },
+                        "status": {
+                          "content": {
+                            "kind": "ColumnList",
+                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                            "metadata": {
+                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbcov2004cl",
+                            },
+                            "items": [
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005c1",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "6"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "Panel",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006p1adf",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "title": "Documentation",
+                                              "tooltip": "This is the panel tooltip",
+                                              "buttons": [
+                                                {
+                                                  "kind": "Button",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b2b3vv",
+                                                  },
+                                                  "status": {
+                                                    "content": [
+                                                      {
+                                                        "label": "edit",
+                                                        "type": "link",
+                                                        "panel": {
+                                                          "title": "Edit list",
+                                                          "content": {
+                                                            "element": "FormGenerator",
+                                                            "props": {
+                                                              title: "This is the title of the form",
+                                                              description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                                                              endpoint: undefined,
+                                                              prefix: "documentList",
+                                                              fieldsEndpoint: "/"
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    ]
+                                                  }
+                                                }
+                                              ],
+                                              "content": [
+                                                {
+                                                  "kind": "Button",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b2sf",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "label": "Document #1",
+                                                        "type": "link",
+                                                        "icon": "book",
+                                                        "prefix": "documents",
+                                                        "content": [
+                                                          {
+                                                            "kind": "Panel",
+                                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                            "metadata": {
+                                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b1c2et",
+                                                            },
+                                                            "status": {
+                                                              "content": [
+                                                                {
+                                                                  "title": "Document #1",
+                                                                  "content": [{
+                                                                    "kind": "Paragraph",
+                                                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                    "metadata": {
+                                                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg1008uu",
+                                                                    },
+                                                                    "spec": {
+                                                                      "app": {
+                                                                        "props": {
+                                                                          "text": "Nullam ut malesuada orci, sit amet pellentesque nisl. Donec quis ipsum in nibh tincidunt luctus nec vel purus. Aenean eget mattis odio, eu ornare quam. Fusce quam nulla, auctor in blandit vitae, consectetur eu tortor. Vestibulum tincidunt suscipit ex, ut lacinia mi porta in. Phasellus bibendum ipsum sit amet tincidunt feugiat. Morbi varius dictum nisl. Proin venenatis luctus libero eget tristique. Ut nec tortor turpis. Sed sagittis eu eros at fringilla. Cras rutrum molestie justo, sed consectetur augue vestibulum eu."
+                                                                        }
+                                                                      },
+                                                                    },
+                                                                  }]
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "kind": "Button",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b3y",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "label": "Document #2",
+                                                        "type": "link",
+                                                        "icon": "book",
+                                                        "prefix": "documents",
+                                                        "content": [
+                                                          {
+                                                            "kind": "Panel",
+                                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                            "metadata": {
+                                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b1c3yyy",
+                                                            },
+                                                            "status": {
+                                                              "content": [
+                                                                {
+                                                                  "title": "Document #2",
+                                                                  "content": [{
+                                                                    "kind": "Paragraph",
+                                                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                    "metadata": {
+                                                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg10083555",
+                                                                    },
+                                                                    "spec": {
+                                                                      "app": {
+                                                                        "props": {
+                                                                          "text": "Mauris sit amet gravida mi. Curabitur vulputate lectus eget nisl cursus scelerisque. Proin faucibus magna nec odio pharetra lacinia. Suspendisse a velit nec eros venenatis vulputate. Morbi sodales eros sed tempus feugiat. Nullam tincidunt libero et felis semper eleifend. Maecenas efficitur mauris urna. Donec posuere tempus diam in euismod. Sed rhoncus erat lorem. Nunc vestibulum ante at enim accumsan vulputate. Nullam sit amet turpis sed nibh maximus iaculis viverra ultricies sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare ex diam, nec pellentesque ex vulputate et."
+                                                                        }
+                                                                      },
+                                                                    },
+                                                                  }]
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                {
+                                                  "kind": "Button",
+                                                  "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                  "metadata": {
+                                                    "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b3ee",
+                                                  },
+                                                  "spec": {
+                                                    "app": {
+                                                      "props": {
+                                                        "label": "Document #3",
+                                                        "type": "link",
+                                                        "icon": "book",
+                                                        "prefix": "documents",
+                                                        "content": [
+                                                          {
+                                                            "kind": "Panel",
+                                                            "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                            "metadata": {
+                                                              "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovp1006b1c32e",
+                                                            },
+                                                            "status": {
+                                                              "content": [
+                                                                {
+                                                                  "title": "Document #3",
+                                                                  "content": [{
+                                                                    "kind": "Paragraph",
+                                                                    "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                                                    "metadata": {
+                                                                      "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg100834jjj",
+                                                                    },
+                                                                    "spec": {
+                                                                      "app": {
+                                                                        "props": {
+                                                                          "text": "Mauris sit amet gravida mi. Curabitur vulputate lectus eget nisl cursus scelerisque. Proin faucibus magna nec odio pharetra lacinia. Suspendisse a velit nec eros venenatis vulputate. Morbi sodales eros sed tempus feugiat. Nullam tincidunt libero et felis semper eleifend. Maecenas efficitur mauris urna. Donec posuere tempus diam in euismod. Sed rhoncus erat lorem. Nunc vestibulum ante at enim accumsan vulputate. Nullam sit amet turpis sed nibh maximus iaculis viverra ultricies sapien. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ornare ex diam, nec pellentesque ex vulputate et."
+                                                                        }
+                                                                      },
+                                                                    },
+                                                                  }]
+                                                                }
+                                                              ]
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "kind": "Column",
+                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                "metadata": {
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3e4",
+                                },
+                                "spec": {
+                                  "app": {
+                                    "props": {
+                                      "width": "18"
+                                    }
+                                  },
+                                },
+                                "status": {
+                                  "content": {
+                                    "items": [
+                                      {
+                                        "kind": "DynamicContent",
+                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "metadata": {
+                                          "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpdc1h4",
+                                        },
+                                        "status": {
+                                          "content": [
+                                            {
+                                              "prefix": "documents",
+                                            }
+                                          ]
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
                     ]
                   }
                 }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { RouterProvider, createBrowserRouter, RouteObject } from "react-router-dom";
+import { RouterProvider, createBrowserRouter, RouteObject, Navigate } from "react-router-dom";
 import Skeleton from "./components/Skeleton/Skeleton";
 import Page from "./components/Page/Page"
 import ErrorPage from "./pages/ErrorPage";
@@ -111,6 +111,10 @@ function App() {
     ));
     setRouter(
       [
+        {
+          path: "/",
+          element: <Navigate to="/templates" replace={true} />,
+        },
         {
           path: "/login",
           element: <LayoutLogin />,
