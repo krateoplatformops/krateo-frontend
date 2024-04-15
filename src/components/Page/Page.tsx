@@ -2014,14 +2014,22 @@ const Page = ({clientId, endpoint}: PageType) => {
                                                         "type": "link",
                                                         "panel": {
                                                           "title": "Edit list",
+                                                          "type": "form",
+                                                          "buttons": [
+                                                            { label: "cancel", type: "text", action: "reset"},
+                                                            { label: "save", type: "primary", action: "submit"}
+                                                          ],
                                                           "content": {
-                                                            "element": "FormGenerator",
+                                                            "element": "EditableList",
                                                             "props": {
-                                                              title: "This is the title of the form",
-                                                              description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                                                              description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                                                               endpoint: undefined,
                                                               prefix: "documentList",
-                                                              fieldsEndpoint: "/"
+                                                              data: [
+                                                                { id: "e14d5e2d-1170-4360-9b86-827d527dabbfb1", label: "Document #1" },
+                                                                { id: "e14d5e2d-1170-4360-9b86-827d527dabbfb2", label: "Document #2" },
+                                                                { id: "e14d5e2d-1170-4360-9b86-827d527dabbfb3", label: "Document #3" },
+                                                              ]
                                                             }
                                                           }
                                                         }
@@ -2056,7 +2064,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                                                 {
                                                                   "title": "Document #1",
                                                                   "content": [{
-                                                                    "kind": "Paragraph",
+                                                                    "kind": "EditableContent",
                                                                     "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                                                                     "metadata": {
                                                                       "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb1ovpg1008uu",
@@ -2064,7 +2072,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                                                     "spec": {
                                                                       "app": {
                                                                         "props": {
-                                                                          "text": "Nullam ut malesuada orci, sit amet pellentesque nisl. Donec quis ipsum in nibh tincidunt luctus nec vel purus. Aenean eget mattis odio, eu ornare quam. Fusce quam nulla, auctor in blandit vitae, consectetur eu tortor. Vestibulum tincidunt suscipit ex, ut lacinia mi porta in. Phasellus bibendum ipsum sit amet tincidunt feugiat. Morbi varius dictum nisl. Proin venenatis luctus libero eget tristique. Ut nec tortor turpis. Sed sagittis eu eros at fringilla. Cras rutrum molestie justo, sed consectetur augue vestibulum eu."
+                                                                          "text": "## Nullam ut malesuada ## \r\r `orci, sit amet` \r\r pellentesque nisl. Donec quis ipsum in nibh tincidunt luctus nec vel purus. Aenean eget mattis odio, eu ornare quam. Fusce quam nulla, auctor in blandit vitae, consectetur eu tortor. Vestibulum tincidunt suscipit ex, ut lacinia mi porta in. Phasellus bibendum ipsum sit amet tincidunt feugiat. Morbi varius dictum nisl. Proin venenatis luctus libero eget tristique. Ut nec tortor turpis. Sed sagittis eu eros at fringilla. Cras rutrum molestie justo, sed consectetur augue vestibulum eu."
                                                                         }
                                                                       },
                                                                     },

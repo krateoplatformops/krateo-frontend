@@ -13,8 +13,8 @@ type DrawerPanelType = {
     type?: "form",
     buttons?: ButtonType[],
     content: {
-      element: string,
-      props?: React.ReactElement // panel content
+      element: string, // widget to render into the panel
+      props?: object // props of widget
     }
   },
   isOpen: boolean,

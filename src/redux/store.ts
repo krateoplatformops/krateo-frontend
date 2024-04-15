@@ -4,6 +4,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { apiSlice } from "../api/apiSlice";
 import dataListSlice from "../features/dataList/dataListSlice";
 import dynamicContentSlice from "../features/dynamicContent/dynamicContentSlice";
+import editableContentSlice from "../features/editableContent/editableContentSlice";
 
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth: authSlice,
     dataList: dataListSlice,
     dynamicContent: dynamicContentSlice,
+    editableContent: editableContentSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

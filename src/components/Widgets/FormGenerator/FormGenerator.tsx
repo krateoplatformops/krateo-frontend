@@ -25,10 +25,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	const dispatch = useAppDispatch();
 
 	// get fields
-	const ls = localStorage.getItem("user");
-	const username = ls && JSON.parse(ls)?.user.username;
-	const group = ls && JSON.parse(ls)?.groups[0]
-	const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint: fieldsEndpoint, username, group});
+	const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint: fieldsEndpoint});
 	const [formData, setFormData] = useState<any>();
 	const [formEndpoint, setFormEndpoint] = useState();
 	const fieldsData: {type: string, name: string}[] = [];

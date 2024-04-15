@@ -3,8 +3,6 @@ import ChartLine from "./ChartLine/ChartLine";
 import ChartBars from "./ChartBars/ChartBars";
 import ChartMultipleBars from "./ChartMultipleBars/ChartMultipleBars";
 import CardTemplate from "./CardTemplate/CardTemplate";
-import Widget1 from "./Widget1/Widget1";
-import Widget2 from "./Widget2/Widget2";
 import FormGenerator from "./FormGenerator/FormGenerator";
 import Button from "./Button/Button";
 import DataList from "./DataList/DataList";
@@ -13,6 +11,8 @@ import RichElement from "./RichElement/RichElement";
 import RichRow from "./RichRow/RichRow";
 import Paragraph from "./Paragraph/Paragraph";
 import DynamicContent from "./DynamicContent/DynamicContent";
+import EditableContent from "./EditableContent/EditableContent";
+import EditableList from "./EditableList/EditableList";
 
 const widgets = {
   "ChartPie": ChartPie,
@@ -28,8 +28,8 @@ const widgets = {
   "RichRow": RichRow,
   "DynamicContent": DynamicContent,
   "Paragraph": Paragraph,
-  "Widget1": Widget1,
-  "Widget2": Widget2,
+  "EditableContent": EditableContent,
+  "EditableList": EditableList,
 }
 
 export default widgets;
