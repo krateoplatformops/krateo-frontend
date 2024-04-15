@@ -3,9 +3,11 @@ import { Button, Form, FormInstance, Input, List, Modal, Space, Typography } fro
 import { useEffect, useState } from "react";
 import { generate_uuidv4 } from "../../../utils/uuid";
 import { usePostContentMutation } from "../../../features/common/commonApiSlice";
-import { /*selectEditableContent,*/ setEditableContent, setEditableContentState } from "../../../features/editableContent/editableContentSlice";
+import { selectEditableContent, setEditableContent, setEditableContentState } from "../../../features/editableContent/editableContentSlice";
 import { useAppDispatch } from "../../../redux/hooks";
-// import { useSelector } from "react-redux";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import { useSelector } from "react-redux";
+
 
 type EditableListElement = { id: string, label: string }
 
@@ -24,18 +26,18 @@ const EditableList = ({ description, form, endpoint, prefix, data = [], onClose 
 	const dispatch = useAppDispatch();
   const { confirm } = Modal;
 
-  // const contents = useSelector(selectEditableContent);
+  const contents = useSelector(selectEditableContent);
   
   // if exists on redux with prefix, use it instead props
   const [list, setList] = useState<EditableListElement[]>(data);
 
-  // useEffect(() => {
-  //   const content = contents.find(el => el.prefix === prefix);
-  //   console.log("GET CONTENT", content);
-  //   if (content?.content)
-  //   setList(content?.content ? content.content as unknown as EditableListElement[] : data);
+  useEffect(() => {
+    const content = contents.find(el => el.prefix === prefix);
+    console.log("GET CONTENT", content);
+    if (content?.content)
+    setList(content?.content ? content.content as unknown as EditableListElement[] : data);
 
-  // }, [contents, data, prefix])
+  }, [contents, data, prefix])
 
   const onSubmit = async (values) => {
     if (endpoint) {
@@ -60,6 +62,15 @@ const EditableList = ({ description, form, endpoint, prefix, data = [], onClose 
       const newList = [...list, {id: generate_uuidv4(), label: currentString}];
       setList(newList);
     }
+  }
+
+  const onDrag = (event) => {
+    // swap elements
+    const indexFrom: number = event.source.index;
+    const indexTo: number = event.destination.index;
+    const newList = [...list];
+    newList[indexFrom] = newList.splice(indexTo, 1, newList[indexFrom])[0];
+    setList(newList);
   }
 
   const updateList = (id: string, label: string) => {
@@ -103,24 +114,47 @@ const EditableList = ({ description, form, endpoint, prefix, data = [], onClose 
         <Button type="primary" onClick={onAdd}><PlusCircleOutlined /></Button>
       </Space.Compact>
 
-      <List
-        dataSource={list}
-        renderItem={(item) => (
-          <List.Item
-            key={item.id}
-            actions={[
-              <Button
-                type="text"
-                shape="circle"
-                icon={<DeleteOutlined />}
-                onClick={() => showConfirm(item.id)}
-              />
-            ]}
-          >
-            <Input defaultValue={item.label} onChange={(event) => updateList(item.id, event.target.value)} />
-          </List.Item>
-        )}
-      />
+      <DragDropContext onDragEnd={onDrag}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+            <List
+              dataSource={list}
+              renderItem={(item, index) => (
+                <Draggable key={item.id} draggableId={item.id} index={index}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                    >
+                      <List.Item
+                        key={item.id}
+                        actions={[
+                          <Button
+                            type="text"
+                            shape="circle"
+                            icon={<DeleteOutlined />}
+                            onClick={() => showConfirm(item.id)}
+                          />
+                        ]}
+                      >
+                        <Input defaultValue={item.label} onChange={(event) => updateList(item.id, event.target.value)} />
+                      </List.Item>
+                    </div>
+                  )}
+                </Draggable>
+              )}
+            />
+    
+            {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
 
       <Form
         form={form}
