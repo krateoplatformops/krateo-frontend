@@ -118,7 +118,7 @@ const EditableList = ({ description, form, endpoint, prefix, data = [], onClose 
 
       <DragDropContext onDragEnd={onDrag}>
         <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
+          {(provided) => (
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
@@ -127,7 +127,7 @@ const EditableList = ({ description, form, endpoint, prefix, data = [], onClose 
               dataSource={list}
               renderItem={(item, index) => (
                 <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
+                  {(provided) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}

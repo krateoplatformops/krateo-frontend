@@ -9,7 +9,7 @@ import remarkGfm from "remark-gfm";
 
 const EditableContent = ({text}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [content, setContent] = useState<string>("");
+  // const [content, setContent] = useState<string>("");
   
   const onEdit = async () => {
     // call API to update
@@ -38,7 +38,7 @@ const EditableContent = ({text}) => {
         }
       >
         <MDXEditor
-          onChange={(value) => setContent(value)}
+          // onChange={(value) => setContent(value)}
           markdown={text}
           plugins={[
             markdownShortcutPlugin(),
