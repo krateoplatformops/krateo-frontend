@@ -6,7 +6,7 @@ type StateType = "idle" | "loading" | "success" | "error"
 export type DynamicContentState = {
   prefix: string,
   status: StateType,
-  content: React.ReactElement[]
+  content: object[]
 }
 
 const initialState: DynamicContentState[] = []

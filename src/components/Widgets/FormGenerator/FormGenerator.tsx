@@ -27,7 +27,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	// get fields
 	const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint: fieldsEndpoint});
 	const [formData, setFormData] = useState<any>();
-	const [formEndpoint, setFormEndpoint] = useState();
+	const [formEndpoint, setFormEndpoint] = useState<string>();
 	const fieldsData: {type: string, name: string}[] = [];
 
 	useEffect(() => {
@@ -62,24 +62,20 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	}
 
 	const generateInitialValues = () => {
-		let defaultValues = {};
-
-		const parseData = (node) => {
-			Object.keys(node).forEach(k => {
-				if (node[k].type === "object") {
-					// recoursive call
-					parseData(node[k].properties);
+		const parseData = (node, name) => {
+			return Object.keys(node.properties).map(k => {
+				const currentName = name ? `${name}.${k}` : k;
+				if (node.properties[k].type === "object") {
+					return parseData(node.properties[k], currentName)
 				} else {
-					// add default value
-					if (node[k].default) {
-						defaultValues = Object.assign(defaultValues, {[k]: node[k].default});
+					// set default value
+					if (node.properties[k].default) {
+						form.setFieldValue(currentName.split("."), node.properties[k].default);
 					}
 				}
 			})
 		}
-
-		parseData(formData.spec);
-		return defaultValues;
+		parseData(formData.spec, "");
 	}
 
 	const renderLabel = (path: string, label: string) => {
@@ -300,12 +296,12 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 											onFinish={onSubmit}
 											name="formGenerator"
 											autoComplete="off"
-											initialValues={generateInitialValues()}
 										>
 											<div className={styles.metadataFields}>
 												{ renderMetadataFields() }
 											</div>
 											{ renderFields() }
+											{ generateInitialValues() }
 										</Form>
 								</div>
 						</Col>

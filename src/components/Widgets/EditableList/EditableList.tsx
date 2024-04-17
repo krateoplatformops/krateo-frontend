@@ -1,4 +1,4 @@
-import { DeleteOutlined, ExclamationCircleFilled, PlusCircleOutlined } from "@ant-design/icons";
+import { DeleteOutlined, ExclamationCircleFilled, HolderOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import { Button, Form, FormInstance, Input, List, Modal, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { generate_uuidv4 } from "../../../utils/uuid";
@@ -7,6 +7,7 @@ import { selectEditableContent, setEditableContent, setEditableContentState } fr
 import { useAppDispatch } from "../../../redux/hooks";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { useSelector } from "react-redux";
+import { setDynamicContent } from "../../../features/dynamicContent/dynamicContentSlice";
 
 
 type EditableListElement = { id: string, label: string }
@@ -33,7 +34,6 @@ const EditableList = ({ description, form, endpoint, prefix, data = [], onClose 
 
   useEffect(() => {
     const content = contents.find(el => el.prefix === prefix);
-    console.log("GET CONTENT", content);
     if (content?.content)
     setList(content?.content ? content.content as unknown as EditableListElement[] : data);
 
@@ -43,14 +43,16 @@ const EditableList = ({ description, form, endpoint, prefix, data = [], onClose 
     if (endpoint) {
 			// submit values
 			if (!isLoading && !isError && !isSuccess) {
-				await postContent({
+				const response = await postContent({
 					endpoint: endpoint,
 					body: values,
-				})
+				}).unwrap();
+        // update list
+        dispatch(setDynamicContent({prefix: prefix, status: "success", content: response}))
 			}
 		}
 
-    // save data on redux
+    // save editable data on redux
     dispatch(setEditableContent({ prefix, status: "success", content: values.list }))
 
     // close panel
@@ -142,7 +144,10 @@ const EditableList = ({ description, form, endpoint, prefix, data = [], onClose 
                           />
                         ]}
                       >
-                        <Input defaultValue={item.label} onChange={(event) => updateList(item.id, event.target.value)} />
+                        <Space>
+                          <HolderOutlined />
+                          <Input defaultValue={item.label} onChange={(event) => updateList(item.id, event.target.value)} />
+                        </Space>
                       </List.Item>
                     </div>
                   )}
