@@ -57,7 +57,7 @@ jobs:
           retention-days: 1
 
   package-arm64:
-    runs-on: buildjet-2vcpu-ubuntu-2204-arm
+    runs-on: buildjet-4vcpu-ubuntu-2204-arm
     permissions:
       packages: write
       contents: read
