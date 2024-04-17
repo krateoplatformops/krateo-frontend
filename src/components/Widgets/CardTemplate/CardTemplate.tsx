@@ -1,17 +1,19 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Card, Avatar, Button, Space, Typography, Tag, message } from "antd";
+import { Card, Avatar, Button, Space, Typography, Tag } from "antd";
 import styles from "./styles.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getColorCode } from "../../../utils/colors";
 import useEvents from "../../../hooks/useEvents";
 import { useDeleteContentMutation } from "../../../features/common/commonApiSlice";
 import { useEffect } from "react";
-import catchError from "../../../utils/catchError";
+import useCatchError from "../../../utils/useCatchError";
 // import { useNavigate } from "react-router-dom";
 
 
 const CardTemplate = (props) => {
   const {id, icon, color, title, status, date, content, tags, actions} = props;
+  const { catchError } = useCatchError();
+
   // add props to open panel and get form fields
   const { manageEvent, elementEvent } = useEvents({
     ...props, 
@@ -28,9 +30,7 @@ const CardTemplate = (props) => {
       }
     },
   });
-  const [deleteContent, {isError: isErrorDelete}] = useDeleteContentMutation();
-  const [messageApi, contextHolder] = message.useMessage();
-  const messageKey = 'cardTemplateMessageKey';
+  const [deleteContent, {isError: isErrorDelete, error}] = useDeleteContentMutation();
   
   // const navigate = useNavigate();
   // const onChangePage = () => {
@@ -54,13 +54,12 @@ const CardTemplate = (props) => {
 
   useEffect(() => {
     if (isErrorDelete) {
-      messageApi.open({key: messageKey, type: 'error', content: catchError()});
+      catchError(error);
     }
-  }, [isErrorDelete, messageApi]);
+  }, [catchError, error, isErrorDelete]);
 
   return (
     <>
-      {contextHolder}
       {elementEvent}
       <Card
         key={id}

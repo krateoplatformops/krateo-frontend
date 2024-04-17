@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Anchor, Col, Form, FormInstance, Input, Radio, Result, Row, Select, Slider, Space, Switch, Typography, message } from "antd";
+import { Anchor, App, Col, Form, FormInstance, Input, Radio, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -7,6 +7,7 @@ import { DataListFilterType, setFilters } from "../../../features/dataList/dataL
 import ListEditor from "../ListEditor/ListEditor";
 import styles from "./styles.module.scss";
 import Skeleton from "../../Skeleton/Skeleton";
+import useCatchError from "../../../utils/useCatchError";
 
 type FormGeneratorType = {
 	title?: string,
@@ -19,13 +20,14 @@ type FormGeneratorType = {
 
 const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClose }: FormGeneratorType) => {
 
-	const [postContent, { isLoading: postLoading, isSuccess: postSuccess, isError: postError }] = usePostContentMutation();
-	const messageKey = 'formGeneratorMessageKey';
-	const [messageApi, contextHolder] = message.useMessage();
+	const [postContent, { isLoading: postLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
+	const { message } = App.useApp();
+  const { catchError } = useCatchError();
+
 	const dispatch = useAppDispatch();
 
 	// get fields
-	const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint: fieldsEndpoint});
+	const {data, isLoading, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint});
 	const [formData, setFormData] = useState<any>();
 	const [formEndpoint, setFormEndpoint] = useState<string>();
 	const fieldsData: {type: string, name: string}[] = [];
@@ -235,7 +237,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 			delete values['metadata']
 
 			// submit values
-			if (!postLoading && !postError && !postSuccess) {
+			if (!postLoading && !isPostError && !isPostSuccess) {
 				await postContent({
 					endpoint: postEndpoint,
 					body: values,
@@ -260,22 +262,22 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	}
 
 	useEffect(() => {
-		if (postError) {
-			messageApi.open({key: messageKey, type: 'error', content: 'The operation couldn\'t be completed'});
+		if (isPostError) {
+			catchError(postError);
 		}
-	}, [messageApi, postError]);
+	}, [catchError, isPostError, postError]);
 
 	useEffect(() => {
-		if (postSuccess) {
-			messageApi.open({key: messageKey, type: 'success', content: 'Operation successful'});
+		if (isPostSuccess) {
+			message.success('Operation successful');
 		}
-	}, [messageApi, postSuccess]);
+	}, [message, isPostSuccess]);
 
 	useEffect(() => {
     if (isLoading || postLoading) {
-      messageApi.open({key: messageKey, type: 'loading', content: 'Sending data...'});
+      message.loading('Receiving data...');
     }
-  }, [isLoading, postLoading, messageApi]);
+  }, [isLoading, postLoading, message]);
 
 	return (
 		isLoading ?
@@ -287,7 +289,6 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 			<Typography.Paragraph>{description}</Typography.Paragraph>
 			<div className={styles.anchorWrapper}>
 				<Row className={styles.anchorRow}>
-						{contextHolder}
 						<Col className={styles.formWrapper} span={12}>
 								<div className={styles.form} id="anchor-content">
 										<Form
@@ -318,11 +319,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 		</div>
 		:
 		isError ?
-		<Result
-				status="warning"
-				title="Data error"
-				subTitle="There seems to be a problem getting data"
-		/>
+			catchError(error, "result")
 		:
 		<></>
 	)

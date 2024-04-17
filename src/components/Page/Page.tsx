@@ -3,13 +3,15 @@ import styles from "./styles.module.scss";
 import Skeleton from "../Skeleton/Skeleton";
 import { useGetContentQuery } from "../../features/common/commonApiSlice";
 import useParseData from "../../hooks/useParseData";
+import useCatchError from "../../utils/useCatchError";
 
 const Page = ({clientId, endpoint}: PageType) => {
   const ls = localStorage.getItem("user");
   const username = ls && JSON.parse(ls)?.user.username;
   const group = ls && JSON.parse(ls)?.groups[0];
-  const {data, isLoading, isSuccess, isError} = useGetContentQuery({endpoint, username, group});
+  const {data, isLoading, isSuccess, isError, error} = useGetContentQuery({endpoint, username, group});
   const [getContent] = useParseData()
+  const { catchError } = useCatchError();
 
   const fetchPage = (clientId: string, endpoint: string) => {
     console.log(clientId, endpoint);
@@ -3370,7 +3372,7 @@ const Page = ({clientId, endpoint}: PageType) => {
     ) {
       // mock data for some pages
       const response = fetchPage(clientId, endpoint);
-      console.log("use mock", window.location.pathname)
+      console.log("use mock")
       return getContent(response, 1);
     } else if (data && isSuccess) {
       console.log("use real data")
@@ -3382,10 +3384,9 @@ const Page = ({clientId, endpoint}: PageType) => {
 
   return (
     <section className={styles.page}>
-      {
-        isLoading && <Skeleton />
-      }
-      { (isSuccess || isError) && getContentPage() }
+      { isLoading && <Skeleton /> }
+      { isSuccess && getContentPage() }
+      { isError && catchError(error, "result") }
     </section>
   );
 }

@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import { getIcon } from "./utils/icons";
 import { useGetAppDataQuery } from "./features/app/appApiSlice";
-import { Space, Spin, Typography, message } from "antd";
+import { App as AntApp, Space, Spin, Typography, message } from "antd";
 import getClientIdFromPath from "./utils/getClientIdFromPath";
 import AuthGitHub from "./pages/Auth/AuthGitHub";
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -160,7 +160,9 @@ function App() {
         </Space>
       : (
         router.length > 0 &&
-        <RouterProvider router={createBrowserRouter(router)} fallbackElement={<Skeleton />} />
+        <AntApp>
+          <RouterProvider router={createBrowserRouter(router)} fallbackElement={<Skeleton />} />
+        </AntApp>
       )
     }
     </>
