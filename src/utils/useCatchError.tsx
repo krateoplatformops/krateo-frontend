@@ -10,19 +10,25 @@ const useCatchError = () => {
     let description: string = "Unable to complete the operation, please try later";
 
     console.log("ERROR", error);
-    if (typeof error === "string") {
-      message = error;
-    } else if (error?.message) {
-      message = error.message;
+
+    // Adjust to account for potentially nested error structure
+    const actualError = error?.data || error;
+
+    console.log("actualERROR", actualError);
+
+    if (typeof actualError === "string") {
+      message = actualError;
+    } else if (actualError?.message) {
+      message = actualError.message;
     }
 
-    if (error?.code) {
+    if (actualError?.code) {
       const clientErrorRegex = /^4\d{2}$/; // Regex for 4xx client errors
-      if (clientErrorRegex.test(String(error.code))) {
+      if (clientErrorRegex.test(String(actualError.code))) {
         message = "Client Error";
-        description = error.message || "There was an error processing your request. Please check your input or permissions.";
+        description = actualError.message || "There was an error processing your request. Please check your input or permissions.";
       } else {
-        switch (error.code) {
+        switch (actualError.code) {
           // Handle other specific codes if necessary
           case 500:
             message = "Internal Server Error";
