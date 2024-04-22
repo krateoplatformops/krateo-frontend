@@ -4,38 +4,38 @@ import { App, Result } from "antd";
 
 const useCatchError = () => {
   const { notification } = App.useApp();
-  
+
   const catchError = (error?: SerializedError | FetchBaseQueryError | any, type: "result" | "notification" = "notification") => {
     let message: string = "Ops! Something didn't work";
     let description: string = "Unable to complete the operation, please try later";
-    let status = error.status;
-console.log("ERROR", error);
-    if (typeof error === "string") {
-      status = error; // using error string as status code                             
 
-    } else if (error?.message) {
-      message = error.message;
+    console.log("ERROR", error);
 
-    } else if (error?.status) {
+    // Adjust to account for potentially nested error structure
+    const actualError = error?.data || error;
 
-      switch (status) {
-        case "WRONG_USERNAME_PASSWORD":
-          message = 'Wrong credentials';
-          break;
+    console.log("actualERROR", actualError);
 
-        case "application_data_missing":
-          message = "Unable to receive application data";
-          break;
+    if (typeof actualError === "string") {
+      message = actualError;
+    } else if (actualError?.message) {
+      message = actualError.message;
+    }
 
-        case "FETCH_ERROR":
-          message = "Unable to receive data";
-          description = "The application failed to retrieve data from the server, try again later";
-          break;
-
-        case "PARSING_ERROR":
-          message = "Failed parsing data";
-          description = "Unexpected character sent, check the data";
-          break;
+    if (actualError?.code) {
+      const clientErrorRegex = /^4\d{2}$/; // Regex for 4xx client errors
+      if (clientErrorRegex.test(String(actualError.code))) {
+        message = "Client Error";
+        description = actualError.message || "There was an error processing your request. Please check your input or permissions.";
+      } else {
+        switch (actualError.code) {
+          // Handle other specific codes if necessary
+          case 500:
+            message = "Internal Server Error";
+            description = "The server encountered an unexpected condition.";
+            break;
+          // Add more cases as needed
+        }
       }
     }
 
