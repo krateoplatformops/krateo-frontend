@@ -1,0 +1,13 @@
+@import '../../../theme/global.scss';
+
+.panel {
+  :global .ant-card-head {
+    font-weight: 300;
+    font-size: $lTitleSize;
+    padding: 24px;
+  }
+}
+
+.paragraph {
+  font-size: $mTextSize;
+}

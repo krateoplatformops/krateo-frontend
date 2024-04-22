@@ -1,5 +1,8 @@
+/**
+ * https://ant-design-charts.antgroup.com/en/examples/statistics/line/#basic
+ */
+
 import { Line } from "@ant-design/charts"
-import Panel from "../../Panel/Panel";
 import styles from "./styles.module.scss";
 import { theme } from "antd";
 
@@ -350,41 +353,34 @@ const mockData = [
   }
   ];
 
-type ChartLineType = {
-  title: string;
-  tooltip?: string;
-}
-
 const { useToken } = theme;
 
-
-const ChartLine = ({title, tooltip}: ChartLineType) => {
+const ChartLine = ({hideAxis}: {hideAxis?: boolean}) => {
   const { token } = useToken();
 
   const config = {
-    animation:false,
+    // animation:false,
     data: mockData,
     // padding: 'auto',
     color: token.colorLink,
     xField: 'Date',
     yField: 'scales',
     xAxis: {
-      // type: 'timeCat',
       tickCount: 5,
     },
+    yAxis: hideAxis ? {
+      grid: { line: { style: { lineWidth: 0 } } },
+    } : {},
+    axis: hideAxis ? {
+      y: { label: false },
+      x: { label: false },
+    } : {},
   };
 
   return (
-    <Panel
-      title={title}
-      tooltip={tooltip}
-      content={
-        <div className={styles.chart}>
-          <Line {...config} />
-        </div>
-      }
-      footer={[]}
-    />
+    <div className={styles.chart}>
+      <Line {...config} />
+    </div>
   )
 }
 

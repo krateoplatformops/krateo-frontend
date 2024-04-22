@@ -4,34 +4,66 @@ import styles from "./styles.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getColorCode } from "../../../utils/colors";
 import useEvents from "../../../hooks/useEvents";
+import { useDeleteContentMutation } from "../../../features/common/commonApiSlice";
+import { useEffect } from "react";
+import useCatchError from "../../../utils/useCatchError";
 // import { useNavigate } from "react-router-dom";
 
 
 const CardTemplate = (props) => {
-  const {id, icon, color, title, status, date, content, tags, actions, allowedActions} = props;
+  const {id, icon, color, title, status, date, content, tags, actions} = props;
+  const { catchError } = useCatchError();
 
-  const [manageEvent, elementEvent] = useEvents(props)
+  // add props to open panel and get form fields
+  const { manageEvent, elementEvent } = useEvents({
+    ...props, 
+    panel: {
+      type: "form", 
+      title: title,
+      size: "large",
+      buttons: [{label: "cancel", type: "default", action: "reset"}, {label: "submit", type: "primary", action: "submit"} ],
+      content: {
+        element: "FormGenerator",
+        props: {
+          fieldsEndpoint: actions?.find(el => el.verb === "get")?.path
+        }
+      }
+    },
+  });
+  const [deleteContent, {isError: isErrorDelete, error}] = useDeleteContentMutation();
   
   // const navigate = useNavigate();
   // const onChangePage = () => {
   //   navigate(id.toString())
   // }
 
-  const isAllowed = (verb) => {
-    if (Array.isArray(actions) && Array.isArray(allowedActions)) {
-      const name = actions.find(el => el.verb.toUpperCase() === verb.toUpperCase())?.name;
-      return allowedActions.indexOf(name) > -1
-    } else {
-      return false;
-    }
+  const onClick = () => {
+    // Card template open always a panel with a form by endpoint
+    if (isAllowed("get"))
+      manageEvent();
   }
+
+  const isAllowed = (verb) => {
+    return actions?.find(el => el.verb === verb) !== undefined
+  }
+
+  const onDeleteAction = async () => {
+    const endpoint = actions?.find(el => el.verb === "delete")?.path;
+    await deleteContent({endpoint: endpoint});
+  }
+
+  useEffect(() => {
+    if (isErrorDelete) {
+      catchError(error);
+    }
+  }, [catchError, error, isErrorDelete]);
 
   return (
     <>
       {elementEvent}
       <Card
         key={id}
-        onClick={manageEvent}
+        onClick={onClick}
         className={styles.card}
         title={
           <Space size="large" className={styles.header}>
@@ -47,7 +79,7 @@ const CardTemplate = (props) => {
         }
         actions={[
           <Space wrap key='1'>{tags?.split(",")?.map((tag, i) => <Tag key={`Tag_${i}`}>{tag}</Tag>)}</Space>,
-          <Button key='2' onClick={(e) => {e.stopPropagation(); console.log("CLICK DELETE")}} icon={<DeleteOutlined />} type="text" disabled={!isAllowed("DELETE")} />
+          <Button key='2' onClick={(e) => {e.stopPropagation(); onDeleteAction()}} icon={<DeleteOutlined />} type="text" disabled={!isAllowed("delete")} />
         ]}
       >
         {content}

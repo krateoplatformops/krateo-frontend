@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { RouterProvider, createBrowserRouter, RouteObject } from "react-router-dom";
+import { RouterProvider, createBrowserRouter, RouteObject, Navigate } from "react-router-dom";
 import Skeleton from "./components/Skeleton/Skeleton";
 import Page from "./components/Page/Page"
 import ErrorPage from "./pages/ErrorPage";
@@ -10,7 +10,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import { getIcon } from "./utils/icons";
 import { useGetAppDataQuery } from "./features/app/appApiSlice";
-import { Space, Spin, Typography, message } from "antd";
+import { App as AntApp, Space, Spin, Typography, message } from "antd";
 import getClientIdFromPath from "./utils/getClientIdFromPath";
 import AuthGitHub from "./pages/Auth/AuthGitHub";
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -28,26 +28,34 @@ function App() {
     return (
       {
         routes: [
-          {
-            label: "Catalog",
-            path: "/",
-            icon: getIcon("dashboard"),
-            endpoint: "/",
-            menu: true,
-          },
+          // {
+          //   label: "Dashboard",
+          //   path: "/",
+          //   icon: getIcon("dashboard"),
+          //   endpoint: "/",
+          //   menu: true,
+          // },
           {
             label: "Templates",
             path: "/templates",
             icon: getIcon('templates'),
-            endpoint: "/apis/layout.ui.krateo.io/rows/two",
+            endpoint: "/apis/layout.ui.krateo.io/rows/two?sub=cyberjoker&orgs=devs&namespace=demo-system",
             menu: true,
           },
+          // {
+          //   label: "Projects",
+          //   path: "/projects",
+          //   icon: getIcon('projects'),
+          //   endpoint: "/",
+          //   menu: true,
+          // },
+          // {
+          //   path: "/projects/:projectID",
+          //   menu: false,
+          // },
           {
-            label: "Form",
-            path: "/form",
-            icon: getIcon('projects'),
-            endpoint: "/",
-            menu: true,
+            path: "/projects/:projectID/:deploymentID",
+            menu: false,
           },
           {
             label: "Flow",
@@ -56,6 +64,13 @@ function App() {
             endpoint: "/",
             menu: true,
           },
+          // {
+          //   label: "Form",
+          //   path: "/form",
+          //   icon: getIcon('dashboard'),
+          //   endpoint: "/",
+          //   menu: true,
+          // },
         ],
         notifications: [
           {
@@ -104,6 +119,10 @@ function App() {
     setRouter(
       [
         {
+          path: "/",
+          element: <Navigate to="/templates" replace={true} />,
+        },
+        {
           path: "/login",
           element: <LayoutLogin />,
           children: [
@@ -148,7 +167,9 @@ function App() {
         </Space>
       : (
         router.length > 0 &&
-        <RouterProvider router={createBrowserRouter(router)} fallbackElement={<Skeleton />} />
+        <AntApp>
+          <RouterProvider router={createBrowserRouter(router)} fallbackElement={<Skeleton />} />
+        </AntApp>
       )
     }
     </>

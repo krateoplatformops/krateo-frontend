@@ -5,8 +5,8 @@ import { setUser } from "../../features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import LoginForm from "./components/LoginForm/LoginForm";
 import { LoginFormType } from "./type";
-import { Divider, Result, message } from "antd";
-import catchError from "../../utils/catchError";
+import { Divider, Result } from "antd";
+import useCatchError from "../../utils/useCatchError";
 import Skeleton from "../../components/Skeleton/Skeleton";
 import getClientIdFromPath from "../../utils/getClientIdFromPath";
 import SocialLogin from './components/SocialLogin/SocialLogin';
@@ -17,8 +17,7 @@ const Login = () => {
   const {data, isLoading, isError, isFetching} = useGetAuthModesQuery(clientId);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [messageApi, contextHolder] = message.useMessage();
-  const messageKey = 'loginMessageKey';
+  const { catchError } = useCatchError();
 
   const onBasicSubmit = async (body: LoginFormType) => {
     const url = data?.find((el) => el.kind === "basic")?.path;
@@ -30,10 +29,10 @@ const Login = () => {
         navigate("/");
       } catch (err) {
         const errorMessage = (err as {data: {errorMessage: string}})?.data?.errorMessage;
-        messageApi.open({key: messageKey, type: 'error', content: catchError(errorMessage)});
+        catchError(errorMessage);
       }
     } else {
-      messageApi.open({key: messageKey, type: 'error', content: catchError("username_o_password_errati")});
+      catchError("WRONG_USERNAME_PASSWORD");
     }
   };
 
@@ -59,7 +58,6 @@ const Login = () => {
 
   return (
     <section>
-      {contextHolder}
       <Panel
         title="Welcome back"
         content={

@@ -2,18 +2,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
 
 export type DataListType = {
-  element: string,
-  props:{
-    icon: string,
-    color: string,
-    title: string,
-    status: string,
-    date: string,
-    content: string,
-    tags: string,
+  kind: string,
+  spec: {
+    app: {
+      props:{
+        prefix: string,
+        asGrid: boolean,
+        data: any[],
+      }
+    }
+  }
+  status: {
     actions: {
-      name: string,
-      enabled: boolean,
       path: string,
       verb: string
     }[]
@@ -27,83 +27,117 @@ export type DataListFilterType = {
 }
 
 export type DataListState = {
-  // prefix: string,
+  prefix: string,
   data: DataListType[],
   filteredData: DataListType[],
   filters: DataListFilterType[]
 }
 
-const initialState: DataListState = {
-  // prefix: "",
-  data: [],
-  filteredData: [],
-  filters: []
-}
+const initialState: DataListState[] = []
 
 export const dataListSlice = createSlice({
   name: 'dataList',
   initialState,
   reducers: {
-    setDataList: (state, action: PayloadAction<DataListType[]>) => {
-      state.data = action.payload;
-      state.filteredData = action.payload;
-    },
-    filterDataList: (state, action: PayloadAction<DataListType[]>) => {
-      state.filteredData = action.payload;
-    },
-    resetFilterDataList: (state) => {
-      state.filteredData = state.data;
-    },
-    clearDataList: (state) => {
-      state.data = [];
-    },
-    setFilters: (state, action: PayloadAction<DataListFilterType[]>) => {
-      state.filters = action.payload;
-      state.filteredData = state.data.filter(el => {
-        let valid = true;
-        action.payload.forEach(filter => {
-          const index = Object.keys(el.props).indexOf(filter.fieldName);
-          const valueToCompare: string = Object.values(el.props)[index] as string;
-          if (index > -1) {
-            switch (filter.fieldType) {
-              case "text":
-              case "textArea": // tested
-                valid = valid && valueToCompare?.toLowerCase().includes((filter.fieldValue as string)?.toLowerCase()) // text, textarea -> include
-                break;
-              case "number": // tested
-                valid = valid && valueToCompare === filter.fieldValue
-                break;
-              case "select": // tested
-                valid = valid && valueToCompare === filter.fieldValue
-                break;
-              case "radioGroup": // tested
-                valid = valid && valueToCompare === filter.fieldValue
-                break;
-              case "checkboxGroup": // tested
-                valid = valid && (filter.fieldValue as string[]).filter(filter => valueToCompare === filter).length > 0
-                break;
-              case "checkbox": // tested send true/false (checked)
-                valid = valid && valueToCompare === filter.fieldValue
-                break;
-              case "datetime": // Needs ISO from K8
-                const dateFilter = new Date((filter.fieldValue as string))
-                const dateToCompare = new Date(valueToCompare)
-                valid = valid && (dateFilter.getDate() === dateToCompare.getDate() && 
-                         dateFilter.getMonth() === dateToCompare.getMonth() && 
-                         dateFilter.getFullYear() === dateToCompare.getFullYear()
-                        )
-                break;
-              default:
-                valid = valid && valueToCompare === filter.fieldValue
-                break;
-            }
+    setDataList: (state, action: PayloadAction<{data: DataListType[], prefix: string}>) => {
+      if (state.find(el => el.prefix === action.payload.prefix)) {
+        state = state.map(el => {
+          if (el.prefix === action.payload.prefix) {
+            el.data = action.payload.data;
+            el.filteredData = action.payload.data;
           }
+          return el;
         })
-        return valid;
+      } else {
+        state.push({
+          prefix: action.payload.prefix,
+          data: action.payload.data,
+          filteredData: action.payload.data,
+          filters: [],
+        })
+      }
+    },
+    filterDataList: (state, action: PayloadAction<{data: DataListType[], prefix: string}>) => {
+      state = state.map(el => {
+        if (el.prefix === action.payload.prefix) {
+            el.filteredData = action.payload.data;
+        }
+        return el;
+      })
+    },
+    resetFilterDataList: (state, action: PayloadAction<{prefix: string}>) => {
+      state = state.map(el => {
+        if (el.prefix === action.payload.prefix) {
+          el.filteredData = el.data;
+        }
+        return el;
+      })
+    },
+    clearDataList: (state, action: PayloadAction<{prefix: string}>) => {
+      state = state.map(el => {
+        if (el.prefix === action.payload.prefix) {
+          el.data = [];
+        }
+        return el;
+      })
+    },
+    setFilters: (state, action: PayloadAction<{filters: DataListFilterType[], prefix: string}>) => {
+      state = state.map(el => {
+        if (el.prefix === action.payload.prefix) {
+          el.filters = action.payload.filters;
+          el.filteredData = el.data.filter(fdata => {
+            let valid = true;
+            action.payload.filters.forEach(filter => {
+              const index = Object.keys(fdata.spec.app.props).indexOf(filter.fieldName);
+              const valueToCompare: string = Object.values(fdata.spec.app.props)[index] as string;
+              const dateFilter = new Date((filter.fieldValue as string))
+              const dateToCompare = new Date(valueToCompare)      
+              if (index > -1) {
+                switch (filter.fieldType) {
+                  case "text":
+                  case "textArea": // tested
+                    valid = valid && valueToCompare?.toLowerCase().includes((filter.fieldValue as string)?.toLowerCase()) // text, textarea -> include
+                    break;
+                  case "number": // tested
+                    valid = valid && valueToCompare === filter.fieldValue
+                    break;
+                  case "select": // tested
+                    valid = valid && valueToCompare === filter.fieldValue
+                    break;
+                  case "radioGroup": // tested
+                    valid = valid && valueToCompare === filter.fieldValue
+                    break;
+                  case "checkboxGroup": // tested
+                    valid = valid && (filter.fieldValue as string[]).filter(filter => valueToCompare === filter).length > 0
+                    break;
+                  case "checkbox": // tested send true/false (checked)
+                    valid = valid && valueToCompare === filter.fieldValue
+                    break;
+                  case "datetime": // Needs ISO from K8
+                    valid = valid && (dateFilter.getDate() === dateToCompare.getDate() && 
+                            dateFilter.getMonth() === dateToCompare.getMonth() && 
+                            dateFilter.getFullYear() === dateToCompare.getFullYear()
+                            )
+                    break;
+                  default:
+                    valid = valid && valueToCompare === filter.fieldValue
+                    break;
+                }
+              }
+            })
+            return valid;
+          })
+        }
+        return el;
       })      
     },
-    clearFilters: (state) => {
-      state.filters = [];
+    clearFilters: (state, action: PayloadAction<{prefix: string}>) => {
+      state = state.map(el => {
+        if (el.prefix === action.payload.prefix) {
+          el.filters = [];
+        }
+        return el;
+      })
     }
   }
 });
@@ -112,5 +146,5 @@ export const { setDataList, clearDataList, setFilters, clearFilters } = dataList
 
 export default dataListSlice.reducer;
 
-export const selectDataList = (state: RootState) => state.dataList?.filteredData;
-export const selectFilters = (state: RootState) => state.dataList?.filters;
+export const selectDataList = (state: RootState, prefix: string) => state.dataList?.find(el => el.prefix === prefix)?.filteredData;
+export const selectFilters = (state: RootState, prefix: string) => state.dataList?.find(el => el.prefix === prefix)?.filters;

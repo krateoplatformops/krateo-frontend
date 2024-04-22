@@ -1,8 +1,8 @@
 import { Button, Drawer, Form, Space, Typography } from "antd"
 import widgets from "../Widgets/index";
-import { useSelector } from "react-redux";
-import { selectFilters } from "../../features/dataList/dataListSlice";
-import dayjs from "dayjs";
+// import { useSelector } from "react-redux";
+// import { selectFilters } from "../../features/dataList/dataListSlice";
+// import dayjs from "dayjs";
 import styles from "./styles.module.scss";
 
 type DrawerPanelType = {
@@ -13,8 +13,8 @@ type DrawerPanelType = {
     type?: "form",
     buttons?: ButtonType[],
     content: {
-      element: string,
-      props?: React.ReactElement // panel content
+      element: string, // widget to render into the panel
+      props?: object // props of widget
     }
   },
   isOpen: boolean,
@@ -32,7 +32,7 @@ type ButtonType = {
 
 const DrawerPanel = ({panel, isOpen, onClose}: DrawerPanelType) => {
   const Component = widgets[panel.content.element];
-  const filters = useSelector(selectFilters);
+  // const filters = useSelector(selectFilters);
   const [form] = Form.useForm();
   const panelProps = {...panel.content.props};
 
@@ -41,13 +41,13 @@ const DrawerPanel = ({panel, isOpen, onClose}: DrawerPanelType) => {
     panelProps["form"] = form;
   }
 
-  const generateInitialValues = () => {
-    const iv = {};
-    filters.forEach(f => {
-      iv[f.fieldName] = f.fieldType === "datetime" ? dayjs(f.fieldValue as string) : f.fieldValue
-    })
-    return iv;
-  }
+  // const generateInitialValues = () => {
+  //   const iv = {};
+  //   filters.forEach(f => {
+  //     iv[f.fieldName] = f.fieldType === "datetime" ? dayjs(f.fieldValue as string) : f.fieldValue
+  //   })
+  //   return iv;
+  // }
 
   const onClickButton = (action: "default" | "submit" | "reset" | undefined) => {
     switch (action) {
@@ -77,7 +77,7 @@ const DrawerPanel = ({panel, isOpen, onClose}: DrawerPanelType) => {
         panel.type === "form" &&
         <Space>
           {
-            panel.buttons?.map(but => <Button type={but.type} onClick={() => onClickButton(but.action)}>{but.label}</Button>)
+            panel.buttons?.map((but, i) => <Button key={`btn_${i}`} type={but.type} onClick={() => onClickButton(but.action)}>{but.label}</Button>)
           }
         </Space>
       }
@@ -86,7 +86,7 @@ const DrawerPanel = ({panel, isOpen, onClose}: DrawerPanelType) => {
         <Typography.Paragraph>{panel.description}</Typography.Paragraph>
         <Component
           {...panelProps}
-          initialValues={panel.type === "form" ? generateInitialValues() : undefined}
+          // initialValues={panel.type === "form" ? generateInitialValues() : undefined}
           onClose={onClose} />
       </Space>
     </Drawer>
