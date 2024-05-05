@@ -1,0 +1,19 @@
+@import '../../../theme/global.scss';
+
+.node {
+  max-width: 250px;
+
+  .header {
+    background: $primary-color;
+    color: $light-color;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+
+  .body {
+    border: solid 1px $primary-color;
+    background: $light-color;
+    padding: 10px;
+    font-size: 12px;
+  }
+}

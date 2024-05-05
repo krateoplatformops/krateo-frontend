@@ -28,13 +28,13 @@ function App() {
     return (
       {
         routes: [
-          // {
-          //   label: "Dashboard",
-          //   path: "/",
-          //   icon: getIcon("dashboard"),
-          //   endpoint: "/",
-          //   menu: true,
-          // },
+          {
+            label: "Catalog",
+            path: "/",
+            icon: getIcon("dashboard"),
+            endpoint: "/",
+            menu: true,
+          },
           {
             label: "Templates",
             path: "/templates",
