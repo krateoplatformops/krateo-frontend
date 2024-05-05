@@ -12,6 +12,7 @@
   "dependencies": {
     "@ant-design/charts": "^1.4.2",
     "@ant-design/icons": "^5.2.6",
+    "@types/dagre": "^0.7.52",
     "@dagrejs/dagre": "^1.1.2",
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
