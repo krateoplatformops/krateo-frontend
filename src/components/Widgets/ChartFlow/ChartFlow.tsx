@@ -9,9 +9,9 @@ import ReactFlow, {
   Position,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import styles from "./styles.module.scss";
 import { Space, Tag } from 'antd';
-import dagre from 'dagre';
+import dagre from '@dagrejs/dagre';
+import styles from "./styles.module.scss";
 
 const showNodeDetails = (data) => {
   console.log(data);
@@ -50,7 +50,7 @@ const NodeElement = ({ data }) => {
 const ChartFlow = () => {
   const nodeType = useMemo(() => ({ nodeElement: NodeElement }), []);
   const dagreGraph = new dagre.graphlib.Graph();
-   dagreGraph.setDefaultEdgeLabel(() => ({}));
+  dagreGraph.setDefaultEdgeLabel(() => ({}));
 
    const nodeWidth = 400;
    const nodeHeight = 200;
@@ -396,17 +396,17 @@ const ChartFlow = () => {
    return (
       <div style={{ height: '100%' }}>
          <ReactFlow
-         nodes={nodes}
-         nodeTypes={nodeType}
-         onNodesChange={onNodesChange}
-         edges={edges}
-         onEdgesChange={onEdgesChange}
-         //   nodesDraggable={false}
-         nodesConnectable={false}
-         fitView
-         >
-         <Background />
-         <Controls showInteractive={false} />
+            nodes={nodes}
+            nodeTypes={nodeType}
+            onNodesChange={onNodesChange}
+            edges={edges}
+            onEdgesChange={onEdgesChange}
+            //   nodesDraggable={false}
+            nodesConnectable={false}
+            fitView
+            >
+            <Background />
+            <Controls showInteractive={false} />
          </ReactFlow>
       </div>
    )
