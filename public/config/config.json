@@ -1,6 +1,6 @@
 {
   "api": {
-    "BFF_API_BASE_URL": "http://4.209.242.225:8081",
-    "AUTHN_API_BASE_URL": "http://4.209.242.209:8082"
+    "BFF_API_BASE_URL": "http://4.207.170.212:8081",
+    "AUTHN_API_BASE_URL": "http://4.207.170.178:8082"
   }
 }

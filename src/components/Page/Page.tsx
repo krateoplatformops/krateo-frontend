@@ -38,7 +38,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
-                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdweee",
                 },
                 "spec": {
                   "app": {
@@ -235,7 +235,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
-                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabb1",
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabb16546",
                 },
                 "spec": {
                   "app": {
@@ -895,7 +895,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "kind": "Column",
                                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
-                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabb1",
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabb1gs",
                                 },
                                 "spec": {
                                   "app": {
@@ -1056,7 +1056,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "kind": "Column",
                                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
-                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdcvx",
                                 },
                                 "spec": {
                                   "app": {
@@ -1177,7 +1177,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "kind": "Column",
                                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
-                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdvv",
                                 },
                                 "spec": {
                                   "app": {
@@ -1220,7 +1220,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "kind": "Column",
                                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
-                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbmsdf",
                                 },
                                 "spec": {
                                   "app": {
@@ -1274,7 +1274,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "kind": "Column",
                                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
-                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbduhgfgd",
                                 },
                                 "spec": {
                                   "app": {
@@ -1318,7 +1318,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "kind": "Column",
                                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
-                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbmsdjsd",
                                 },
                                 "spec": {
                                   "app": {
@@ -1458,7 +1458,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "kind": "Button",
                                 "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                                 "metadata": {
-                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb2",
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb2ggg",
                                 },
                                 "status": {
                                   "content": [
@@ -1495,7 +1495,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 "kind": "Button",
                                 "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                                 "metadata": {
-                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb2",
+                                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbfb2dda",
                                 },
                                 "status": {
                                   "content": [
@@ -1518,7 +1518,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
-                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdxx",
                 },
                 "spec": {
                   "app": {
@@ -1561,7 +1561,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
-                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbmfgjl",
                 },
                 "spec": {
                   "app": {
@@ -1593,10 +1593,8 @@ const Page = ({clientId, endpoint}: PageType) => {
                               "icon": "code-branch",
                               "tags": "lorem,ipsum",
                               "route": "/projects/12345/67890",
-                              "allowedActions": ["remove"],
                               "actions": [{
-                                "name": "remove",
-                                "verb": "DELETE",
+                                "verb": "get",
                               }]
                             }
                           ]
@@ -1610,7 +1608,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                 "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
-                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
+                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdsdfh",
                 },
                 "spec": {
                   "app": {
@@ -1642,6 +1640,9 @@ const Page = ({clientId, endpoint}: PageType) => {
                               "color": "blue",
                               "tags": "lorem,ipsum",
                               "route": "/projects/12345/67890",
+                              "actions": [{
+                                "verb": "get",
+                              }]
                             }
                           ]
                         }
@@ -1686,10 +1687,8 @@ const Page = ({clientId, endpoint}: PageType) => {
                               "icon": "code-branch",
                               "tags": "lorem,ipsum",
                               "route": "/projects/12345/67890",
-                              "allowedActions": ["remove"],
                               "actions": [{
-                                "name": "remove",
-                                "verb": "DELETE",
+                                "verb": "get",
                               }]
                             }
                           ]
@@ -3328,26 +3327,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                   "app": {
                     "props": {
                       "label": "Terminal"
-                    }
-                  },
-                },
-                "status": {
-                  "content": {
-                    "items": [
-                    ]
-                  }
-                }
-              },
-              {
-                "kind": "TabPane",
-                "apiVersion": "layout.ui.krateo.io/v1alpha1",
-                "metadata": {
-                  "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdt40",
-                },
-                "spec": {
-                  "app": {
-                    "props": {
-                      "label": "Keptn"
                     }
                   },
                 },

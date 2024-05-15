@@ -22,10 +22,15 @@
 
     :global(.ant-row) {
       padding: 0;
+      align-content: flex-start;
     }
 
     :global(.ant-col) {
       padding: 10px;
+      
+      &:only-child {
+        height: 100%;
+      }
     }
 
     :global(.ant-col > div) {

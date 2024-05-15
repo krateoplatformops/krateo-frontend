@@ -14,31 +14,31 @@ const CardTemplate = (props) => {
   const {id, icon, color, title, status, date, content, tags, actions} = props;
   const { catchError } = useCatchError();
 
-  // add props to open panel and get form fields
-  const { manageEvent, elementEvent } = useEvents({
-    ...props, 
-    panel: {
-      type: "form", 
-      title: title,
-      size: "large",
-      buttons: [{label: "cancel", type: "default", action: "reset"}, {label: "submit", type: "primary", action: "submit"} ],
-      content: {
-        element: "FormGenerator",
-        props: {
-          fieldsEndpoint: actions?.find(el => el.verb === "get")?.path
+  // TEMP: keep until BE send route, endpoint or panel props
+  let cardProps = {...props};
+  if (!props.route && !props.endpoint && !props.panel && actions?.find(el => el.verb === "get")?.path) {
+    // add "panel" props to open panel and get form fields as default CTA of card
+    cardProps = {...cardProps,
+      panel: {
+        type: "form",
+        title: title,
+        size: "large",
+        buttons: [{label: "cancel", type: "default", action: "reset"}, {label: "submit", type: "primary", action: "submit"} ],
+        content: {
+          element: "FormGenerator",
+          props: {
+            fieldsEndpoint: actions?.find(el => el.verb === "get")?.path
+          }
         }
-      }
-    },
-  });
+      },
+    }
+  }
+  // END TEMP
+
+  const { manageEvent, elementEvent } = useEvents(cardProps);
   const [deleteContent, {isError: isErrorDelete, error}] = useDeleteContentMutation();
-  
-  // const navigate = useNavigate();
-  // const onChangePage = () => {
-  //   navigate(id.toString())
-  // }
 
   const onClick = () => {
-    // Card template open always a panel with a form by endpoint
     if (isAllowed("get"))
       manageEvent();
   }
@@ -64,7 +64,7 @@ const CardTemplate = (props) => {
       <Card
         key={id}
         onClick={onClick}
-        className={styles.card}
+        className={`${styles.card} ${!isAllowed("get") && styles.noLink}`}
         title={
           <Space size="large" className={styles.header}>
             <Avatar style={{ backgroundColor: getColorCode(color) }} size={64} icon={<FontAwesomeIcon icon={icon} />} />

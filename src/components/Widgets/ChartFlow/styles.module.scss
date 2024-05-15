@@ -1,18 +1,17 @@
 @import '../../../theme/global.scss';
 
 .node {
-  max-width: 250px;
+  padding: 10px;
+  border: solid 1px $border-color;
+  background: $light-color;
+  border-radius: 50px;
 
   .header {
-    background: $primary-color;
-    color: $light-color;
     padding: 5px 10px;
     font-size: 14px;
   }
 
   .body {
-    border: solid 1px $primary-color;
-    background: $light-color;
     padding: 10px;
     font-size: 12px;
   }

@@ -7,6 +7,14 @@
     border: none;
   }
 
+  &.noLink {
+   cursor: default;
+
+    :global .ant-card-actions span {
+      cursor: default;
+    }
+  }
+
   .header {
     width: 100%;
 

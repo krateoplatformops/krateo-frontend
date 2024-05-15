@@ -9,39 +9,58 @@ import ReactFlow, {
   Position,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Space, Tag } from 'antd';
+import { Avatar, Space, Tag } from 'antd';
 import dagre from '@dagrejs/dagre';
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import styles from "./styles.module.scss";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const showNodeDetails = (data) => {
   console.log(data);
 }
 
-const getTagColor = (status: number) => {
-  const colors = ["error", "success"]
-  return colors[status];
+const health = [
+   {label: "Degraded", color: "error"}, 
+   {label: "Healthy", color: "success"}, 
+   {label: "Progressing", color: "warning"}
+]
+
+const icons = [
+   {kind: "Pod", icon: "fa-cube"},
+   {kind: "ReplicaSet", icon: "fa-clone"},
+   {kind: "EndpointSlice", icon: "fa-circle-dot"},
+   {kind: "Endpoints", icon: "fa-diagram-project"},
+   {kind: "Ingress", icon: "fa-shuffle"},
+   {kind: "Deployment", icon: "fa-arrow-rotate-right"},
+   {kind: "Service", icon: "fa-cubes"},
+   {kind: "Namespace", icon: "fa-folder"},
+]
+
+const getTagColor = (status: string) => {
+   return health.find(el => el.label === status)?.color;
 }
 
-const getTagText = (status: number) => {
-  const text = ["offline", "online"]
-  return text[status];
+const getNodeIcon = (kind: string) => {
+   return icons.find(el => el.kind === kind)?.icon;
 }
 
 const NodeElement = ({ data }) => {
   return (
     <div className={styles.node} onClick={() => showNodeDetails(data)}>
       <Handle type="target" position={Position.Left} />
-      <>
-        <div className={styles.header}>
-          {data.header}
-        </div>
-        <div className={styles.body}>
-          <Space direction="vertical" size="middle">
-            <div>{data.body}</div>
-            <Tag color={getTagColor(data.status)}>{getTagText(data.status)}</Tag>
-          </Space>
-        </div>
-      </>
+         <Space>
+            <Avatar size={40}>{<FontAwesomeIcon icon={getNodeIcon(data.kind) as IconProp} />}</Avatar>
+            <>
+               <div className={styles.header}>
+                  {data.header}
+               </div>
+               <div className={styles.body}>
+                  <Space direction="vertical" size="middle">
+                     {data.status && <Tag color={getTagColor(data.status.status)}>{data.status.status}</Tag>}
+                  </Space>
+               </div>
+            </>
+         </Space>
       <Handle type="source" position={Position.Right} />
     </div>
   )
@@ -340,7 +359,7 @@ const ChartFlow = () => {
    const parsedNodes = mockData.map((el) => (
    {
       id: el.uid,
-      data: { header: el.name, status: el.health },
+      data: { header: el.name, kind: el.kind, status: el.health },
       type: 'nodeElement'
    }
    ));

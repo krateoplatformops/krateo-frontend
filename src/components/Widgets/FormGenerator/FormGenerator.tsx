@@ -92,14 +92,14 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 					breadcrumb.map((el, index) => {
 						if (index < breadcrumb.length -1) {
 							if (index === 2 && breadcrumb.length > 3) {
-								return <Typography.Text className={styles.breadcrumbDots}>... <span> &rsaquo; </span></Typography.Text>
+								return <Typography.Text key={`label_breadcrumb_${index}`} className={styles.breadcrumbDots}>... <span> &rsaquo; </span></Typography.Text>
 							} else if (index > 2 && index < breadcrumb.length -1 && breadcrumb.length > 3) {
 								return ""
 							} else {
-								return <Typography.Text ellipsis>{el} <span> &rsaquo; </span></Typography.Text>
+								return <Typography.Text key={`label_breadcrumb_${index}`} ellipsis>{el} <span> &rsaquo; </span></Typography.Text>
 							}
 						} else {
-							return <Typography.Text ellipsis>{el}</Typography.Text>
+							return <Typography.Text key={`label_breadcrumb_${index}`} ellipsis>{el}</Typography.Text>
 						}
 					})
 				}
