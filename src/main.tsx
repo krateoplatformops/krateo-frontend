@@ -21,7 +21,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
             colorTextBase: '#323b40',
             colorBgBase: '#fbfbfb',
             colorBorder: '#E1E3E8',
-            colorInfo: '#05629A', //bar charts
+            colorInfo: '#11B2E2', //bar charts
+            colorWhite: '#FFFFFF',
+            colorSuccessBg: '#00D690',
           }
         }}
       >

@@ -15,7 +15,8 @@ import getClientIdFromPath from "./utils/getClientIdFromPath";
 import AuthGitHub from "./pages/Auth/AuthGitHub";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
-library.add(fas)
+import { far } from '@fortawesome/free-regular-svg-icons'
+library.add(fas, far)
 
 function App() {
   const clientId = getClientIdFromPath();
@@ -29,7 +30,7 @@ function App() {
       {
         routes: [
           {
-            label: "Catalog",
+            label: "Dashboard",
             path: "/",
             icon: getIcon("dashboard"),
             endpoint: "/",
@@ -39,14 +40,14 @@ function App() {
             label: "Templates",
             path: "/templates",
             icon: getIcon('templates'),
-            endpoint: "/apis/layout.ui.krateo.io/rows/two?sub=cyberjoker&orgs=devs&namespace=demo-system",
+            endpoint: "/call?uri=/apis/widgets.krateo.io/v1alpha1/namespaces/demo-system/rows/two",
             menu: true,
           },
           {
             label: "Projects",
             path: "/projects",
             icon: getIcon('projects'),
-            endpoint: "/apis/layout.ui.krateo.io/projects?sub=cyberjoker&orgs=devs&namespace=demo-system",
+            endpoint: "/call?uri=/apis/widgets.krateo.io/v1alpha1/namespaces/demo-system/projects",
             menu: true,
           },
           {
@@ -56,13 +57,6 @@ function App() {
           {
             path: "/projects/:projectID/:deploymentID",
             menu: false,
-          },
-          {
-            label: "Flow",
-            path: "/flow",
-            icon: getIcon('projects'),
-            endpoint: "/",
-            menu: true,
           },
           // {
           //   label: "Form",

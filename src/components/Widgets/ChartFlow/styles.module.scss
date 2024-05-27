@@ -5,14 +5,40 @@
   border: solid 1px $border-color;
   background: $light-color;
   border-radius: 50px;
+  position: relative;
+
+  .nodeIconProgressing {
+    position: relative;
+
+    .nodeIconSpinner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
 
   .header {
-    padding: 5px 10px;
+    padding: 0px 10px;
     font-size: 14px;
+    text-transform: uppercase;
   }
 
   .body {
-    padding: 10px;
-    font-size: 12px;
+    font-size: 14px;
+    padding: 0px 10px;
+    color: $gray-color;
+  }
+
+  .footer {
+    position: absolute;
+    right: 20px;
+
+    .tagFlow {
+      border-radius: 20px;
+      background-color: $border-color;
+      padding: 3px 10px;
+    }
   }
 }
