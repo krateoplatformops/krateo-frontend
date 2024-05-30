@@ -35,7 +35,6 @@ const Page = ({clientId, endpoint}: PageType) => {
             },
             "items": [
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdweee",
@@ -56,8 +55,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                     },
                     "items": [
                       {
-                        "kind": "CardTemplate",
-                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
                         "metadata": {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
                         },
@@ -98,7 +96,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
@@ -119,8 +116,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                     },
                     "items": [
                       {
-                        "kind": "CardTemplate",
-                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
                         "metadata": {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
                         },
@@ -146,7 +142,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbg",
@@ -197,7 +192,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13",
@@ -232,7 +226,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb16546",
@@ -276,7 +269,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13z",
@@ -343,7 +335,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13z1",
@@ -841,8 +832,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                             },
                             "items": [
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbg",
                                 },
@@ -892,8 +882,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb1gs",
                                 },
@@ -936,8 +925,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13",
                                 },
@@ -971,8 +959,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb1",
                                 },
@@ -1053,8 +1040,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                             },
                             "items": [
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdcvx",
                                 },
@@ -1174,8 +1160,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdvv",
                                 },
@@ -1195,8 +1180,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                     },
                                     "items": [
                                       {
-                                        "kind": "CardTemplate",
-                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                         "metadata": {
                                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
                                         },
@@ -1217,8 +1201,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbmsdf",
                                 },
@@ -1238,8 +1221,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                     },
                                     "items": [
                                       {
-                                        "kind": "CardTemplate",
-                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                         "metadata": {
                                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
                                         },
@@ -1271,8 +1253,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbduhgfgd",
                                 },
@@ -1292,8 +1273,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                     },
                                     "items": [
                                       {
-                                        "kind": "CardTemplate",
-                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                         "metadata": {
                                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
                                         },
@@ -1315,8 +1295,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbmsdjsd",
                                 },
@@ -1336,8 +1315,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                     },
                                     "items": [
                                       {
-                                        "kind": "CardTemplate",
-                                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                         "metadata": {
                                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
                                         },
@@ -1394,7 +1372,6 @@ const Page = ({clientId, endpoint}: PageType) => {
             },
             "items": [
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbd",
@@ -1515,7 +1492,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdxx",
@@ -1536,8 +1512,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                     },
                     "items": [
                       {
-                        "kind": "CardTemplate",
-                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
                         "metadata": {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
                         },
@@ -1558,7 +1533,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbmfgjl",
@@ -1579,7 +1553,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                     },
                     "items": [
                       {
-                        "kind": "CardTemplate",
                         "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                         "metadata": {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
@@ -1605,7 +1578,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdsdfh",
@@ -1626,8 +1598,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                     },
                     "items": [
                       {
-                        "kind": "CardTemplate",
-                        "apiVersion": "widgets.ui.krateo.io/v1alpha1",
+                        "apiVersion": "layout.ui.krateo.io/v1alpha1",
                         "metadata": {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbf",
                         },
@@ -1652,7 +1623,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                 }
               },
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbm",
@@ -1673,7 +1643,6 @@ const Page = ({clientId, endpoint}: PageType) => {
                     },
                     "items": [
                       {
-                        "kind": "CardTemplate",
                         "apiVersion": "widgets.ui.krateo.io/v1alpha1",
                         "metadata": {
                           "uid": "e14d5e2d-1170-4360-9b86-827d527dabbi",
@@ -1751,8 +1720,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                             },
                             "items": [
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3",
                                 },
@@ -1799,8 +1767,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3556",
                                 },
@@ -1937,8 +1904,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                             },
                             "items": [
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13z2f",
                                 },
@@ -2005,8 +1971,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                             },
                             "items": [
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13z2f",
                                 },
@@ -2073,8 +2038,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                             },
                             "items": [
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005c1",
                                 },
@@ -2305,8 +2269,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3e4",
                                 },
@@ -2377,8 +2340,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                             },
                             "items": [
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov300544",
                                 },
@@ -2443,8 +2405,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                                                           },
                                                                           "items": [
                                                                             {
-                                                                              "kind": "Column",
-                                                                              "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                                                                                                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                                                               "metadata": {
                                                                                 "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005c244",
                                                                               },
@@ -2492,8 +2453,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                                                               }
                                                                             },
                                                                             {
-                                                                              "kind": "Column",
-                                                                              "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                                                                                                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                                                               "metadata": {
                                                                                 "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005c2244",
                                                                               },
@@ -2701,8 +2661,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov344",
                                 },
@@ -2773,8 +2732,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                             },
                             "items": [
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005",
                                 },
@@ -2839,8 +2797,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                                                           },
                                                                           "items": [
                                                                             {
-                                                                              "kind": "Column",
-                                                                              "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                                                                                                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                                                               "metadata": {
                                                                                 "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005c2",
                                                                               },
@@ -2888,8 +2845,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                                                               }
                                                                             },
                                                                             {
-                                                                              "kind": "Column",
-                                                                              "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                                                                                                            "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                                                               "metadata": {
                                                                                 "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3005c22",
                                                                               },
@@ -3097,8 +3053,7 @@ const Page = ({clientId, endpoint}: PageType) => {
                                 }
                               },
                               {
-                                "kind": "Column",
-                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
+                                                "apiVersion": "layout.ui.krateo.io/v1alpha1",
                                 "metadata": {
                                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabbdov3",
                                 },
@@ -3360,7 +3315,6 @@ const Page = ({clientId, endpoint}: PageType) => {
             },
             "items": [
               {
-                "kind": "Column",
                 "apiVersion": "layout.ui.krateo.io/v1alpha1",
                 "metadata": {
                   "uid": "e14d5e2d-1170-4360-9b86-827d527dabb13z2",

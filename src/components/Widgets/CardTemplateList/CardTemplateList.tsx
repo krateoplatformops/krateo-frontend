@@ -9,6 +9,11 @@ import { useEffect } from "react";
 import useCatchError from "../../../utils/useCatchError";
 // import { useNavigate } from "react-router-dom";
 
+const CardTemplateList = (props) => {
+  return(
+    props.items?.map(item => <CardTemplate id={item.metadata.uid} key={item.metadata.uid} actions={item.status.content.actions} {...item.status?.content[0]} />)
+  );
+}
 
 const CardTemplate = (props) => {
   const {id, icon, color, title, status, date, content, tags, actions} = props;
@@ -88,4 +93,4 @@ const CardTemplate = (props) => {
   )
 }
 
-export default CardTemplate;
+export default CardTemplateList;

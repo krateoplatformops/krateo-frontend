@@ -5,7 +5,7 @@ export const appApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAppData: builder.query({
       query: (clientID) => ({
-        url: `${getBaseUrl()}appData/${clientID}`,
+        url: `${getBaseUrl()}/appData/${clientID}`,
         headers: getHeaders(),
       }),
     }),

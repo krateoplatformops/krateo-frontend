@@ -20,9 +20,9 @@ const useParseData = () => {
     const renderComponent = (data, index) => {
       switch (data.kind) {
         case "Row":
-          return <Row key={data.metadata.uid} className={styles.row}>{ getContent(data.status.content.items, index+1) }</Row>
-        case "Column":
-          return <Col key={data.metadata.uid} { ...getColProps(data.spec.app.props.width) } className={styles.col}>{ getContent(data.status.content.items, index+1) }</Col>
+          return <Row key={data.metadata.uid} className={styles.row}>{ getContent(data.status.content, index+1) }</Row>
+        case "ColumnList":
+          return data.items.map(item => <Col key={item.metadata.uid} { ...getColProps(item.spec.app.props.width) } className={styles.col}>{ getContent(item.status.content.kind ? item.status.content : item.status.content.items, index+1) }</Col>)
         case "Tabs":
           return <Tabs key={data.metadata.uid} className={styles.tabs}>{ getContent(data.status.content.items, index+1) }</Tabs>
         case "TabPane":
@@ -31,16 +31,12 @@ const useParseData = () => {
           return <Toolbar key={data.metadata.uid}>{ getContent(data.status.content.items, index+1) }</Toolbar>
         default:
           if (data.apiVersion?.indexOf("widgets") === 0) {
-            if (data.status?.content) { // eg: CardTemplate (currently)
-              const Component = widgets[data.kind];
+            const Component = widgets[data.kind];
+            if (data.status?.content) {
               return data.status.content.map((el, i) => <Component id={`${data.metadata.uid}_${i}`} key={`widget_${data.metadata.uid}_${i}`} actions={data.status.actions} {...el} />)
             } else if (data.items) { // eg: CardTemplateList
-              return data.items.map((el) => {
-                const Component = widgets[el.kind];
-                return <Component id={el.metadata.uid} key={el.metadata.uid} actions={el.status.content.actions} {...el} />
-              })
+              return <Component id={data.metadata.uid || crypto.randomUUID()} key={data.metadata.uid || crypto.randomUUID()} items={data.items} />
             } else {
-              const Component = widgets[data.kind];
               return <Component id={data.metadata.uid} key={`widget_${data.metadata.uid}`} actions={data.status?.actions} {...data.spec.app.props} />
             }
           } else {
