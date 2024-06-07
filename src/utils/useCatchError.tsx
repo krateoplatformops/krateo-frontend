@@ -9,12 +9,8 @@ const useCatchError = () => {
     let message: string = "Ops! Something didn't work";
     let description: string = "Unable to complete the operation, please try later";
 
-    console.log("ERROR", error);
-
     // Adjust to account for potentially nested error structure
     const actualError = error?.data || error;
-
-    console.log("actualERROR", actualError);
 
     if (typeof actualError === "string") {
       message = actualError;

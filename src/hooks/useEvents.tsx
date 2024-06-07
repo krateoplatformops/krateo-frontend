@@ -10,9 +10,6 @@ const useEvents = (props) => {
   const { panel, route, prefix, endpoint, content } = props;
 	const dispatch = useAppDispatch();
 	const [getContent, {data, isLoading, isSuccess, isError}] = useLazyGetContentQuery();
-  const ls = localStorage.getItem("user");
-	const username = ls && JSON.parse(ls)?.user.username;
-	const group = ls && JSON.parse(ls)?.groups[0]
 
   const navigate = useNavigate();
   let elementEvent = <></>;
@@ -37,7 +34,7 @@ const useEvents = (props) => {
       // case 3: change component content
       if (endpoint) {
         // load content to show in dynamicData
-        await getContent({endpoint, username, group}).unwrap()
+        await getContent({endpoint}).unwrap()
         if (data && isSuccess)
         dispatch(setDynamicContent({prefix: prefix, status: "success", content: data}))
       } else {

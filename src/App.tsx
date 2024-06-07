@@ -44,26 +44,23 @@ function App() {
             menu: true,
           },
           {
-            label: "Projects",
-            path: "/projects",
+            label: "Deployments",
+            path: "/deployments",
             icon: getIcon('projects'),
-            endpoint: "/call?uri=/apis/widgets.krateo.io/v1alpha1/namespaces/demo-system/projects",
+            endpoint: "/call?uri=/apis/composition.krateo.io",
             menu: true,
           },
           {
-            path: "/projects/:projectID",
-            menu: false,
-          },
-          {
-            path: "/projects/:projectID/:deploymentID",
+            path: "/deployments/:deploymentID",
             menu: false,
           },
           // {
-          //   label: "Form",
-          //   path: "/form",
-          //   icon: getIcon('dashboard'),
-          //   endpoint: "/",
-          //   menu: true,
+          //   path: "/projects/:projectID",
+          //   menu: false,
+          // },
+          // {
+          //   path: "/projects/:projectID/:deploymentID",
+          //   menu: false,
           // },
         ],
         notifications: [

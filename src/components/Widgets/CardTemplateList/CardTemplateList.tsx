@@ -11,8 +11,14 @@ import useCatchError from "../../../utils/useCatchError";
 
 const CardTemplateList = (props) => {
   return(
-    props.items?.map(item => <CardTemplate id={item.metadata.uid} key={item.metadata.uid} actions={item.status.content.actions} {...item.status?.content[0]} />)
-  );
+    props.items?.map(item => {
+      if (item.status?.content?.length > 0) {
+        return item.status.content.map((el, index) => <CardTemplate id={`${item.metadata.uid}_${index}`} key={`${item.metadata.uid}_${index}`} actions={el.actions} {...el} />)
+      } else {
+        return <CardTemplate id={item.metadata.uid} key={item.metadata.uid} actions={item.actions} {...item.status.content[0]} />
+      }
+    })
+  )
 }
 
 const CardTemplate = (props) => {
