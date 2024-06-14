@@ -40,14 +40,16 @@ function App() {
             label: "Templates",
             path: "/templates",
             icon: getIcon('templates'),
-            endpoint: "/call?uri=/apis/widgets.krateo.io/v1alpha1/namespaces/demo-system/rows/two",
+            // endpoint: "/call?uri=/apis/widgets.krateo.io/v1alpha1/namespaces/demo-system/rows/two",
+            endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/templates-row",
             menu: true,
           },
           {
             label: "Deployments",
             path: "/deployments",
             icon: getIcon('projects'),
-            endpoint: "/call?uri=/apis/composition.krateo.io",
+            // endpoint: "/call?uri=/apis/composition.krateo.io",
+            endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployments-row",
             menu: true,
           },
           {
