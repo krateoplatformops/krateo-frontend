@@ -4,17 +4,17 @@ import styles from "./styles.module.scss";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
 const Panel = ({title, tooltip, buttons, content}) => {
-  const [getContent] = useParseData()
+  const [parseContent] = useParseData()
 
-  let panelContent;
+  // let panelContent;
 
-  if (Array.isArray(content)) {
-    panelContent = content.map(el => {
-      return getContent(el, 1);
-    })
-  } else {
-    panelContent = getContent(content, 1);
-  }
+  // if (Array.isArray(content)) {
+  //   panelContent = content.map(el => {
+  //     return parseContent(el, 1);
+  //   })
+  // } else {
+  //   panelContent = parseContent(content, 1);
+  // }
 
   return (
     <Card
@@ -26,9 +26,10 @@ const Panel = ({title, tooltip, buttons, content}) => {
       extra={
         tooltip && <Tooltip className={styles.tooltip} title={tooltip}><QuestionCircleOutlined /></Tooltip>
       }
-      actions={buttons ? [getContent(buttons, "")] : []}
+      actions={buttons ? [parseContent(buttons, "")] : []}
     >
-      {panelContent}
+      {/* {panelContent} */}
+      {content}
     </Card>
   )
 }

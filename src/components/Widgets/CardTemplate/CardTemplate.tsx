@@ -15,7 +15,11 @@ const CardTemplate = (props) => {
 
   // TEMP: keep until BE send route, endpoint or panel props
   let cardProps = {...props};
-  if (!props.route && !props.endpoint && !props.panel && actions?.find(el => el.verb === "get")?.path) {
+  if (cardProps.panel !== "true") {
+    delete cardProps.panel; // keep "panel: true" only
+    cardProps.route = `/deployments/${id}?endpoint=${actions?.find(el => el.verb === "get")?.path}`;
+  }
+  if (!props.route && !props.endpoint && props.panel === "true" && actions?.find(el => el.verb === "get")?.path) {
     // add "panel" props to open panel and get form fields as default CTA of card
     cardProps = {...cardProps,
       panel: {

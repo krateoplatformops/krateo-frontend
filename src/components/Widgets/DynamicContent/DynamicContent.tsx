@@ -21,7 +21,7 @@ const DynamicContent = ({prefix, content}: DynamicContentType) => {
       content: content
     }
   }
-  const [getContent] = useParseData();
+  const [parseContent] = useParseData();
 
 
   return (
@@ -32,7 +32,7 @@ const DynamicContent = ({prefix, content}: DynamicContentType) => {
       <Result status="error" title="Ops! Something didn't work" subTitle="Unable to retrieve content data" />
     :
     storeContent?.status === "success" ?
-      getContent(storeContent.content, 1)
+    parseContent(storeContent.content, 1)
     :
     <></>
   )

@@ -16,11 +16,19 @@ type ButtonType = {
   type?: "default" | "text" | "link" | "primary" | "dashed",
   action?: "default" | "submit" | "reset",
   prefix?: string,
+  actions?: {
+    path: string,
+    verb: "get" | "delete",
+  }[],
+  verb?: "get" | "delete",
 }
 
 const Button = (props: ButtonType) => {
-  const {type, icon, label, badge, prefix} = props;
-  const {manageEvent, elementEvent} = useEvents(props)
+  const {type, icon, label, badge, prefix, actions, verb} = props;
+  const endpoint = actions?.find(el => el.verb === verb)?.path;
+  const buttonProps = {...props};
+  delete buttonProps.actions;
+  const {manageEvent, elementEvent} = useEvents({...buttonProps, endpoint})
 
   const btnComp = (
     <ButtonAnt

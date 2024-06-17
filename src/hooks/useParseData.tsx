@@ -4,6 +4,7 @@ import { ReactElement } from "react";
 import Toolbar from "../components/Toolbar/Toolbar";
 import widgets from "../components/Widgets";
 import styles from "./styleParse.module.scss";
+import Panel from "../components/Widgets/Panel/Panel";
 
 
 const useParseData = () => {
@@ -16,34 +17,35 @@ const useParseData = () => {
     }
   }
 
-  const getContent = (data, i): ReactElement => {
+  const parseContent = (data, i): ReactElement => {
     const renderComponent = (data, index) => {
-      switch (data.type) {
+      switch (data?.type) {
         case "row":
-          return <Row key={`row_${Math.random()}`} className={styles.row}>{ data.items.map(item => getContent(item, index+1)) }</Row>
+          return <Row key={`row_${data.uid}`} className={styles.row}>{ data.items.map(item => parseContent(item, index+1)) }</Row>
         case "column":
-          return <Col key={`column_${Math.random()}`} { ...getColProps(data.props.width) } className={styles.col}>{ data.items.map(item => getContent(item, index+1)) }</Col>
-        case "Tabs": //TODO
-          return <Tabs key={data.metadata.uid} className={styles.tabs}>{ getContent(data.status.content.items, index+1) }</Tabs>
-        case "TabPane": //TODO
-          return <TabPane key={data.metadata.uid} tab={data.spec.app.props.label} className={styles.tabpane}>{ getContent(data.status.content.items, index+1) }</TabPane>
+          return <Col key={`column_${data.uid}`} { ...getColProps(data.props.width) } className={styles.col}>{ data.items.map(item => parseContent(item, index+1)) }</Col>
+        case "tablist":
+          return <Tabs key={data.uid} className={styles.tabs}>{ data.items.map(item => parseContent(item, index+1)) }</Tabs>
+        case "tabpane":
+          return <TabPane key={data.uid} tab={data.props.label} className={styles.tabpane}>{ data.items.map(item => parseContent(item, index+1)) }</TabPane>
+        case "panel":
+          return <Panel key={data.uid} title={undefined} tooltip={undefined} buttons={undefined} content={data.items.map(item => parseContent(item, index+1))} />
         case "Toolbar": //TODO
-          return <Toolbar key={data.metadata.uid}>{ getContent(data.status.content.items, index+1) }</Toolbar>
+          return <Toolbar key={data.uid}>{ parseContent(data.status.content.items, index+1) }</Toolbar>
         default:
-          if (data.type) {
+          if (data?.type) {
             const Component = widgets[data.type];
-             return data.items.map((el, i) => <Component id={`widget_${index}_${i}`} key={`widget_${index}_${i}`} actions={el.actions} {...el.app} />)
+            return data.items.map((el, i) => <Component id={`${data.uid}_${i}`} key={`widget_${data.uid}_${i}`} actions={el.actions} {...{...el.app, ...data.props}} />)
           } else {
             // null -> exit recoursive loop
             return <></>
           }
       }
     }
-
-    return renderComponent(data.status, i);
+    return renderComponent(data?.status, i);
   }
 
-  return [getContent];
+  return [parseContent];
 }
 
 export default useParseData;

@@ -27,17 +27,17 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	const dispatch = useAppDispatch();
 
 	// get fields
-	const {data, isLoading, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint});
+	const {data, isLoading, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint?.replace("/form/", "/forms/")});
 	const [formData, setFormData] = useState<any>();
 	const [formEndpoint, setFormEndpoint] = useState<string>();
 	const fieldsData: {type: string, name: string}[] = [];
 
 	useEffect(() => {
-		if (data) {
+		if (data && isSuccess) {
 			setFormData(data.status.content.schema.properties); // set root node (/spec /metadata)
 			setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
 		}
-	}, [data])
+	}, [data, isSuccess])
 
 	const parseData = (node, name) => {
 		return Object.keys(node.properties).map(k => {
@@ -229,19 +229,39 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 
 		// send all data values to specific endpoint as POST
 		if (formEndpoint) {
-
 			// update endpoint
-			const postEndpoint = `${formEndpoint}&${(new URLSearchParams(values['metadata']).toString())}`;
+			const name = values['metadata'].name;
+			const namespace = values['metadata'].namespace;
 
+			const arrEndPoint = formEndpoint.split("/");
+			arrEndPoint.splice(arrEndPoint.length - 1, 0, "namespaces");
+			arrEndPoint.splice(arrEndPoint.length - 1, 0, namespace);
+			arrEndPoint.push(name);
+			const postEndpoint = arrEndPoint.join("/");
+			
 			// remove metadata from values
 			delete values['metadata']
 
+			// update payload
+			const payload = {
+				"kind":"FireworksApp",
+				"apiVersion":"composition.krateo.io/v0-1-0",
+				"metadata":{
+					"name": name,
+					"namespace": namespace
+				},
+				"spec": values
+			}
+
 			// submit values
 			if (!postLoading && !isPostError && !isPostSuccess) {
-				await postContent({
+				const response = await postContent({
 					endpoint: postEndpoint,
-					body: values,
-				})
+					body: payload,
+				}).unwrap();
+				if (response.code && response.code !== 200) {
+					catchError();
+				}
 			}
 		}
 
