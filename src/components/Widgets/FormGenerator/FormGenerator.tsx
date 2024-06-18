@@ -34,7 +34,6 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 
 	useEffect(() => {
 		if (data && isSuccess) {
-			console.log("DATA", data);
 			setFormData(data.status.content.schema.properties); // set root node (/spec /metadata)
 			setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
 		}
