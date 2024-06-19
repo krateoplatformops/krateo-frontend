@@ -3,13 +3,15 @@ import DrawerPanel from "../components/DrawerPanel/DrawerPanel";
 import { useNavigate } from "react-router-dom";
 import { setDynamicContent, setDynamicContentState } from "../features/dynamicContent/dynamicContentSlice";
 import { useAppDispatch } from "../redux/hooks";
-import { useDeleteContentMutation, useLazyGetContentQuery } from "../features/common/commonApiSlice";
+import { useDeleteContentMutation, useLazyGetContentQuery, usePostContentMutation, usePutContentMutation } from "../features/common/commonApiSlice";
 
 const useEvents = (props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { panel, route, prefix, endpoint, content, verb } = props;
 	const dispatch = useAppDispatch();
 	const [getContent, {data, isLoading, isSuccess, isError}] = useLazyGetContentQuery();
+	const [postContent] = usePostContentMutation();
+	const [putContent] = usePutContentMutation();
   const [deleteContent] = useDeleteContentMutation();
 
   const navigate = useNavigate();
@@ -45,6 +47,10 @@ const useEvents = (props) => {
     } else if (endpoint && verb) {
       if (verb === "get") {
         await getContent({endpoint}).unwrap();
+      } else if (verb === "post") {
+        await postContent({endpoint}).unwrap();
+      } else if (verb === "put") {
+        await putContent({endpoint}).unwrap();
       } else if (verb === "delete") {
         await deleteContent({endpoint}).unwrap();
       }
