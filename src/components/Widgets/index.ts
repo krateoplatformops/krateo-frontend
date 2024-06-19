@@ -21,7 +21,7 @@ const widgets = {
   "ChartLine": ChartLine,
   "ChartBars": ChartBars,
   "ChartMultipleBars": ChartMultipleBars,
-  "ChartFlow": ChartFlow,
+  "chartflow": ChartFlow,
   "CardTemplateList": CardTemplateList,
   "card": CardTemplate,
   "FormGenerator": FormGenerator,

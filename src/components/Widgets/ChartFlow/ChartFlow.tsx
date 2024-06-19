@@ -22,7 +22,7 @@ const showNodeDetails = (data) => {
   console.log(data);
 }
 
-const ChartFlow = () => {
+const ChartFlow = ({ data }) => {
    const { useToken } = theme;
    const { token } = useToken();
 
@@ -107,6 +107,7 @@ const ChartFlow = () => {
    const nodeWidth = 400;
    const nodeHeight = 200;
 
+   /*
    const mockData = [
       {
          "version":"v1",
@@ -407,9 +408,10 @@ const ChartFlow = () => {
          "createdAt":"2024-05-02T07:15:03Z"
       }
    ];
+   */
 
    // parsing data
-   const parsedNodes = mockData.map((el) => (
+   const parsedNodes = JSON.parse(data).map((el) => (
    {
       id: el.uid,
       data: { name: el.name, kind: el.kind, icon: el.icon, health: el.health, status: el.status, version: el.version, date: el.createdAt },
@@ -418,7 +420,7 @@ const ChartFlow = () => {
    ));
 
    const parsedEdges: Edge[] = [];
-   mockData.forEach((el) => {
+   JSON.parse(data).forEach((el) => {
       if (el.parentRefs !== undefined && el.parentRefs?.length > 0) {
          parsedEdges.push({ id: `${el.parentRefs[0].uid}-${el.uid}`, source: el.parentRefs[0].uid, target: el.uid, label: '' })
       }
