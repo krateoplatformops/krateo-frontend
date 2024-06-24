@@ -259,13 +259,10 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 			
 			// submit values
 			if (!postLoading && !isPostError && !isPostSuccess) {
-				const response = await postContent({
+				await postContent({
 					endpoint: postEndpoint,
 					body: payload,
-				}).unwrap();
-				if (response.code && response.code !== 200) {
-					catchError();
-				}
+				});
 			}
 		}
 

@@ -35,6 +35,10 @@ const CardTemplate = (props) => {
         }
       },
     }
+  } 
+  if (props.panel === "true" && !actions?.find(el => el.verb === "get")?.path) {
+    // avoid wrong panel open
+    delete cardProps.panel;
   }
   // END TEMP
 

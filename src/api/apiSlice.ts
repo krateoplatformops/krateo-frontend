@@ -1,20 +1,24 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../redux/store';
+import { BaseQueryFn, FetchArgs, FetchBaseQueryError, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const baseQuery = fetchBaseQuery({
-  prepareHeaders: (headers, { getState }) => {
-    const kubeConfig = (getState()  as RootState).auth?.data;
-    if (kubeConfig) {
-      // headers.set("authorization", `Bearer ${token}`);
-      /**
-       * INSERT HERE HOW TO SEND LOGIN INFO TO APIs
-       */
+const baseQuery = fetchBaseQuery({});
+
+const customFetchBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args, api, extraOptions) => {
+  const result = await baseQuery(args, api, extraOptions);
+  const realErrorCode = (result as unknown as {code: number})?.code;
+  if (realErrorCode !== undefined && realErrorCode !== 200) {
+    const clientErrorRegex = /^4\d{2}$/; // Regex for 4xx client errors
+    if (clientErrorRegex.test(String(realErrorCode))) {
+      // use transformation to ovewrite the fetch status with right error code
+      return {
+        status: realErrorCode,
+        data: {}
+      }
     }
-    return headers;
   }
-});
+  return result;
+}
 
 export const apiSlice = createApi({
-  baseQuery: baseQuery,
+  baseQuery: customFetchBaseQuery,
   endpoints: () => ({}), // all apis will be injected here
 })
