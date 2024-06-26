@@ -92,7 +92,7 @@ const ChartFlow = ({ data }) => {
                      <div className={styles.header}>
                         {data.name}
                      </div>
-                     { data.namespace && <div className={styles.subHeader}>NS: {'data.namespace'}</div> }
+                     { data.namespace && <div className={styles.subHeader}>NS: {data.namespace}</div> }
                      <div className={styles.body}>
                         {data.kind}
                      </div>
