@@ -8,6 +8,7 @@ import { logout, selectLoggedUser, setUser } from '../../features/auth/authSlice
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { useEffect } from 'react';
+import Notification from '../Notifications/Notifications';
 
 const AppBar = () => {
   const user = useSelector(selectLoggedUser);
@@ -26,7 +27,7 @@ const AppBar = () => {
     if (user === null && userLS.data) {
       dispatch(setUser(userLS));
     }
-  }, [navigate, user, userLS.data]);
+  }, [dispatch, navigate, user, userLS, userLS.data]);
 
   return (
     <section className={styles.appBar}>
@@ -34,15 +35,15 @@ const AppBar = () => {
         <Breadcrumb />
       </Space>
       <Space className={styles.right} direction='horizontal' size='large'>
-        
-      {user &&
-        <UserLogged
-          fullname={user.displayName !== "" ? user.displayName : user.username}
-          role="" // {user.role}
-          picture={user.avatarURL}
-          onLogout={onLogout}
-        />
-      }
+        <Notification />
+        {user &&
+          <UserLogged
+            fullname={user.displayName !== "" ? user.displayName : user.username}
+            role="" // {user.role}
+            picture={user.avatarURL}
+            onLogout={onLogout}
+          />
+        }
       </Space>
     </section>
   )
