@@ -27,6 +27,7 @@ const ChartFlow = ({ data }) => {
    const { token } = useToken();
 
    const status = [
+      {label: "Available", icon: "fa-check", color: token.colorSuccessBg},
       {label: "Healthy", icon: "fa-check", color: token.colorSuccessBg},
       {label: "Degraded", icon: "fa-xmark", color: token.colorError},
       {label: "Progressing", icon: "fa-ellipsis", color: token.colorInfo},
@@ -37,9 +38,16 @@ const ChartFlow = ({ data }) => {
       {label: "Synced", icon: "fa-rotate", color: token.colorSuccessBg},
    ]
 
-   const getStatusIcon = (label: string, message?: string) => {
-      const icon = status.find(el => el.label === label)?.icon;
-      const color = status.find(el => el.label === label)?.color;
+   const getStatusIcon = (label: string | boolean, message?: string) => {
+      let statusLabel = label;
+      if (label?.toString().toLocaleLowerCase() === "true" || label === true) {
+         statusLabel = "Healthy";
+      }
+      if (label?.toString().toLocaleLowerCase() === "false" || label === false) {
+         statusLabel = "Degraded";
+      }
+      const icon = status.find(el => el.label === statusLabel)?.icon;
+      const color = status.find(el => el.label === statusLabel)?.color;
       const comp = <Avatar style={{backgroundColor: color, color: token.colorWhite, border: `solid 4px ${token.colorWhite}`}} icon={<FontAwesomeIcon icon={icon as IconProp} />} />;
       if (message) {
          return <Tooltip title={message}><div>{comp}</div></Tooltip>;
@@ -84,11 +92,12 @@ const ChartFlow = ({ data }) => {
                      <div className={styles.header}>
                         {data.name}
                      </div>
+                     { data.namespace && <div className={styles.subHeader}>NS: {'data.namespace'}</div> }
                      <div className={styles.body}>
                         {data.kind}
                      </div>
                      <Flex align='center' className={styles.footer} gap={5}>
-                        {data.health && getStatusIcon(data.health.status, data.health.message)}
+                        {data.health?.status && getStatusIcon(data.health.status, data.health.message)}
                         {data.status && getStatusIcon(data.status, data.status === "Synced" ? "Synced" : "Out of Sync")}
                         <TagDateFlow date={data.date} />
                         <TagVersionFlow version={data.version} />
@@ -414,7 +423,16 @@ const ChartFlow = ({ data }) => {
    const parsedNodes = JSON.parse(data).map((el) => (
    {
       id: el.uid,
-      data: { name: el.name, kind: el.kind, icon: el.icon, health: el.health, status: el.status, version: el.version, date: el.createdAt },
+      data: {
+         name: el.name,
+         kind: el.kind,
+         icon: el.icon,
+         health: el.health,
+         status: el.status,
+         version: el.version,
+         date: el.createdAt,
+         namespace: el.namespace
+      },
       type: 'nodeElement'
    }
    ));
