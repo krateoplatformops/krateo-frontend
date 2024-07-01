@@ -1,0 +1,50 @@
+@import '../../theme/global.scss';
+
+.notifications {
+
+  .toolButton {
+    svg {
+      font-size: $mTitleSize;
+    }
+  }
+
+  .badge {
+    sup {
+      top: 5px;
+      box-shadow: 0 0 0 2px $light-color;
+    }
+  }
+}
+
+.notificationList {
+
+  .notificationElement {
+    height: auto;
+    text-align: left;
+    position: relative;
+    padding: 0;
+
+    .icon {
+      margin-right: 10px;
+      display: inline-flex;
+
+      svg path {
+        fill: $light-color;
+      }
+    }
+
+    .date {
+      color: $gray-color;
+    }
+
+    .title {
+      font-size: $smallText;
+      text-wrap: wrap;
+    }
+
+    .description {
+      max-width: 250px;
+      white-space: initial;
+    }
+  }
+}

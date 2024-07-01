@@ -5,6 +5,7 @@ import { apiSlice } from "../api/apiSlice";
 import dataListSlice from "../features/dataList/dataListSlice";
 import dynamicContentSlice from "../features/dynamicContent/dynamicContentSlice";
 import editableContentSlice from "../features/editableContent/editableContentSlice";
+import notificationsSlice from "../features/notifications/notificationsSlice";
 
 
 export const store = configureStore({
@@ -14,6 +15,7 @@ export const store = configureStore({
     dataList: dataListSlice,
     dynamicContent: dynamicContentSlice,
     editableContent: editableContentSlice,
+    notifications: notificationsSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
