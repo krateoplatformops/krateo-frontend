@@ -45,15 +45,16 @@ function App() {
             menu: true,
           },
           {
-            label: "Deployments",
-            path: "/deployments",
+            label: "Compositions",
+            path: "/compositions",
             icon: getIcon('projects'),
             // endpoint: "/call?uri=/apis/composition.krateo.io",
             endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployments-row",
             menu: true,
           },
           {
-            path: "/deployments/:deploymentID",
+            path: "/compositions/:compositionID",
+            endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployment-fireworksapp-tgz-tablist",
             menu: false,
           },
           // {
@@ -61,7 +62,7 @@ function App() {
           //   menu: false,
           // },
           // {
-          //   path: "/projects/:projectID/:deploymentID",
+          //   path: "/projects/:projectID/:compositionID",
           //   menu: false,
           // },
         ],

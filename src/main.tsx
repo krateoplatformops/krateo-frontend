@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           token: {
             fontFamily: 'Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif',
             colorLink: '#05629A',
-            colorPrimary: '#303030',
+            colorPrimary: '#05629A',
             colorSuccess: '#00d690',
             colorWarning: '#ffaa00',
             colorError: '#f84c4c',

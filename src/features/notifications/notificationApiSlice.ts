@@ -1,18 +1,29 @@
 import { apiSlice } from "../../api/apiSlice"
 import { getBaseUrl, getHeaders } from "../../utils/api"
-import { NotificationType } from "./notificationsSlice"
+
+export type EventType = {
+  compositionId: string,
+  metadata: {
+    uid: string,
+    creationTimestamp: string,
+  },
+  message: string,
+  type: "Normal" | "Warning",
+  icon: string,
+  color: string,
+}
 
 export const notificationApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getNotifications: builder.query<NotificationType[], void>({
+    getNotifications: builder.query<EventType[], void>({
       query: () => ({
-        url: `${getBaseUrl()}/notifications`,
+        url: `/events`,
         headers: getHeaders(),
       }),
     }),
     deleteNotification: builder.mutation<string, string>({
       query: (id) => ({
-        url: `${getBaseUrl()}/notifications/${id}`,
+        url: `${getBaseUrl("EVENTS")}/events/${id}`,
         method: 'DELETE',
         headers: getHeaders(),
       }),

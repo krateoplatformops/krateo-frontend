@@ -3,9 +3,11 @@ import { RootState } from "../../redux/store";
 
 export type NotificationType = {
   uid: string,
-  type: string,
+  type: "Normal" | "Warning",
   title: string,
   description: string,
+  date: string,
+  url: string,
   toRead: boolean,
 }
 
@@ -28,7 +30,7 @@ export const notificationsSlice = createSlice({
       state.data = state.data.map(el => (el.uid === action.payload ? {...el, toRead: false} : el))
     },
     appendNotification: (state, action: PayloadAction<NotificationType>) => {
-      state.data = [...state.data, action.payload]
+      state.data = [action.payload, ...state.data]
     },
     removeNotification: (state, action: PayloadAction<string>) => {
       state.data = state.data.filter(el => (el.uid !== action.payload))

@@ -12,10 +12,16 @@ export default defineConfig({
   })],
   server: {
     proxy: {
-      "/apis": {
-        target: "http://4.209.35.224:8081/apis",
+      // "/apis": {
+      //   target: "http://4.209.35.224:8081/apis",
+      //   changeOrigin: true,
+      //   rewrite: (path) => path.replace(/^\/apis/, ''),
+      // },
+      "/events": {
+        target: "http://172.205.73.51:30080/events",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/apis/, ''),
+        secure: false,
+        rewrite: (path) => path.replace(/^\/events/, ''),
       }
     }
   }

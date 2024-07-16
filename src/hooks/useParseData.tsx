@@ -5,9 +5,13 @@ import Toolbar from "../components/Toolbar/Toolbar";
 import widgets from "../components/Widgets";
 import styles from "./styleParse.module.scss";
 import Panel from "../components/Widgets/Panel/Panel";
+import EventsList from "../components/Widgets/EventsList/EventsList";
+import { useSearchParams } from "react-router-dom";
 
 
 const useParseData = () => {
+  const [searchParams] = useSearchParams();
+  const tabKey = searchParams.get("tabKey");
 
   const getColProps = (size) => {
     if (isNaN(size)) {
@@ -25,17 +29,19 @@ const useParseData = () => {
         case "column":
           return <Col key={`column_${data.uid}`} { ...getColProps(data.props.width) } className={styles.col}>{ data.items?.map(item => parseContent(item, index+1)) }</Col>
         case "tablist":
-          return <Tabs key={data.uid} className={styles.tabs}>{ data.items?.map(item => parseContent(item, index+1)) }</Tabs>
+          return <Tabs key={data.uid} className={styles.tabs} defaultActiveKey={tabKey === "events" ? data.items?.find(item => item.status?.props?.label?.toLowerCase() === "events").status.uid : undefined} >{ data.items?.map(item => parseContent(item, index+1)) }</Tabs>
         case "tabpane":
           return <TabPane key={data.uid} tab={data.props.label} className={styles.tabpane}>{ data.items?.map(item => parseContent(item, index+1)) }</TabPane>
         case "panel":
           return <Panel key={data.uid} title={undefined} tooltip={undefined} buttons={undefined} content={data.items?.map(item => parseContent(item, index+1))} />
         case "Toolbar": //TODO
           return <Toolbar key={data.uid}>{ parseContent(data.status.content.items, index+1) }</Toolbar>
+        case "eventlist":
+          return <EventsList key={data.uid} {...data.props} events={data.items[0]?.app?.events ? JSON.parse(data.items[0]?.app?.events) : []} />
         default:
           if (data?.type) {
             const Component = widgets[data.type];
-            return data.items?.map((el, i) => <Component id={`${data.uid}_${i}`} key={`widget_${data.uid}_${i}`} actions={el.actions} {...{...el.app, ...data.props}} />)
+            return data.items?.map((el, i) => <Component id={data.items > 1 ? `${data.uid}_${i}` : data.uid} key={`widget_${data.uid}_${i}`} actions={el.actions} {...{...el.app, ...data.props}} />)
           } else {
             // null -> exit recoursive loop
             return <></>

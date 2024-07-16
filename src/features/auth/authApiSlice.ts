@@ -1,5 +1,6 @@
 import { apiSlice } from "../../api/apiSlice"
 import { AuthModeType, AuthRequestType, AuthResponseType, LoginFormType } from "../../pages/Login/type"
+import { getBaseUrl } from "../../utils/api"
 
 // const baseAuthUrl = import.meta.env.VITE_AUTHN_API_BASE_URL;
 // const getBaseUrl = async () => {
@@ -8,27 +9,17 @@ import { AuthModeType, AuthRequestType, AuthResponseType, LoginFormType } from "
 //   return configJson.api.AUTHN_API_BASE_URL;
 // }
 
-const getBaseUrl = () => {
-  const ls = localStorage.getItem("K_config");
-  let baseAuthUrl = "";
-  if (ls) {
-    const configJson = JSON.parse(ls);
-    baseAuthUrl = configJson.api.AUTHN_API_BASE_URL;
-  }
-  return baseAuthUrl;
-}
-
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) =>  ({
     getAuthModes: builder.query<AuthModeType[], string>({
       query: () => ({
-        url: `${getBaseUrl()}/strategies`,
+        url: `${getBaseUrl("AUTH")}/strategies`,
         headers: {},
       }),
     }),
     authentication: builder.query<AuthResponseType, {body: LoginFormType, url: string}>({
       query: (data) => ({
-        url: `${getBaseUrl()}${data.url}`,
+        url: `${getBaseUrl("AUTH")}${data.url}`,
         headers: {
           Authorization: `Basic ${btoa(`${data.body.username}:${data.body.password}`)}`
         },
@@ -36,7 +27,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
     }),
     socialAuthentication: builder.query<AuthResponseType, AuthRequestType>({
       query: (body) => ({
-        url: `${getBaseUrl()}${body.url}?name=${body.name}`,
+        url: `${getBaseUrl("AUTH")}${body.url}?name=${body.name}`,
         headers: {
           'X-Auth-Code': body.code,
         }

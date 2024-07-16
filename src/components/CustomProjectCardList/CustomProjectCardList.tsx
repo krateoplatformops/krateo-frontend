@@ -49,7 +49,7 @@ const CustomProjectCardList = ({data}) => {
         <Col xs={24} sm={12} key={`Col_${c.metadata.uid}`}>
           <Card
             key={c.metadata.uid}
-            onClick={() => navigate(`/deployments/${c.metadata.uid}`)}
+            onClick={() => navigate(`/compositions/${c.metadata.uid}`)}
             className={styles.card}
             title={
               <Space size="large" className={styles.header}>

@@ -6,25 +6,37 @@ import useParseData from "../../hooks/useParseData";
 import useCatchError from "../../utils/useCatchError";
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { logout } from "../../features/auth/authSlice";
 
 const Page = ({clientId, endpoint}: PageType) => {
   const isMock = useRef(false);
-  // const ls = localStorage.getItem("user");
-  // const username = ls && JSON.parse(ls)?.user.username;
-  // const group = ls && JSON.parse(ls)?.groups[0];
   const [parseContent] = useParseData()
   const { catchError } = useCatchError();
+  const dispatch = useAppDispatch();
   
-  // const {data, isLoading, isSuccess, isError, error} = useGetContentQuery({endpoint, username, group});
-	const [getContent, {data, isLoading, isSuccess, isError, error}] = useLazyGetContentQuery();
+  const [getContent, {data, isLoading, isSuccess, isError, error}] = useLazyGetContentQuery();
   const [searchParams] = useSearchParams();
   const endpointQs = searchParams.get("endpoint");
-  // const endpointQs = (new URL(document.location).searchParams).get("endpoint");
   
   useEffect(() => {
-    if (endpoint || endpointQs)
-      getContent({endpoint: endpointQs || endpoint });
-  }, [endpoint, endpointQs, getContent]);
+    if (endpoint || endpointQs) {
+      const loadData = async () => {
+        const response = await getContent({endpoint: endpointQs || endpoint });
+        if (response.data.code === 401) {
+          // not authorized
+          dispatch(logout());
+        }
+      }
+      loadData();
+    }
+  }, [dispatch, endpoint, endpointQs, getContent]);
+
+  useEffect(() => {
+    if (isError) {
+      console.log("ERR", error);
+    }
+  }, [error, isError]);
 
   const fetchPage = (clientId: string, endpoint: string) => {
     console.log(clientId, endpoint);
@@ -417,7 +429,7 @@ const Page = ({clientId, endpoint}: PageType) => {
       }
     }
 
-    // deployment details (page with tabs)
+    // compositions details (page with tabs)
     if (window.location.pathname.match(/^\/projects\/[0-9]+\/[0-9]+$/g)) {
       return {
         "kind": "Tabs",

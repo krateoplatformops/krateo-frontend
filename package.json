@@ -22,7 +22,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@types/dagre": "^0.7.52",
     "@vitejs/plugin-basic-ssl": "^1.0.1",
-    "antd": "^5.15.3",
+    "antd": "^5.19.1",
     "axios": "^1.6.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

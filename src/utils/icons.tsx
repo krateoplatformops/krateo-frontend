@@ -8,7 +8,7 @@ import Logs from '../assets/icons/logs.svg?react';
 import Endpoints from '../assets/icons/endpoints.svg?react';
 import Licenses from '../assets/icons/licenses.svg?react';
 
-export type IconCode = 'dashboard' | 'projects' | 'deployments' | 'templates' | 'providers' | 'status' | 'organizations' | 'logs' | 'endpoints' | 'licenses';
+export type IconCode = 'dashboard' | 'projects' | 'compositions' | 'templates' | 'providers' | 'status' | 'organizations' | 'logs' | 'endpoints' | 'licenses';
 
 export const getIcon = (code: IconCode) => {
   switch (code) {
@@ -18,7 +18,7 @@ export const getIcon = (code: IconCode) => {
     case 'projects':
       return <Projects />
 
-    case 'deployments':
+    case 'compositions':
       return <Projects />
 
     case 'templates':

@@ -1,24 +1,16 @@
 import { BellFilled, DeleteFilled } from "@ant-design/icons";
-import { Avatar, Badge, Button, Drawer, List, Space, Typography } from "antd";
+import { Badge, Button, Drawer, List, Space, theme, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { appendNotification, removeNotification, selectNotifications, setNotificationRead, setNotifications } from "../../features/notifications/notificationsSlice";
+import { appendNotification, NotificationType, removeNotification, selectNotifications, setNotificationRead, setNotifications } from "../../features/notifications/notificationsSlice";
 import styles from './styles.module.scss';
-import { IconCode, getIcon } from "../../utils/icons";
 import { useNavigate } from "react-router-dom";
 import { useDeleteNotificationMutation, useGetNotificationsQuery } from "../../features/notifications/notificationApiSlice";
 import Skeleton from "../Skeleton/Skeleton";
 import { getBaseUrl } from "../../utils/api";
-
-type NotificationType = {
-  uid: string,
-  type: string,
-  title: string,
-  description: string,
-  toRead: boolean,
-}
+import { formatISODate } from "../../utils/dateTime";
 
 const Notification = () => {
   const [showNotificationPanel, setShowNotificationPanel] = useState<boolean>(false);
@@ -30,10 +22,25 @@ const Notification = () => {
   const notifications = useSelector((state: RootState) => selectNotifications(state));
   const [notificationToDelete, setNotificationToDelete] = useState<string>();
 
+  const { useToken } = theme;
+  const { token } = useToken();
+
   // save data on Redux
   useEffect(() => {
     if (isSuccess && data) {
-      dispatch(setNotifications({data}));
+      const notifications: NotificationType[] = data.map(el => (
+        {
+          uid: el.metadata.uid,
+          type: el.type,
+          title: el.metadata.creationTimestamp && formatISODate(el.metadata.creationTimestamp, true),
+          description: el.message,
+          date: el.metadata.creationTimestamp,
+          url: getNotificationURL(el),
+          toRead: true,
+        }
+      ));
+
+      dispatch(setNotifications({data: notifications}));
     }
     // const mockData: NotificationType[] = [
     //   {
@@ -45,7 +52,7 @@ const Notification = () => {
     //   },
     //   {
     //     uid: "1234567891",
-    //     type: "deployments",
+    //     type: "compositions",
     //     title: "Lorem ipsum",
     //     description: "Lorem ipsum dolor sit amet",
     //     toRead: false,
@@ -70,19 +77,8 @@ const Notification = () => {
   const onClickNotification = (el: NotificationType) => {
     // set as read
     dispatch(setNotificationRead(el.uid));
-
-    switch (el.type) {
-      case "templates": 
-        navigate(`/templates/${el.uid}`)
-      break;
-
-      case "deployments":
-        navigate(`/deployments/${el.uid}`)
-      break;
-
-      default:
-
-      break;
+    if (el.url?.length > 0) {
+      navigate(el.url)
     }
   }
 
@@ -92,16 +88,37 @@ const Notification = () => {
     }
   }, [dispatch, isDeleteSuccess, notificationToDelete]);
 
+  const getNotificationURL = (el) => {
+    let url = "";
+    // se è presente compositionId allora è un composition (ex deployment)
+    if (el.compositionId && el.compositionId !== "") {
+      url = `/compositions/${el.compositionId}?tabKey=events`; // <-- nel tab Events
+    }
+    return url
+  }
+
   useEffect(() => {
     // opening a connection to the server to begin receiving events from it
-    const eventSource = new EventSource(`${getBaseUrl()}/notifications`);
+    const eventSource = new EventSource(`${getBaseUrl("EVENTS_PUSH")}/notifications`, {
+      withCredentials: false,
+    });
     
-    // attaching a handler to receive message events
-    eventSource.onmessage = (event) => {
-      const newEvents = JSON.parse(event.data);
-      dispatch(appendNotification(newEvents));
-    };
-    
+    eventSource.addEventListener("krateo", (event) => {
+      const data = JSON.parse(event.data);
+
+      const notification: NotificationType = {
+        uid: data.metadata.uid,
+        date: data.metadata.creationTimestamp,
+        title: formatISODate(data.metadata.creationTimestamp, true),
+        type: data.type,
+        description: data.message,
+        toRead: true,
+        url: getNotificationURL(data)
+      }
+
+      dispatch(appendNotification(notification));
+    });
+
     // terminating the connection on component unmount
     return () => eventSource.close();
   }, [dispatch]);
@@ -141,10 +158,11 @@ const Notification = () => {
                   >
                     <Space style={{width: '100%'}} wrap>
                       <Button className={styles.notificationElement} type="link" onClick={() => onClickNotification(item)}>
-                        {item.type !== undefined && <Avatar className={styles.icon} icon={getIcon(item.type as IconCode)} />}
                         <Space direction='vertical'>
-                          <Typography.Text strong={item.toRead} className={styles.title}>{item.title}</Typography.Text>
-                          <Typography.Text className={styles.description} ellipsis={true}>{item.description}</Typography.Text>
+                          <Badge color={item.type === "Normal" ? token.colorInfo : token.colorWarning} text={
+                            <Typography.Text className={styles.title}>{item.toRead ? <strong>{item.title}</strong> : item.title}</Typography.Text>
+                          } />
+                          <Typography.Paragraph className={styles.description} ellipsis={{rows: 2, expandable: false}}>{item.description}</Typography.Paragraph>
                         </Space>
                       </Button>
                     </Space>

@@ -29,7 +29,7 @@ const widgets = {
   "DataList": DataList,
   "panel": Panel,
   "RichElement": RichElement,
-  "RichRow": RichRow,
+  "richrow": RichRow,
   "DynamicContent": DynamicContent,
   "paragraph": Paragraph,
   "EditableContent": EditableContent,

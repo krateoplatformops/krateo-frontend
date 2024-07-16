@@ -1,6 +1,8 @@
 {
   "api": {
     "BFF_API_BASE_URL": "http://4.207.0.165:8081",
-    "AUTHN_API_BASE_URL": "http://4.207.0.144:8082"
+    "AUTHN_API_BASE_URL": "http://4.207.0.144:8082",
+    "EVENTS_PUSH_API_BASE_URL": "http://172.205.73.51:30080",
+    "EVENTS_API_BASE_URL": "http://172.205.73.51:30080"
   }
 }
