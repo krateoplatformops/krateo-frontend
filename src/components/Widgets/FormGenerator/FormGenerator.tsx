@@ -8,7 +8,6 @@ import ListEditor from "../ListEditor/ListEditor";
 import styles from "./styles.module.scss";
 import Skeleton from "../../Skeleton/Skeleton";
 import useCatchError from "../../../utils/useCatchError";
-import { useNavigate } from "react-router-dom";
 
 type FormGeneratorType = {
 	title?: string,
@@ -24,7 +23,6 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	const [postContent, { data: postData, isLoading: postLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
 	const { message } = App.useApp();
   const { catchError } = useCatchError();
-	const navigate = useNavigate();
 
 	const dispatch = useAppDispatch();
 
