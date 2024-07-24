@@ -37,7 +37,7 @@ const useParseData = () => {
         case "Toolbar": //TODO
           return <Toolbar key={data.uid}>{ parseContent(data.status.content.items, index+1) }</Toolbar>
         case "eventlist":
-          return <EventsList key={data.uid} {...data.props} events={data.items[0]?.app?.events ? JSON.parse(data.items[0]?.app?.events) : []} />
+          return <EventsList key={data.uid} {...data.props} events={ data.items?.filter(el => el.app?.event !== undefined).map(el => JSON.parse(el.app?.event)) } />
         default:
           if (data?.type) {
             const Component = widgets[data.type];

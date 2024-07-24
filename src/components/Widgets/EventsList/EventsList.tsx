@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import RichRow from "../RichRow/RichRow";
 import { formatISODate } from "../../../utils/dateTime";
 import { Typography, Divider } from "antd";
+import { getBaseUrl } from "../../../utils/api";
 
 type RowEventType = {
   uid: string,
@@ -47,7 +48,8 @@ const EventsList = ({sseEndpoint, sseTopic, events = []}: {
   useEffect(() => {
     // opening a connection to the server to begin receiving events from it
     if (sseEndpoint && sseTopic) {
-      const eventSource = new EventSource(sseEndpoint.endsWith('/') ? sseEndpoint.slice(0, -1) : sseEndpoint, {
+      const eventsEndpoint = `${getBaseUrl("EVENTS_PUSH")}${sseEndpoint.endsWith('/') ? sseEndpoint.slice(0, -1) : sseEndpoint}`;
+      const eventSource = new EventSource(eventsEndpoint, {
           withCredentials: false,
       });
 
