@@ -17,12 +17,16 @@
 }
 
 .notificationList {
+  :global li.ant-list-item {
+    align-items: baseline;
+  }
 
   .notificationElement {
     height: auto;
     text-align: left;
     position: relative;
     padding: 0;
+    text-wrap: wrap;
 
     .icon {
       margin-right: 10px;

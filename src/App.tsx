@@ -54,7 +54,7 @@ function App() {
           },
           {
             path: "/compositions/:compositionID",
-            endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployment-fireworksapp-tgz-tablist",
+            // endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployment-fireworksapp-tgz-tablist",
             menu: false,
           },
           // {
@@ -114,7 +114,7 @@ function App() {
       [
         {
           path: "/",
-          element: <Navigate to="/templates" replace={true} />,
+          element: <Navigate to="/compositions" replace={true} />,
         },
         {
           path: "/login",

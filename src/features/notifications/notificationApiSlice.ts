@@ -11,6 +11,12 @@ export type EventType = {
   type: "Normal" | "Warning",
   icon: string,
   color: string,
+  involvedObject: {
+    kind: string,
+    name: string,
+    namespace: string,
+    apiVersion: string,
+  }
 }
 
 export const notificationApiSlice = apiSlice.injectEndpoints({

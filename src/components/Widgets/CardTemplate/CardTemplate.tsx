@@ -19,7 +19,8 @@ const CardTemplate = (props) => {
     delete cardProps.panel; // keep "panel: true" only
     // cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb === "get")?.path}`;
     if (actions?.find(el => el.verb === "get")) {
-      cardProps.route = `/compositions/${id}`;
+      // cardProps.route = `/compositions/${id}`;
+      cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb === "get")?.path}`;
     }
   }
   if (!props.route && !props.endpoint && props.panel === "true" && actions?.find(el => el.verb === "get")?.path) {

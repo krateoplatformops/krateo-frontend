@@ -32,12 +32,6 @@ const Page = ({clientId, endpoint}: PageType) => {
     }
   }, [dispatch, endpoint, endpointQs, getContent]);
 
-  useEffect(() => {
-    if (isError) {
-      console.log("ERR", error);
-    }
-  }, [error, isError]);
-
   const fetchPage = (clientId: string, endpoint: string) => {
     console.log(clientId, endpoint);
 
@@ -2057,8 +2051,7 @@ const Page = ({clientId, endpoint}: PageType) => {
 
   // get data by API
   const getContentPage = () => {
-    if ((window.location.pathname === "/")
-    ) {
+    if (window.location.pathname === "/") {
       // mock data for some pages
       const response = fetchPage(clientId, endpoint);
       isMock.current = true;

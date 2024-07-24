@@ -9,6 +9,10 @@ export type NotificationType = {
   date: string,
   url: string,
   toRead: boolean,
+  kind: string,
+  name: string,
+  namespace: string,
+  apiVersion: string,
 }
 
 export type NotificationState = {

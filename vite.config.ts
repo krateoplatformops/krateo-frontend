@@ -18,7 +18,7 @@ export default defineConfig({
       //   rewrite: (path) => path.replace(/^\/apis/, ''),
       // },
       "/events": {
-        target: "http://172.205.73.51:30080/events",
+        target: "http://172.205.110.253:8083/events",
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path.replace(/^\/events/, ''),

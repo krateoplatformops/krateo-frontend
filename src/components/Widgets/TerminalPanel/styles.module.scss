@@ -1,0 +1,7 @@
+@import '../../../theme/global.scss';
+
+  .terminal {
+    :global .react-terminal-window-buttons {
+      display: none;
+    }
+  }

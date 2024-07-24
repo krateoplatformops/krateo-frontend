@@ -22,9 +22,9 @@ const eventToRichRow = (el) => {
     subPrimaryText: el.message,
     primaryText: (
       <>
-      <Typography.Text type="secondary">name:</Typography.Text> <Typography.Text>{el.metadata.name}</Typography.Text>
+      <Typography.Text type="secondary">name:</Typography.Text> <Typography.Text>{el.involvedObject.name}</Typography.Text>
       <Divider type="vertical" />
-      <Typography.Text type="secondary">namespace:</Typography.Text> <Typography.Text>{el.metadata.namespace}</Typography.Text>
+      <Typography.Text type="secondary">namespace:</Typography.Text> <Typography.Text>{el.involvedObject.namespace}</Typography.Text>
       <Divider type="vertical" />
       <Typography.Text type="secondary">kind:</Typography.Text> <Typography.Text>{el.involvedObject.kind}</Typography.Text>
       <Divider type="vertical" />
@@ -42,7 +42,7 @@ const EventsList = ({sseEndpoint, sseTopic, events = []}: {
   sseTopic?: string,
   events: any[],
 }) => {
-  const [eventList, setEventList] = useState<RowEventType[]>(events.map(el => eventToRichRow(el)));
+  const [eventList, setEventList] = useState<RowEventType[]>(events?.map(el => eventToRichRow(el)) || []);
 
   useEffect(() => {
     // opening a connection to the server to begin receiving events from it

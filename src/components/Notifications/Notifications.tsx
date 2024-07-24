@@ -37,6 +37,10 @@ const Notification = () => {
           date: el.metadata.creationTimestamp,
           url: getNotificationURL(el),
           toRead: true,
+          name: el.involvedObject.name,
+          namespace: el.involvedObject.namespace,
+          apiVersion: el.involvedObject.apiVersion,
+          kind: el.involvedObject.kind,
         }
       ));
 
@@ -89,12 +93,18 @@ const Notification = () => {
   }, [dispatch, isDeleteSuccess, notificationToDelete]);
 
   const getNotificationURL = (el) => {
-    let url = "";
+    const url = "";
     // se è presente compositionId allora è un composition (ex deployment)
+
+    /** NB: non è possibile puntare a una composition se è necessario passare l'endpoint nella querystring
+     *    per mantenere questa soluzione è necessario ricevere l'endpoint per costruire correttamente l'URL
+     * 
+     */
+    // TEMPORANEMENTE DISABILITATO
     if (el.compositionId && el.compositionId !== "") {
-      url = `/compositions/${el.compositionId}?tabKey=events`; // <-- nel tab Events
+    //   url = `/compositions/${el.compositionId}?tabKey=events`; // <-- nel tab Events
     }
-    return url
+    return url;
   }
 
   useEffect(() => {
@@ -113,7 +123,11 @@ const Notification = () => {
         type: data.type,
         description: data.message,
         toRead: true,
-        url: getNotificationURL(data)
+        url: getNotificationURL(data),
+        name: data.involvedObject.name,
+        namespace: data.involvedObject.namespace,
+        kind: data.involvedObject.kind,
+        apiVersion: data.involvedObject.apiVersion,
       }
 
       dispatch(appendNotification(notification));
@@ -163,6 +177,7 @@ const Notification = () => {
                             <Typography.Text className={styles.title}>{item.toRead ? <strong>{item.title}</strong> : item.title}</Typography.Text>
                           } />
                           <Typography.Paragraph className={styles.description} ellipsis={{rows: 2, expandable: false}}>{item.description}</Typography.Paragraph>
+                          <Typography.Text>{`${item.apiVersion}.${item.kind}/${item.name}@${item.namespace}`}</Typography.Text>
                         </Space>
                       </Button>
                     </Space>
