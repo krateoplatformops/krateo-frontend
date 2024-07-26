@@ -151,8 +151,10 @@ const Notification = () => {
 
       <Drawer
         open={showNotificationPanel}
+        className={styles.notificationPanel}
         onClose={() => setShowNotificationPanel(false)}
         title="Notifications"
+        width={550}
       >
         {
           isLoading && <Skeleton />
@@ -176,8 +178,8 @@ const Notification = () => {
                           <Badge color={item.type === "Normal" ? token.colorInfo : token.colorWarning} text={
                             <Typography.Text className={styles.title}>{item.toRead ? <strong>{item.title}</strong> : item.title}</Typography.Text>
                           } />
-                          <Typography.Paragraph className={styles.description} ellipsis={{rows: 2, expandable: false}}>{item.description}</Typography.Paragraph>
-                          <Typography.Text>{`${item.apiVersion}.${item.kind}/${item.name}@${item.namespace}`}</Typography.Text>
+                          <Typography.Text className={styles.description}>{item.description}</Typography.Text>
+                          <Typography.Paragraph className={styles.details}>{`${item.apiVersion}.${item.kind}/${item.name}@${item.namespace}`}</Typography.Paragraph>
                         </Space>
                       </Button>
                     </Space>

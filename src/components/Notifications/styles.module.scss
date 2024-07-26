@@ -17,9 +17,21 @@
   }
 }
 
+.notificationPanel {
+  :global .ant-drawer-body {
+    padding: 0;
+  }
+}
+
 .notificationList {
   :global li.ant-list-item {
     align-items: baseline;
+    padding: 30px;
+    border-radius: 10px;
+
+    &:hover {
+      background-color: $background-color;
+    }
   }
 
   .notificationElement {
@@ -50,6 +62,11 @@
     .description {
       max-width: 250px;
       white-space: initial;
+    }
+
+    .details {
+      font-size: $extraSmallText;
+      color: $gray-color;
     }
   }
 }
