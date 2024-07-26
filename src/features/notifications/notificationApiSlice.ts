@@ -23,8 +23,7 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotifications: builder.query<EventType[], void>({
       query: () => ({
-        url: `/events`,
-        headers: getHeaders(),
+        url: `${getBaseUrl("EVENTS")}/events`,
       }),
     }),
     deleteNotification: builder.mutation<string, string>({
