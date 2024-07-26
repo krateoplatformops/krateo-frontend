@@ -420,29 +420,41 @@ const ChartFlow = ({ data }) => {
    */
 
    // parsing data
-   const parsedNodes = JSON.parse(data).map((el) => (
-   {
-      id: el.uid,
-      data: {
-         name: el.name,
-         kind: el.kind,
-         icon: el.icon,
-         health: el.health,
-         status: el.status,
-         version: el.version,
-         date: el.createdAt,
-         namespace: el.namespace
-      },
-      type: 'nodeElement'
-   }
-   ));
-
-   const parsedEdges: Edge[] = [];
-   JSON.parse(data).forEach((el) => {
-      if (el.parentRefs !== undefined && el.parentRefs?.length > 0) {
-         parsedEdges.push({ id: `${el.parentRefs[0].uid}-${el.uid}`, source: el.parentRefs[0].uid, target: el.uid, label: '' })
+   let parsedNodes = [];
+   
+   try {
+      parsedNodes = JSON.parse(data).map((el) => (
+      {
+         id: el.uid,
+         data: {
+            name: el.name,
+            kind: el.kind,
+            icon: el.icon,
+            health: el.health,
+            status: el.status,
+            version: el.version,
+            date: el.createdAt,
+            namespace: el.namespace
+         },
+         type: 'nodeElement'
       }
-   })
+      ));
+   }
+   catch(error) {
+      parsedNodes = [];
+   }
+
+   let parsedEdges: Edge[] = [];
+   try {
+      JSON.parse(data).forEach((el) => {
+         if (el.parentRefs !== undefined && el.parentRefs?.length > 0) {
+            parsedEdges.push({ id: `${el.parentRefs[0].uid}-${el.uid}`, source: el.parentRefs[0].uid, target: el.uid, label: '' })
+         }
+      })
+   }
+   catch(error) {
+      parsedEdges = [];
+   }
 
    // auto layouting
    const getLayoutedElements = (nodes, edges, direction) => {
