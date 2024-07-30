@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Anchor, App, Col, Form, FormInstance, Input, Radio, Row, Select, Slider, Space, Switch, Typography } from "antd";
+import { Anchor, App, Col, Form, FormInstance, Input, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -33,7 +33,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	const fieldsData: {type: string, name: string}[] = [];
 
 	useEffect(() => {
-		if (data && isSuccess) {
+		if (data?.status?.content?.schema?.properties && data?.status?.actions && isSuccess) {
 			setFormData(data.status.content.schema.properties); // set root node (/spec /metadata)
 			setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
 		}
@@ -54,13 +54,17 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	}
 
 	const renderMetadataFields = () => {
-		const fieldsList = parseData({ properties: {metadata: formData.metadata}, required: [], type: 'object' }, "");
-		return fieldsList;
+		if (formData) {
+			const fieldsList = parseData({ properties: {metadata: formData.metadata}, required: [], type: 'object' }, "");
+			return fieldsList;
+		}
 	}
 
 	const renderFields = () => {
-		const fieldsList = parseData(formData.spec, "");
-		return fieldsList;
+		if (formData) {
+			const fieldsList = parseData(formData.spec, "");
+			return fieldsList;
+		}
 	}
 
 	const generateInitialValues = () => {
@@ -295,7 +299,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 			console.log("postData", postData);
 			// navigate("");
 		}
-	}, [message, isPostSuccess]);
+	}, [message, isPostSuccess, postData]);
 
 	useEffect(() => {
     if (isLoading || postLoading) {
@@ -341,6 +345,8 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 				</Row>
 			</div>
 		</div>
+		:
+		!formData ? <Result status="error" title="Ops! Something didn't work" subTitle="Unable to retrieve content data" />
 		:
 		isError ?
 			catchError(error, "result")

@@ -25,72 +25,65 @@ function App() {
   const [messageApi, contextHolder] = message.useMessage();
   // const messageKey = 'appMessageKey';
 
-  const fetchMockData = useCallback(() => {
-    return (
-      {
-        routes: [
-          // {
-          //   label: "Dashboard",
-          //   path: "/",
-          //   icon: getIcon("dashboard"),
-          //   endpoint: "/",
-          //   menu: true,
-          // },
-          {
-            label: "Templates",
-            path: "/templates",
-            icon: getIcon('templates'),
-            // endpoint: "/call?uri=/apis/widgets.krateo.io/v1alpha1/namespaces/demo-system/rows/two",
-            endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/templates-row",
-            menu: true,
-          },
-          {
-            label: "Compositions",
-            path: "/compositions",
-            icon: getIcon('projects'),
-            // endpoint: "/call?uri=/apis/composition.krateo.io",
-            endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployments-row",
-            menu: true,
-          },
-          {
-            path: "/compositions/:compositionID",
-            // endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployment-fireworksapp-tgz-tablist",
-            menu: false,
-          },
-          // {
-          //   path: "/projects/:projectID",
-          //   menu: false,
-          // },
-          // {
-          //   path: "/projects/:projectID/:compositionID",
-          //   menu: false,
-          // },
-        ],
-        notifications: [
-          {
-            title: "",
-            description: "",
-            icon: "",
-            new: true,
-          }
-        ]
-      }
-    )
-  }, []);
-
-  const getConfiguration = async () => {
+  const fetchMockData = useCallback(async (clientId: string) => {
     const configFile = await fetch("/config/config.json");
     const configJson = await configFile.json();
     localStorage.setItem("K_config", JSON.stringify(configJson));
-  }
+  
+    const routes = {
+      routes: [
+        // {
+        //   label: "Dashboard",
+        //   path: "/",
+        //   icon: getIcon("dashboard"),
+        //   endpoint: "/",
+        //   menu: true,
+        // },
+        {
+          label: "Templates",
+          path: "/templates",
+          icon: getIcon('templates'),
+          endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/${configJson.params.FRONTEND_NAMESPACE}/collections/templates-row`,
+          menu: true,
+        },
+        {
+          label: "Compositions",
+          path: "/compositions",
+          icon: getIcon('projects'),
+          endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/${configJson.params.FRONTEND_NAMESPACE}/collections/compositions-row`,
+          menu: true,
+        },
+        {
+          path: "/compositions/:compositionID",
+          // endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployment-fireworksapp-tgz-tablist",
+          menu: false,
+        },
+        // {
+        //   path: "/projects/:projectID",
+        //   menu: false,
+        // },
+        // {
+        //   path: "/projects/:projectID/:compositionID",
+        //   menu: false,
+        // },
+      ],
+      notifications: [
+        {
+          title: "",
+          description: "",
+          icon: "",
+          new: true,
+        }
+      ]
+    }
+
+    createRoutes(clientId, routes)
+  }, []);
 
   useEffect(() => {
     if (clientId) {
       // get application data (after logged)
-      const result = fetchMockData();
-
-      createRoutes(clientId, result);
-      getConfiguration();
+      fetchMockData(clientId);
     }
   }, [clientId, fetchMockData]);
 

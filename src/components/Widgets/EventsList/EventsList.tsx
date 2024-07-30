@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import RichRow from "../RichRow/RichRow";
 import { formatISODate } from "../../../utils/dateTime";
 import { Typography, Divider } from "antd";
-import { getBaseUrl } from "../../../utils/api";
+import { getBaseUrl } from "../../../utils/config";
 
 type RowEventType = {
   uid: string,

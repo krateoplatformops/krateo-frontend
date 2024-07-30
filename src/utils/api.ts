@@ -1,35 +1,3 @@
-export const getBaseUrl = (type: "AUTH" | "BFF" | "EVENTS_PUSH" | "EVENTS" = "BFF") => {
-  let baseUrl = "";
-  const useConfig = import.meta.env.VITE_USE_CONFIG;
-  if (useConfig === "true") {
-    const ls = localStorage.getItem("K_config");
-    if (ls) {
-      const configJson = JSON.parse(ls);
-      switch (type) {
-        case "AUTH":
-          baseUrl = configJson.api.AUTHN_API_BASE_URL;
-          break;
-
-        case "BFF":
-          baseUrl = configJson.api.BFF_API_BASE_URL;
-          break;
-
-        case "EVENTS":
-          baseUrl = configJson.api.EVENTS_API_BASE_URL;
-          break;
-  
-        case "EVENTS_PUSH":
-          baseUrl = configJson.api.EVENTS_PUSH_API_BASE_URL;
-          break;
-  
-        default:
-          break;
-      }
-    }
-  }
-  return baseUrl;
-}
-
 export const getHeaders = () => {
   const ls = localStorage.getItem("user");
   if (ls) {

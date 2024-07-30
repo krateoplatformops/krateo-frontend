@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getBaseUrl, getHeaders } from "../../utils/api";
+import { getHeaders } from "../../utils/api";
 import { Avatar, Card, Col, Row, Space, Typography } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./styles.module.scss";
@@ -8,6 +8,7 @@ import { formatISODate } from "../../utils/dateTime";
 import { getColorCode } from "../../utils/colors";
 import { useNavigate } from "react-router-dom";
 import useCatchError from "../../utils/useCatchError";
+import { getBaseUrl } from "../../utils/config";
 
 const CustomProjectCardList = ({data}) => {
   const endpoint = "/call?uri=/apis/composition.krateo.io";

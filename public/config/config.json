@@ -3,6 +3,10 @@
     "AUTHN_API_BASE_URL": "http://172.205.108.228:8082",
     "BFF_API_BASE_URL": "http://172.205.108.243:8081",
     "EVENTS_API_BASE_URL": "http://172.205.109.116:8083",
-    "EVENTS_PUSH_API_BASE_URL": "http://172.205.109.116:8083"
+    "EVENTS_PUSH_API_BASE_URL": "http://172.205.109.116:8083",
+    "TERMINAL_SOCKET_URL": "http://4.208.220.117:8080"
+  },
+  "params": {
+    "FRONTEND_NAMESPACE": "demo-system"
   }
 }

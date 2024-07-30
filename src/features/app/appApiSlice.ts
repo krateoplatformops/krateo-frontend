@@ -1,5 +1,6 @@
 import { apiSlice } from "../../api/apiSlice";
-import { getBaseUrl, getHeaders } from "../../utils/api";
+import { getHeaders } from "../../utils/api";
+import { getBaseUrl } from "../../utils/config";
 
 export const appApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

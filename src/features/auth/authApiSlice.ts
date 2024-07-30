@@ -1,6 +1,6 @@
 import { apiSlice } from "../../api/apiSlice"
 import { AuthModeType, AuthRequestType, AuthResponseType, LoginFormType } from "../../pages/Login/type"
-import { getBaseUrl } from "../../utils/api"
+import { getBaseUrl } from "../../utils/config"
 
 // const baseAuthUrl = import.meta.env.VITE_AUTHN_API_BASE_URL;
 // const getBaseUrl = async () => {

@@ -9,7 +9,7 @@ import styles from './styles.module.scss';
 import { useNavigate } from "react-router-dom";
 import { useDeleteNotificationMutation, useGetNotificationsQuery } from "../../features/notifications/notificationApiSlice";
 import Skeleton from "../Skeleton/Skeleton";
-import { getBaseUrl } from "../../utils/api";
+import { getBaseUrl } from "../../utils/config";
 import { formatISODate } from "../../utils/dateTime";
 
 const Notification = () => {

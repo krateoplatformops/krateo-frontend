@@ -1,49 +1,59 @@
-// import { Input } from 'antd';
-// import { useCallback, useEffect, useState } from 'react';
-// import useWebSocket/*, { ReadyState }*/ from 'react-use-websocket';
-import Terminal, { ColorMode, /* TerminalOutput */ } from 'react-terminal-ui';
+import { io } from 'socket.io-client';
+import Terminal, { ColorMode, TerminalOutput } from 'react-terminal-ui';
 import styles from "./styles.module.scss";
+import { getBaseUrl } from '../../../utils/config';
+import { useEffect, useState } from 'react';
+import { Tag } from 'antd';
+
+const URL = getBaseUrl("TERMINAL_SOCKET");
+const socket = io(URL, {
+  autoConnect: false
+});
 
 const TerminalPanel = () => {
+  const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
   // const [history, setHistory] = useState<MessageEvent<any>[]>([]);
-  // const { sendMessage, lastMessage/*, readyState */ } = useWebSocket('wss://echo.websocket.org');
+  const [terminalLineData, setTerminalLineData] = useState([
+    <TerminalOutput>Welcome to the Krateo Terminal</TerminalOutput>
+  ]);
 
-  /*
-  const connectionStatus = {
-    [ReadyState.CONNECTING]: 'Connecting',
-    [ReadyState.OPEN]: 'Open',
-    [ReadyState.CLOSING]: 'Closing',
-    [ReadyState.CLOSED]: 'Closed',
-    [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-  }[readyState];
-  */
+  useEffect(() => {
+    socket.connect();
 
-  // const [terminalLineData, setTerminalLineData] = useState([
-  //   <TerminalOutput>Welcome to the Krateo Terminal</TerminalOutput>
-  // ]);
+    const onConnect = () => {
+      setIsConnected(true);
+    }
 
-  // useEffect(() => {
-  //   if (lastMessage !== null) {
-  //     setHistory([lastMessage, ...history]);
-  //   }
-  // }, [history, lastMessage]);
+    const onDisconnect = () => {
+      setIsConnected(false);
+    }
 
-  // const onSendCommand = useCallback((event) => {
-  //   const command = event.target.value;
-  //   // send websocket
-  //   sendMessage(command);
-  // }, [sendMessage]);
+    const onCommandResult = (values) => {
+      setTerminalLineData([values, ...terminalLineData]);
+    }
 
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('task_result', onCommandResult);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('task_result', onCommandResult);
+      socket.disconnect();
+    };
+  }, []);
+  
   return (
     <div className={styles.terminal}>
-      {/* {history.map(el => <p>{el.data}</p>)} */}
-      {/* <Input onPressEnter={onSendCommand} /> */}
+      { isConnected && <Tag color='green'>connected</Tag> }
+      { !isConnected && <Tag color='red'>disconnected</Tag> }
+
       <Terminal
         name='Krateo Terminal'
         colorMode={ ColorMode.Dark }
-        redBtnCallback={() => {}}
-        onInput={ terminalInput => console.log(`New terminal input received: '${ terminalInput }'`) }>
-        {/* { terminalLineData } */}
+        onInput={ terminalInput => socket.emit('task', terminalInput) }>
+        { terminalLineData }
       </Terminal>
     </div>
   )
