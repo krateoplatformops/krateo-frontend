@@ -34,7 +34,7 @@ export const notificationsSlice = createSlice({
       state.data = state.data.map(el => (el.uid === action.payload ? {...el, toRead: false} : el))
     },
     appendNotification: (state, action: PayloadAction<NotificationType>) => {
-      state.data = [action.payload, ...state.data]
+      state.data = [action.payload, ...(state.data.length > 99 ? state.data.slice(0, 98) : state.data) ]
     },
     removeNotification: (state, action: PayloadAction<string>) => {
       state.data = state.data.filter(el => (el.uid !== action.payload))

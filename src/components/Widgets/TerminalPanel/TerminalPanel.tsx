@@ -42,7 +42,7 @@ const TerminalPanel = () => {
       socket.off('task_result', onCommandResult);
       socket.disconnect();
     };
-  }, []);
+  }, [terminalLineData]);
   
   return (
     <div className={styles.terminal}>
@@ -52,7 +52,7 @@ const TerminalPanel = () => {
       <Terminal
         name='Krateo Terminal'
         colorMode={ ColorMode.Dark }
-        onInput={ terminalInput => socket.emit('task', terminalInput) }>
+        onInput={ terminalInput => { socket.emit('task', {nodeId: 12345, command: terminalInput}) } }>
         { terminalLineData }
       </Terminal>
     </div>

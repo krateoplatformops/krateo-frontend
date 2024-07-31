@@ -24,7 +24,7 @@ export const notificationApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getNotifications: builder.query<EventType[], void>({
       query: () => ({
-        url: `${getBaseUrl("EVENTS")}/events`,
+        url: `${getBaseUrl("EVENTS")}/events?limit=100`,
       }),
     }),
     deleteNotification: builder.mutation<string, string>({

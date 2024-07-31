@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../features/auth/authSlice";
+// import TerminalPanel from "../Widgets/TerminalPanel/TerminalPanel";
 
 const Page = ({clientId, endpoint}: PageType) => {
   const isMock = useRef(false);
@@ -2066,6 +2067,7 @@ const Page = ({clientId, endpoint}: PageType) => {
 
   return (
     <section className={styles.page}>
+      {/* <TerminalPanel /> */}
       { isLoading && <Skeleton /> }
       { ((data !== undefined && data.code === undefined && isSuccess === true) || isMock) && getContentPage() }
       { ( data?.code !== undefined && data?.code !== 200 || (isError && !isMock)) && catchError(error, "result") }
