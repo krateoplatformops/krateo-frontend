@@ -8,7 +8,6 @@ export type NotificationType = {
   description: string,
   date: string,
   url: string,
-  toRead: boolean,
   kind: string,
   name: string,
   namespace: string,
@@ -30,9 +29,6 @@ export const notificationsSlice = createSlice({
     setNotifications: (state, action: PayloadAction<{data: NotificationType[]}>) => {
       state.data = action.payload.data;
     },
-    setNotificationRead: (state, action: PayloadAction<string>) => {
-      state.data = state.data.map(el => (el.uid === action.payload ? {...el, toRead: false} : el))
-    },
     appendNotification: (state, action: PayloadAction<NotificationType>) => {
       state.data = [action.payload, ...(state.data.length > 99 ? state.data.slice(0, 98) : state.data) ]
     },
@@ -42,7 +38,7 @@ export const notificationsSlice = createSlice({
   }
 });
 
-export const { setNotifications, setNotificationRead, appendNotification, removeNotification } = notificationsSlice.actions;
+export const { setNotifications, appendNotification, removeNotification } = notificationsSlice.actions;
 
 export default notificationsSlice.reducer;
 

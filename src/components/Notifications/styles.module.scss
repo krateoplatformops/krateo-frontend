@@ -26,7 +26,7 @@
 .notificationList {
   :global li.ant-list-item {
     align-items: baseline;
-    padding: 5px 10px 0 30px;
+    padding: 15px 10px 0 30px;
     border-radius: 10px;
 
     &:hover {
@@ -40,6 +40,8 @@
     position: relative;
     padding: 0;
     text-wrap: wrap;
+    display: block;
+    width: 100%;
 
     .icon {
       margin-right: 10px;
