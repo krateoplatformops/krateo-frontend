@@ -34,8 +34,8 @@ export const getBaseUrl = (type: "AUTH" | "BFF" | "EVENTS_PUSH" | "TERMINAL_SOCK
   return baseUrl;
 }
 
-export const getParam = (name: "FRONTEND_NAMESPACE") => {
-  let param = "";
+export const getParam = (name: "FRONTEND_NAMESPACE" | "DELAY_SAVE_NOTIFICATION") => {
+  let param;
 
   const useConfig = import.meta.env.VITE_USE_CONFIG;
   if (useConfig === "true") {
@@ -45,6 +45,10 @@ export const getParam = (name: "FRONTEND_NAMESPACE") => {
       switch (name) {
         case "FRONTEND_NAMESPACE":
           param = configJson.params.FRONTEND_NAMESPACE;
+          break;
+
+        case "DELAY_SAVE_NOTIFICATION":
+          param = configJson.params.DELAY_SAVE_NOTIFICATION;
           break;
 
         default:

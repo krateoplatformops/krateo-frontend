@@ -1,6 +1,6 @@
 import { BellFilled } from "@ant-design/icons";
 import { Badge, Button, Drawer, List, Space, theme, Typography } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -9,13 +9,16 @@ import styles from './styles.module.scss';
 import { useNavigate } from "react-router-dom";
 import { useGetNotificationsQuery } from "../../features/notifications/notificationApiSlice";
 import Skeleton from "../Skeleton/Skeleton";
-import { getBaseUrl } from "../../utils/config";
+import { getBaseUrl, getParam } from "../../utils/config";
 import { formatISODate } from "../../utils/dateTime";
 
 const Notification = () => {
   const [showNotificationPanel, setShowNotificationPanel] = useState<boolean>(false);
   const navigate = useNavigate();
   const { data, isSuccess, isLoading } = useGetNotificationsQuery();
+
+  const timer = useRef<NodeJS.Timeout>();
+  const eventsToAppend = useRef<NotificationType[]>([]);
 
   const dispatch = useAppDispatch();
   const notifications = useSelector((state: RootState) => selectNotifications(state));
@@ -99,7 +102,6 @@ const Notification = () => {
     
     eventSource.addEventListener("krateo", (event) => {
       const data = JSON.parse(event.data);
-
       const notification: NotificationType = {
         uid: data.metadata.uid,
         date: data.metadata.creationTimestamp,
@@ -113,7 +115,16 @@ const Notification = () => {
         apiVersion: data.involvedObject.apiVersion,
       }
 
-      dispatch(appendNotification(notification));
+      // create a list to append after
+      eventsToAppend.current = [notification, ...eventsToAppend.current];
+
+      if (!timer.current) {
+        timer.current = setTimeout(() => {
+          dispatch(appendNotification(eventsToAppend.current));
+          eventsToAppend.current = [];
+          timer.current = undefined;
+        }, getParam("DELAY_SAVE_NOTIFICATION"))
+      }
     });
 
     // terminating the connection on component unmount

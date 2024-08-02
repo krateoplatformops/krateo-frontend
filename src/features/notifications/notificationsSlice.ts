@@ -29,8 +29,8 @@ export const notificationsSlice = createSlice({
     setNotifications: (state, action: PayloadAction<{data: NotificationType[]}>) => {
       state.data = action.payload.data;
     },
-    appendNotification: (state, action: PayloadAction<NotificationType>) => {
-      state.data = [action.payload, ...(state.data.length > 99 ? state.data.slice(0, 98) : state.data) ]
+    appendNotification: (state, action: PayloadAction<NotificationType[]>) => {
+      state.data = [...action.payload, ...(state.data.length > 99 ? state.data.slice(0, 100 - action.payload.length) : state.data) ]
     },
     removeNotification: (state, action: PayloadAction<string>) => {
       state.data = state.data.filter(el => (el.uid !== action.payload))
