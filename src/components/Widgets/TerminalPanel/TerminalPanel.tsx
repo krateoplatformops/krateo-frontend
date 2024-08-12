@@ -3,19 +3,31 @@ import Terminal, { ColorMode, TerminalOutput } from 'react-terminal-ui';
 import styles from "./styles.module.scss";
 import { getBaseUrl } from '../../../utils/config';
 import { useEffect, useState } from 'react';
-import { Tag } from 'antd';
+import { Button, Dropdown, Space, Tag } from 'antd';
+
+type TerminalType = {
+  nodeId: string,
+  commands: string,
+}
 
 const URL = getBaseUrl("TERMINAL_SOCKET");
 const socket = io(URL, {
   autoConnect: false
 });
 
-const TerminalPanel = () => {
+const TerminalPanel = ({nodeId, commands}: TerminalType) => {
+  const commandList = commands && commands !== "" ? JSON.parse(commands) : [];
   const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
-  // const [history, setHistory] = useState<MessageEvent<any>[]>([]);
+  const prompt = "$";
   const [terminalLineData, setTerminalLineData] = useState([
-    <TerminalOutput>Welcome to the Krateo Terminal</TerminalOutput>
+    <TerminalOutput>{`Welcome to the Krateo Terminal, type a command or choose one from the command list\n\n`}</TerminalOutput>
   ]);
+
+  const sendCommand = (command) => {
+    if (nodeId) {
+      socket.emit('task', {nodeId: nodeId, command: command})
+    }
+  }
 
   useEffect(() => {
     socket.connect();
@@ -28,8 +40,8 @@ const TerminalPanel = () => {
       setIsConnected(false);
     }
 
-    const onCommandResult = (values) => {
-      setTerminalLineData([values, ...terminalLineData]);
+    const onCommandResult = (result) => {
+      setTerminalLineData([...terminalLineData, <TerminalOutput>{`${prompt} ${result.command}\n${result.output}\n`}</TerminalOutput>]);
     }
 
     socket.on('connect', onConnect);
@@ -42,20 +54,30 @@ const TerminalPanel = () => {
       socket.off('task_result', onCommandResult);
       socket.disconnect();
     };
-  }, [terminalLineData]);
-  
-  return (
-    <div className={styles.terminal}>
-      { isConnected && <Tag color='green'>connected</Tag> }
-      { !isConnected && <Tag color='red'>disconnected</Tag> }
+  }, [prompt, terminalLineData]);
 
+  return (
+    <Space direction='vertical' size='large' className={styles.terminal}>
+      <Space>
+        <Space>State: 
+          { isConnected && <Tag color='green'>connected</Tag> }
+          { !isConnected && <Tag color='red'>disconnected</Tag> }
+        </Space>
+        <Dropdown 
+          menu={{ items: commandList.map(el => ({ key: el.command, label: el.label })), onClick: (e) => sendCommand(e.key) }}
+          placement="bottomLeft"
+        >
+          <Button size='small'>Command list</Button>
+        </Dropdown>
+      </Space>
       <Terminal
         name='Krateo Terminal'
         colorMode={ ColorMode.Dark }
-        onInput={ terminalInput => { socket.emit('task', {nodeId: 12345, command: terminalInput}) } }>
+        prompt={prompt}
+        onInput={ terminalInput => { sendCommand(terminalInput) } }>
         { terminalLineData }
       </Terminal>
-    </div>
+    </Space>                                                          
   )
 }
 

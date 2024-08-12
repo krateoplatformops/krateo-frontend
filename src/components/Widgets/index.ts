@@ -15,6 +15,7 @@ import EditableContent from "./EditableContent/EditableContent";
 import EditableList from "./EditableList/EditableList";
 import CardTemplateList from "./CardTemplateList/CardTemplateList";
 import CardTemplate from "./CardTemplate/CardTemplate";
+import TerminalPanel from "./TerminalPanel/TerminalPanel";
 
 const widgets = {
   "ChartPie": ChartPie,
@@ -34,6 +35,7 @@ const widgets = {
   "paragraph": Paragraph,
   "EditableContent": EditableContent,
   "EditableList": EditableList,
+  "terminal": TerminalPanel,
 }
 
 export default widgets;
