@@ -20,7 +20,7 @@ const TerminalPanel = ({nodeId, commands}: TerminalType) => {
   const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
   const prompt = "$";
   const [terminalLineData, setTerminalLineData] = useState([
-    <TerminalOutput>{`Welcome to the Krateo Terminal, type a command or choose one from the command list\n\n`}</TerminalOutput>
+    <TerminalOutput key={0}>{`Welcome to the Krateo Terminal, type a command or choose one from the command list\n\n`}</TerminalOutput>
   ]);
 
   const sendCommand = (command) => {
@@ -41,7 +41,7 @@ const TerminalPanel = ({nodeId, commands}: TerminalType) => {
     }
 
     const onCommandResult = (result) => {
-      setTerminalLineData([...terminalLineData, <TerminalOutput>{`${prompt} ${result.command}\n${result.output}\n`}</TerminalOutput>]);
+      setTerminalLineData([...terminalLineData, <TerminalOutput key={`terminal_output_${terminalLineData.length}`}>{`${prompt} ${result.command}\n${result.output}\n`}</TerminalOutput>]);
     }
 
     socket.on('connect', onConnect);
@@ -64,7 +64,7 @@ const TerminalPanel = ({nodeId, commands}: TerminalType) => {
           { !isConnected && <Tag color='red'>disconnected</Tag> }
         </Space>
         <Dropdown 
-          menu={{ items: commandList.map(el => ({ key: el.command, label: el.label })), onClick: (e) => sendCommand(e.key) }}
+          menu={{ items: commandList.map((el) => ({ key: el.command, label: el.label })), onClick: (e) => sendCommand(e.key) }}
           placement="bottomLeft"
         >
           <Button size='small'>Command list</Button>
