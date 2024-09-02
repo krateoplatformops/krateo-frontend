@@ -23,7 +23,7 @@ const Page = ({clientId, endpoint}: PageType) => {
     if (endpoint || endpointQs) {
       const loadData = async () => {
         const response = await getContent({endpoint: endpointQs || endpoint });
-        if (response.data.code === 401) {
+        if (response.isSuccess && response.data?.message && JSON.parse(response.data.message).code === 401) {
           // not authorized
           dispatch(logout());
         }
@@ -2068,7 +2068,7 @@ const Page = ({clientId, endpoint}: PageType) => {
     <section className={styles.page}>
       { isLoading && <Skeleton /> }
       { ((data !== undefined && data.code === undefined && isSuccess === true) || isMock) && getContentPage() }
-      { ( data?.code !== undefined && data?.code !== 200 || (isError && !isMock)) && catchError(error, "result") }
+      { (isError && !isMock.current) && catchError(error, "result") }
     </section>
   );
 }

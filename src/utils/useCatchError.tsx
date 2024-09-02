@@ -9,21 +9,20 @@ const useCatchError = () => {
     let message: string = "Ops! Something didn't work";
     let description: string = "Unable to complete the operation, please try later";
     // Adjust to account for potentially nested error structure
-    const actualError = error?.data || error;
+    let actualErrorCode: number;
+    let actualErrorMessage: string = "";
 
-    if (typeof actualError === "string") {
-      message = actualError;
-    } else if (actualError?.message) {
-      message = actualError.message;
-    }
-
-    if (actualError?.code) {
+    if (error?.message && JSON.parse(error.message).data?.code) {
+      // error from API with status 200
+      actualErrorCode = JSON.parse(error.message).data.code;
+      actualErrorMessage = JSON.parse(error.message).data.message;
+      
       const clientErrorRegex = /^4\d{2}$/; // Regex for 4xx client errors
-      if (clientErrorRegex.test(String(actualError.code))) {
-        message = "Client Error";
-        description = actualError.message || "There was an error processing your request. Please check your input or permissions.";
+      if (clientErrorRegex.test(String(actualErrorCode))) {
+        message = actualErrorMessage;
+        description = "There was an error processing your request. Please check your input or permissions.";
       } else {
-        switch (actualError.code) {
+        switch (actualErrorCode) {
           // Handle other specific codes if necessary
           case 500:
             message = "Internal Server Error";
@@ -32,6 +31,10 @@ const useCatchError = () => {
           // Add more cases as needed
         }
       }
+    
+    } else if (error?.message) {
+      // classic catch with error object
+      message = actualErrorMessage; // override message only
     }
 
     switch (type) {

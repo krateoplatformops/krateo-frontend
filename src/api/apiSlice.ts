@@ -11,7 +11,7 @@ const customFetchBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQu
     const clientErrorRegex = /^4\d{2}$/; // Regex for 4xx client errors
     if (clientErrorRegex.test(String(realErrorCode))) {
       // use transformation to ovewrite the fetch status with right error code
-      throw new Error(realErrorMessage);
+      throw new Error(JSON.stringify({data: {message: realErrorMessage, code: realErrorCode}}));
     }
   }
   return result;
