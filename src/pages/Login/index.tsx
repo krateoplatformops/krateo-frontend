@@ -28,11 +28,10 @@ const Login = () => {
         dispatch(setUser(userData));
         navigate("/");
       } catch (err) {
-        const errorMessage = (err as {data: {errorMessage: string}})?.data?.errorMessage;
-        catchError(errorMessage);
+        catchError(err);
       }
     } else {
-      catchError("WRONG_USERNAME_PASSWORD");
+      catchError("Wrong username or password, try again with different credentials");
     }
   };
 

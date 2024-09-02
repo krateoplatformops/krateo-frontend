@@ -8,7 +8,6 @@ const useCatchError = () => {
   const catchError = (error?: SerializedError | FetchBaseQueryError | any, type: "result" | "notification" = "notification") => {
     let message: string = "Ops! Something didn't work";
     let description: string = "Unable to complete the operation, please try later";
-
     // Adjust to account for potentially nested error structure
     const actualError = error?.data || error;
 
