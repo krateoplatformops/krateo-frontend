@@ -346,7 +346,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 			</div>
 		</div>
 		:
-		!formData && isSuccess ? <Result status="error" title="Ops! Something didn't work" subTitle="Unable to retrieve content data" />
+		!formData && isSuccess ? <Result status="warning" title="Ops! Something didn't work" subTitle="Unable to retrieve content data" />
 		:
 		isError ?
 			catchError(error, "result")
