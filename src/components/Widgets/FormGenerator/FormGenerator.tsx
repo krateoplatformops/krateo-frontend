@@ -27,7 +27,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	const dispatch = useAppDispatch();
 
 	// get fields
-	const {data, isLoading, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint?.replace("/form/", "/forms/")});
+	const {data, isLoading, isFetching, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint?.replace("/form/", "/forms/")});
 	const [formData, setFormData] = useState<any>();
 	const [formEndpoint, setFormEndpoint] = useState<string>();
 	const fieldsData: {type: string, name: string}[] = [];
@@ -308,7 +308,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
   }, [isLoading, postLoading, message]);
 
 	return (
-		isLoading ?
+		isLoading || isFetching ?
 				<Skeleton />
 		:
 		formData && isSuccess ?
@@ -346,7 +346,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 			</div>
 		</div>
 		:
-		!formData ? <Result status="error" title="Ops! Something didn't work" subTitle="Unable to retrieve content data" />
+		!formData && isSuccess ? <Result status="error" title="Ops! Something didn't work" subTitle="Unable to retrieve content data" />
 		:
 		isError ?
 			catchError(error, "result")
