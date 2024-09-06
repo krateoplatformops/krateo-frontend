@@ -23,7 +23,7 @@ const Page = ({clientId, endpoint}: PageType) => {
     if (endpoint || endpointQs) {
       const loadData = async () => {
         const response = await getContent({endpoint: endpointQs || endpoint });
-        if (response.isSuccess && response.data?.message && JSON.parse(response.data.message).code === 401) {
+        if (response.isError && JSON.parse((error as {message: string}).message)?.data?.code === 401) {
           // not authorized
           dispatch(logout());
         }
