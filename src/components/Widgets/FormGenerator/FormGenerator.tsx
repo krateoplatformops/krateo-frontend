@@ -60,14 +60,14 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 	}
 
 	const renderMetadataFields = () => {
-		if (formData && formData !== "idle") {
+		if (formData && formData.metadata) {
 			const fieldsList = parseData({ properties: {metadata: formData.metadata}, required: [], type: 'object' }, "");
 			return fieldsList;
 		}
 	}
 
 	const renderFields = () => {
-		if (formData && formData !== "idle") {
+		if (formData && formData.spec) {
 			const fieldsList = parseData(formData.spec, "");
 			return fieldsList;
 		}
@@ -87,7 +87,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 				}
 			})
 		}
-		parseData(formData.spec, "");
+		if (formData.spec) parseData(formData.spec, "");
 	}
 
 	const renderLabel = (path: string, label: string) => {
@@ -317,7 +317,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 		isLoading || isFetching ?
 				<Skeleton />
 		:
-		formData && isSuccess ?
+		formData && formData.spec && isSuccess ?
 		<div className={styles.formGenerator}>
 			<Typography.Text strong>{title}</Typography.Text>
 			<Typography.Paragraph>{description}</Typography.Paragraph>
