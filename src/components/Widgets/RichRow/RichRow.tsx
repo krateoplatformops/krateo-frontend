@@ -8,10 +8,10 @@ const RichRow = ({color, icon, subPrimaryText, primaryText, subSecondaryText, se
 
 
   return (
-    <Flex justify="space-between" className={styles.richRow}>
-      <Space align="start" size="large">
+    <Flex justify="space-between" className={styles.richRow} gap={10}>
+      <Space align="start" size="large" className={styles.primary}>
         <Avatar style={{ backgroundColor: getColorCode(color) }} size={icon ? 24 : 18} icon={<FontAwesomeIcon icon={icon} />} />
-        <div className={styles.primary}>
+        <div>
           <Typography.Text className={styles.subtext}>{subPrimaryText}</Typography.Text>
           <Typography.Paragraph>{primaryText}</Typography.Paragraph>
         </div>

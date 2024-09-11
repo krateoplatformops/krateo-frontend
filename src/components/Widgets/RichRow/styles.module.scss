@@ -5,6 +5,14 @@
     border-bottom: solid 1px $border-color;
     margin-top: 15px;
 
+    .primary {
+      flex: 1;
+    }
+
+    .secondary {
+      width: 20%;
+    }
+
     .subtext {
       color: $gray-color;
     }
