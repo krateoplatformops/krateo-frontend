@@ -82,7 +82,7 @@ const CardTemplate = (props) => {
             <div className={styles.details}>
               <Typography.Title className={styles.title} ellipsis level={2} title={title}>{title}</Typography.Title>
               <Space className={styles.subTitle}>
-                <div className={styles.status} style={{ color: color }}>{status}</div>
+                <div className={styles.status} style={{ color: getColorCode(color) }}>{status}</div>
                 <div className={styles.date}>{date}</div>
               </Space>
             </div>
