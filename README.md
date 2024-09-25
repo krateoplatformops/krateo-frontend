@@ -22,13 +22,17 @@ $ export "VITE_BFF_API_BASE_URL=http://20.105.44.127:8080" && export "VITE_AUTHN
 
 Copy content of _/build_ folder in your web server
 
+
+
 ## Widget List
 
-Button
+# Button
+/widget-samples/button.png
+
 {
   icon?: string,
   label?: string,
-  badge?: string,
+  badge?: boolean,
   type?: "default" | "text" | "link" | "primary" | "dashed",
   action?: "default" | "submit" | "reset",
   prefix?: string,
@@ -40,9 +44,9 @@ Button
 }
 
 {
-  icon: "gear",
+  icon: "fa-gear",
   label: "click here!",
-  badge: "true",
+  badge: false,
   type: "default",
   action: "default",
   prefix: "filtersCompositions",
@@ -55,9 +59,10 @@ Button
   verb: "get",
 }
 
--------------------------
 
-CardTemplate
+# CardTemplate
+/widget-samples/card.png
+
 {
 	id: string,
  	icon: string,
@@ -68,21 +73,20 @@ CardTemplate
  	content: string,
  	tags: string,
  	actions: {
- 		verb: "get" | "delete",
+ 		verb: "get" | "delete" | "put" | "post",
  		path: string,
  	}[],
- 	panel: string,
- 	route: string // attualmente non utilizzato
+ 	panel: string
 }
 
 {
 	id: "e35ac33c-bd86-4301-83ee-c14236691a74",
- 	icon: "gear",
+ 	icon: "fa-gear",
  	color: "blue",
  	title: "This is the card title",
  	status: "pending",
  	date: "06/05/2024",
- 	content: "{... oggetto widget ...}",
+ 	content: "lorem ipsum",
  	tags: "lorem, ipsum, dolor",
  	actions: [
 	  {
@@ -91,13 +95,12 @@ CardTemplate
 	  }
   ],
  	panel: "true",
- 	route: ""
 }
 
--------------------------
 
+# ChartBars
+/widget-samples/chartbars.png
 
-ChartBars
 {
   data: {
 	  label: string;
@@ -117,18 +120,20 @@ ChartBars
 	  }
 	];
 }
--------------------------
 
-ChartFlow
+
+# ChartFlow
+/widget-samples/chartflow.png
+
 {
 	uid: string,
 	name: string,
 	kind: string,
 	icon: string,
 	health: {
-		status: string
+		status: "Available" | "Healty" | "Progressing" | "Degraded" | "Suspended" | "Missing" | "Unknown"
 	}
-	status: string
+	status: "OutOfSync" | "Synced"
 	version: string,
 	createdAt: string,
 	namespace: string,
@@ -145,9 +150,9 @@ ChartFlow
 		kind: "Ingress",
 		icon: "fa-shuffle",
 		health: {
-	    "status": "Synced"
+	    "status": "Healty"
 	 	},
-		status: "Available",
+		status: "OutOfSync",
 		version:"v1",
 		createdAt:"2024-05-02T07:15:03Z",
 		namespace:"fire-firefire-ns",
@@ -160,10 +165,9 @@ ChartFlow
 ]
 
 
--------------------------
+# ChartLine
+/widget-samples/chartline.png
 
-
-ChartLine
 {
 	color: "success" | "normal" | "exception" | "active";
 	data: {
@@ -180,10 +184,10 @@ ChartLine
 	}[]
 }
 
--------------------------
 
+# ChartMultipleBars
+/widget-samples/chartmultiplebars.png
 
-ChartMultipleBars
 {
 	data: {
 		label: string,
@@ -216,11 +220,9 @@ ChartMultipleBars
 }
 
 
--------------------------
+# ChartPie
+/widget-samples/chartpie.png
 
-
-
-ChartPie
 {
 	label?: string;
  	value: number;
@@ -235,10 +237,9 @@ ChartPie
  	status: "default"
 }
 
--------------------------
 
+# DataList
 
-DataList
 {
 	prefix: string,
 	data: {
@@ -270,10 +271,9 @@ DataList
 }
 
 
--------------------------
 
+# DynamicContent
 
-DynamicContent
 {
 	prefix: string,
 	content: {
@@ -295,22 +295,22 @@ DynamicContent
 }
 
 
--------------------------
 
 
+# EditableContent
 /* 
 	WIP: miss update and check markdown editor
 */
-EditableContent
 {
 	text: string,
 	editEndpoint: string
 }
 
+
+# EditableList
 /* 
 	WIP: miss update, add, remove, fields sort
 */
-EditableList
 {
 	description?: string,
   data?: { id: string, label: string }[],
@@ -319,10 +319,10 @@ EditableList
 }
 
 
--------------------------
 
+# EventsList
+/widget-samples/eventlist.png
 
-EventsList
 {
   sseEndpoint?: string,
   sseTopic?: string,
@@ -365,10 +365,11 @@ EventsList
   }[],
 }
 
--------------------------
 
 
-FormGenerator
+# FormGenerator
+/widget-samples/formgenerator.png
+
 {
 	title?: string,
 	description?: string,
@@ -384,10 +385,11 @@ FormGenerator
 	prefix: "filtersCompositions",
 }
 
--------------------------
 
 
-Panel
+# Panel
+/widget-samples/panel.png
+
 {
 	title: string,
 	tooltip: string,
@@ -404,10 +406,10 @@ Panel
 }
 
 
--------------------------
 
+# Paragraph
+/widget-samples/paragraph.png
 
-Paragraph
 {
 	text: string
 }
@@ -416,10 +418,11 @@ Paragraph
 	text: "lorem ipsum dolor sit amet"
 }
 
--------------------------
 
 
-RichElement
+# RichElement
+/widget-samples/richelement.png
+
 {
 	icon: string,
 	color: "blue" | "darkBlue" | "orange" | "gray" | "red", title: string,
@@ -433,10 +436,11 @@ RichElement
 	description: "lorem ipsum dolor sit amet"
 }
 
--------------------------
 
 
-RichRow
+# RichRow
+/widget-samples/richrow.png
+
 {
 	color: "blue" | "darkBlue" | "orange" | "gray" | "red",
 	icon: string,
@@ -455,10 +459,12 @@ RichRow
 	secondaryText: "lorem ipsum dolor sit amet"
 }
 
--------------------------
 
 
-TerminalPanel
+
+# TerminalPanel
+/widget-samples/terminal.png
+
 {
   nodeId: string,
   commands: string,
