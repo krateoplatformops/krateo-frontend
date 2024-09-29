@@ -10,6 +10,13 @@ export default defineConfig({
       icon: true,
     },
   })],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: "modern-compiler",
+      }
+    }
+  },
   server: {
     proxy: {
       // "/apis": {
