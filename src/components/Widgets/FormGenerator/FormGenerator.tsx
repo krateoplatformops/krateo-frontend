@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Anchor, App, Col, Form, FormInstance, Input, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import { useGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
+import { useGetContentQuery, useLazyGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 import { DataListFilterType, setFilters } from "../../../features/dataList/dataListSlice";
 import ListEditor from "../ListEditor/ListEditor";
@@ -28,9 +28,11 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 
 	// get fields
 	const {data, isLoading, isFetching, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint?.replace("/form/", "/forms/")});
+	const [getContent] = useLazyGetContentQuery();
 	const [formData, setFormData] = useState<any>("idle");
 	const [formEndpoint, setFormEndpoint] = useState<string>();
 	const fieldsData: {type: string, name: string}[] = [];
+	const [loadingFields, setLoadingFields] = useState({});
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -118,7 +120,13 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 		)
 	}
 
-	const renderField = (label: string, name: string, node: any, required: boolean) => {
+	const setLoading = (key: string, value: boolean) => {
+		const loadingObj = {...loadingFields}
+		loadingObj[key] = value
+		setLoadingFields(loadingObj)
+	}
+
+	const renderField = async (label: string, name: string, node: any, required: boolean) => {
 		const rules: any[] = [];
 		if (required) {
 			rules.push({required: true, message: "Insert a value"})
@@ -138,7 +146,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 							rules={rules}
 						>
 							{node.enum ? (
-								node.enum > 4 ? (
+								node.enum.length > 4 ? (
 									<Select
 										placeholder={node.description ? node.description : undefined}
 										options={node.enum.map(opt => ({value: opt, label: opt}))}
@@ -199,6 +207,41 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 							rules={rules}
 						>
 							<Slider step={1} min={node.minimum ? node.minimum : 0} max={node.maximum ? node.maximum : 100} />
+						</Form.Item>
+					</div>
+				)
+			
+			case "selectWithFilters":
+				let options;
+				if (node.source) {
+					options = node.source.map(opt => ({value: opt, label: opt}))
+				}
+				if (node.endpoint) {
+					try {
+						setLoading(name, true)
+						const result = await getContent({endpoint: node.endpoint}).unwrap()
+						options = result.map(opt => ({value: opt, label: opt}))
+						setLoading(name, false)
+					} catch(error) {
+						catchError({ message: "Unable to retrieve field data"})
+					}
+				}
+				return (
+					<div id={name} className={styles.formField}>
+						<Form.Item
+							key={name}
+							label={renderLabel(name, label)}
+							name={name.split(".")}
+							rules={rules}
+						>
+							<Select
+								placeholder={node.description ? node.description : undefined}
+								loading={loadingFields[name]}
+								options={options}
+								allowClear
+								showSearch
+								optionFilterProp="label"
+							/>
 						</Form.Item>
 					</div>
 				)
