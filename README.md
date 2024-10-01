@@ -26,9 +26,13 @@ Copy content of _/build_ folder in your web server
 
 ## Widget List
 
-# Button
-/widget-samples/button.png
+### Button
 
+![Button](/widget-samples/button.png) 
+
+#### Properties
+
+```
 {
   icon?: string,
   label?: string,
@@ -42,7 +46,11 @@ Copy content of _/build_ folder in your web server
   }[],
   verb?: "get" | "delete",
 }
+```
 
+#### Example
+
+```
 {
   icon: "fa-gear",
   label: "click here!",
@@ -58,11 +66,15 @@ Copy content of _/build_ folder in your web server
   ],
   verb: "get",
 }
+```
 
+### CardTemplate
 
-# CardTemplate
-/widget-samples/card.png
+![CardTemplate](/widget-samples/card.png) 
 
+#### Properties
+
+```
 {
 	id: string,
  	icon: string,
@@ -78,7 +90,11 @@ Copy content of _/build_ folder in your web server
  	}[],
  	panel: string
 }
+```
 
+#### Example
+
+```
 {
 	id: "e35ac33c-bd86-4301-83ee-c14236691a74",
  	icon: "fa-gear",
@@ -96,11 +112,15 @@ Copy content of _/build_ folder in your web server
   ],
  	panel: "true",
 }
+```
 
+### ChartBars
 
-# ChartBars
-/widget-samples/chartbars.png
+![ChartBars](/widget-samples/chartbars.png) 
 
+#### Properties
+
+```
 {
   data: {
 	  label: string;
@@ -109,7 +129,11 @@ Copy content of _/build_ folder in your web server
 	  color: "success" | "normal" | "exception" | "active";
   }[];
 }
+```
 
+#### Example
+
+```
 {
   data: [
 	  {
@@ -120,11 +144,16 @@ Copy content of _/build_ folder in your web server
 	  }
 	];
 }
+```
 
 
-# ChartFlow
-/widget-samples/chartflow.png
+### ChartFlow
 
+![ChartFlow](/widget-samples/chartflow.png) 
+
+#### Properties
+
+```
 {
 	uid: string,
 	name: string,
@@ -141,8 +170,11 @@ Copy content of _/build_ folder in your web server
 		uid: string,
 	}[]
 }[]
+```
 
+#### Example
 
+```
 [
 	{
 		uid: "ad8a8b68-40e7-4eb0-aac0-58df5ccd4820",
@@ -163,11 +195,16 @@ Copy content of _/build_ folder in your web server
 		]
 	}
 ]
+```
 
 
-# ChartLine
-/widget-samples/chartline.png
+### ChartLine
 
+![ChartLine](/widget-samples/chartline.png) 
+
+#### Properties
+
+```
 {
 	color: "success" | "normal" | "exception" | "active";
 	data: {
@@ -175,7 +212,11 @@ Copy content of _/build_ folder in your web server
 		yValue: string | number,
 	}[]
 }
+```
 
+#### Example
+
+```
 {
 	color: "normal";
 	data: {
@@ -183,11 +224,15 @@ Copy content of _/build_ folder in your web server
 		yValue: 1998,
 	}[]
 }
+```
 
+### ChartMultipleBars
 
-# ChartMultipleBars
-/widget-samples/chartmultiplebars.png
+![ChartMultipleBars](/widget-samples/chartmultiplebars.png) 
 
+#### Properties
+
+```
 {
 	data: {
 		label: string,
@@ -198,7 +243,11 @@ Copy content of _/build_ folder in your web server
 		}[]
 	}[]
 }
+```
 
+#### Example
+
+```
 {
 	data: [
 		{
@@ -218,28 +267,39 @@ Copy content of _/build_ folder in your web server
 	  }
   ]
 }
+```
 
+### ChartPie
 
-# ChartPie
-/widget-samples/chartpie.png
+![ChartPie](/widget-samples/chartpie.png) 
 
+#### Properties
+
+```
 {
 	label?: string;
  	value: number;
  	total: number;
  	status: "default" | "error" | "warning"
 }
+```
 
+#### Example
+
+```
 {
 	label?: "lorem ipsum";
  	value: 1522;
  	total: 4895;
  	status: "default"
 }
+```
 
+### DataList
 
-# DataList
+#### Properties
 
+```
 {
 	prefix: string,
 	data: {
@@ -254,7 +314,11 @@ Copy content of _/build_ folder in your web server
 	}[],
 	asGrid: boolean
 }
+```
 
+#### Example
+
+```
 {
 	prefix: "compositionsFiltered",
 	data: {
@@ -269,10 +333,11 @@ Copy content of _/build_ folder in your web server
 	}[],
 	asGrid: boolean
 }
+```
 
+### DynamicContent
 
-
-# DynamicContent
+#### Properties
 
 {
 	prefix: string,
@@ -284,6 +349,8 @@ Copy content of _/build_ folder in your web server
 	}[]
 }
 
+#### Example
+
 {
 	prefix: "documentList",
 	content: {
@@ -294,10 +361,7 @@ Copy content of _/build_ folder in your web server
 	}[]
 }
 
-
-
-
-# EditableContent
+### EditableContent
 /* 
 	WIP: miss update and check markdown editor
 */
@@ -307,7 +371,7 @@ Copy content of _/build_ folder in your web server
 }
 
 
-# EditableList
+### EditableList
 /* 
 	WIP: miss update, add, remove, fields sort
 */
@@ -318,11 +382,13 @@ Copy content of _/build_ folder in your web server
 	endpoint: string,
 }
 
+### EventsList
 
+![EventsList](/widget-samples/eventlist.png) 
 
-# EventsList
-/widget-samples/eventlist.png
+#### Properties
 
+```
 {
   sseEndpoint?: string,
   sseTopic?: string,
@@ -343,7 +409,11 @@ Copy content of _/build_ folder in your web server
   	}
   }[],
 }
+```
 
+#### Example
+
+```
 {
   sseEndpoint: "/lorem/ipsum",
   sseTopic: "test",
@@ -364,32 +434,41 @@ Copy content of _/build_ folder in your web server
   	}
   }[],
 }
+```
 
+### FormGenerator
 
+![FormGenerator](/widget-samples/formgenerator.png) 
 
-# FormGenerator
-/widget-samples/formgenerator.png
+#### Properties
 
+```
 {
 	title?: string,
 	description?: string,
 	fieldsEndpoint?: string,
 	prefix?: string,
 }
+```
 
+#### Example
 
+```
 {
 	title: "lorem ipsum dolor sit amet",
 	description: "lorem ipsum dolor sit amet",
 	fieldsEndpoint: "/lorem/ipsum",
 	prefix: "filtersCompositions",
 }
+```
 
+### Panel
 
+![Panel](/widget-samples/panel.png) 
 
-# Panel
-/widget-samples/panel.png
+#### Properties
 
+```
 {
 	title: string,
 	tooltip: string,
@@ -397,50 +476,69 @@ Copy content of _/build_ folder in your web server
 		// other widget
 	}
 }
+```
 
+#### Example
 
+```
 {
 	title: "lorem ipsum dolor sit amet",
 	tooltip: "lorem ipsum dolor sit amet",
 	content: // other widget
 }
+```
 
+### Paragraph
 
+![Paragraph](/widget-samples/paragraph.png) 
 
-# Paragraph
-/widget-samples/paragraph.png
+#### Properties
 
+```
 {
 	text: string
 }
+```
 
+#### Example
+
+```
 {
 	text: "lorem ipsum dolor sit amet"
 }
+```
 
+### RichElement
 
+![RichElement](/widget-samples/richelement.png) 
 
-# RichElement
-/widget-samples/richelement.png
+#### Properties
 
+```
 {
 	icon: string,
 	color: "blue" | "darkBlue" | "orange" | "gray" | "red", title: string,
 	description: string
 }
+```
 
+#### Example
 
+```
 {
 	icon: "fa-gear",
 	color: "blue",
 	description: "lorem ipsum dolor sit amet"
 }
+```
 
+### RichRow
 
+![RichRow](/widget-samples/richrow.png) 
 
-# RichRow
-/widget-samples/richrow.png
+#### Properties
 
+```
 {
 	color: "blue" | "darkBlue" | "orange" | "gray" | "red",
 	icon: string,
@@ -449,7 +547,11 @@ Copy content of _/build_ folder in your web server
 	subSecondaryText: string,
 	secondaryText: string
 }
+```
 
+#### Example
+
+```
 {
 	color: "blue",
 	icon: "fa-gear",
@@ -458,26 +560,37 @@ Copy content of _/build_ folder in your web server
 	subSecondaryText: "lorem ipsum dolor sit amet",
 	secondaryText: "lorem ipsum dolor sit amet"
 }
+```
 
+### TerminalPanel
 
+![TerminalPanel](/widget-samples/terminal.png) 
 
+#### Properties
 
-# TerminalPanel
-/widget-samples/terminal.png
-
+```
 {
   nodeId: string,
   commands: string,
 }
+```
 
+#### Example
+
+```
 {
   nodeId: "e35ac33c-bd86-4301-83ee-c14236691a74",
   commands: "[{command: "xyz", label: "lorem ipsum"}]",
 }
+```
 
-# TableData
-/widget-samples/tabledata.png
+### TableData
 
+![TableData](/widget-samples/tabledata.png) 
+
+#### Properties
+
+```
 {
   pageSize?: number
   columns: {
@@ -492,3 +605,4 @@ Copy content of _/build_ folder in your web server
     }[]
   }[]
 }
+```
