@@ -28,7 +28,7 @@ Copy content of _/build_ folder in your web server
 
 ### Button
 
-![Button](/widget-samples/button.png) 
+![Button](/widgets-samples/button.png) 
 
 #### Properties
 
@@ -70,7 +70,7 @@ Copy content of _/build_ folder in your web server
 
 ### CardTemplate
 
-![CardTemplate](/widget-samples/card.png) 
+![CardTemplate](/widgets-samples/card.png) 
 
 #### Properties
 
@@ -116,7 +116,7 @@ Copy content of _/build_ folder in your web server
 
 ### ChartBars
 
-![ChartBars](/widget-samples/chartbars.png) 
+![ChartBars](/widgets-samples/chartbars.png) 
 
 #### Properties
 
@@ -149,7 +149,7 @@ Copy content of _/build_ folder in your web server
 
 ### ChartFlow
 
-![ChartFlow](/widget-samples/chartflow.png) 
+![ChartFlow](/widgets-samples/chartflow.png) 
 
 #### Properties
 
@@ -200,7 +200,7 @@ Copy content of _/build_ folder in your web server
 
 ### ChartLine
 
-![ChartLine](/widget-samples/chartline.png) 
+![ChartLine](/widgets-samples/chartline.png) 
 
 #### Properties
 
@@ -228,7 +228,7 @@ Copy content of _/build_ folder in your web server
 
 ### ChartMultipleBars
 
-![ChartMultipleBars](/widget-samples/chartmultiplebars.png) 
+![ChartMultipleBars](/widgets-samples/chartmultiplebars.png) 
 
 #### Properties
 
@@ -271,7 +271,7 @@ Copy content of _/build_ folder in your web server
 
 ### ChartPie
 
-![ChartPie](/widget-samples/chartpie.png) 
+![ChartPie](/widgets-samples/chartpie.png) 
 
 #### Properties
 
@@ -384,7 +384,7 @@ Copy content of _/build_ folder in your web server
 
 ### EventsList
 
-![EventsList](/widget-samples/eventlist.png) 
+![EventsList](/widgets-samples/eventlist.png) 
 
 #### Properties
 
@@ -438,7 +438,7 @@ Copy content of _/build_ folder in your web server
 
 ### FormGenerator
 
-![FormGenerator](/widget-samples/formgenerator.png) 
+![FormGenerator](/widgets-samples/formgenerator.png) 
 
 #### Properties
 
@@ -464,7 +464,7 @@ Copy content of _/build_ folder in your web server
 
 ### Panel
 
-![Panel](/widget-samples/panel.png) 
+![Panel](/widgets-samples/panel.png) 
 
 #### Properties
 
@@ -490,7 +490,7 @@ Copy content of _/build_ folder in your web server
 
 ### Paragraph
 
-![Paragraph](/widget-samples/paragraph.png) 
+![Paragraph](/widgets-samples/paragraph.png) 
 
 #### Properties
 
@@ -510,7 +510,7 @@ Copy content of _/build_ folder in your web server
 
 ### RichElement
 
-![RichElement](/widget-samples/richelement.png) 
+![RichElement](/widgets-samples/richelement.png) 
 
 #### Properties
 
@@ -534,7 +534,7 @@ Copy content of _/build_ folder in your web server
 
 ### RichRow
 
-![RichRow](/widget-samples/richrow.png) 
+![RichRow](/widgets-samples/richrow.png) 
 
 #### Properties
 
@@ -564,7 +564,7 @@ Copy content of _/build_ folder in your web server
 
 ### TerminalPanel
 
-![TerminalPanel](/widget-samples/terminal.png) 
+![TerminalPanel](/widgets-samples/terminal.png) 
 
 #### Properties
 
@@ -586,7 +586,7 @@ Copy content of _/build_ folder in your web server
 
 ### TableData
 
-![TableData](/widget-samples/tabledata.png) 
+![TableData](/widgets-samples/tabledata.png) 
 
 #### Properties
 
