@@ -169,7 +169,7 @@ Copy content of _/build_ folder in your web server
 /widget-samples/chartline.png
 
 {
-	color: "success" | "normal" | "exception" | "active";
+	color: "blue" | "darkBlue" | "orange" | "gray" | "red" | "green",
 	data: {
 		xValue: string | number,
 		yValue: string | number,
@@ -177,7 +177,7 @@ Copy content of _/build_ folder in your web server
 }
 
 {
-	color: "normal";
+	color: "blue",
 	data: {
 		xValue: "2010-01",
 		yValue: 1998,
@@ -224,17 +224,48 @@ Copy content of _/build_ folder in your web server
 /widget-samples/chartpie.png
 
 {
-	label?: string;
- 	value: number;
- 	total: number;
- 	status: "default" | "error" | "warning"
+	title?: string;
+  description?: string;
+  series: {
+    total: number,
+    data: {
+      color: "blue" | "darkBlue" | "orange" | "gray" | "red" | "green",
+      value: number,
+      label: string
+    }[]
+  }[]
 }
 
 {
-	label?: "lorem ipsum";
- 	value: 1522;
- 	total: 4895;
- 	status: "default"
+	title="5896",
+  description="Licenses",
+	series={[
+		{
+			total: 5000,
+			data: [
+				{
+					color: "blue",
+					value: 1890,
+					label: "label #1"
+				},
+				{
+					color: "darkBlue",
+					value: 1415,
+					label: "label #2"
+				},
+			]
+		},
+		{
+			total: 2000,
+			data: [
+				{
+					color: "red",
+					value: 495,
+					label: "label #3"
+				}
+			]
+		}
+	]}
 }
 
 
