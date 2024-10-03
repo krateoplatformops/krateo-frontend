@@ -8,7 +8,6 @@ import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../features/auth/authSlice";
-import ChartPie from "../Widgets/ChartPie/ChartPie";
 
 const Page = ({clientId, endpoint}: PageType) => {
   const isMock = useRef(false);
