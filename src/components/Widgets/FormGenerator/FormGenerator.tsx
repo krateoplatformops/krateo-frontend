@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Anchor, App, Col, Form, FormInstance, Input, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
+import { Anchor, App, Col, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, useLazyGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -198,6 +198,8 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 
 			case "integer":
 				form.setFieldValue(name.split("."), (node.minimum || 0));
+				const min = node.minimum
+				const max = node.maximum
 				return (
 					<div id={name} className={styles.formField}>
 						<Form.Item
@@ -206,7 +208,12 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 							name={name.split(".")}
 							rules={rules}
 						>
-							<Slider step={1} min={node.minimum ? node.minimum : 0} max={node.maximum ? node.maximum : 100} />
+							{
+								min && max && (max - min < 100) ?
+								<Slider step={1} min={min} max={max} />
+								:
+								<InputNumber min={min ? min : 0} max={max ? max : undefined} step={1} />
+							}
 						</Form.Item>
 					</div>
 				)
