@@ -3,7 +3,14 @@ import useParseData from "../../../hooks/useParseData";
 import styles from "./styles.module.scss";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 
-const Panel = ({title, tooltip, buttons, content}) => {
+type PanelType = {
+  title?: string,
+  tooltip?: string,
+  buttons?: React.ReactElement[],
+  content: React.ReactElement
+}
+
+const Panel = ({title, tooltip, buttons, content}: PanelType) => {
   const [parseContent] = useParseData()
 
   // let panelContent;

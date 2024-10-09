@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Anchor, App, Col, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import { useGetContentQuery, useLazyGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
+import { useGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 import { DataListFilterType, setFilters } from "../../../features/dataList/dataListSlice";
 import ListEditor from "../ListEditor/ListEditor";
 import styles from "./styles.module.scss";
 import Skeleton from "../../Skeleton/Skeleton";
 import useCatchError from "../../../utils/useCatchError";
+import SelectWithFilters from "./SelectWithFilters";
 
 type FormGeneratorType = {
 	title?: string,
@@ -15,10 +16,11 @@ type FormGeneratorType = {
 	fieldsEndpoint?: string,
 	form: FormInstance<any>,
 	prefix?: string,
-	onClose: () => void
+	onClose: () => void,
+	disableButtons: (value: boolean) => void
 }
 
-const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClose }: FormGeneratorType) => {
+const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClose, disableButtons }: FormGeneratorType) => {
 
 	const [postContent, { data: postData, isLoading: postLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
 	const { message } = App.useApp();
@@ -28,11 +30,9 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 
 	// get fields
 	const {data, isLoading, isFetching, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint?.replace("/form/", "/forms/")});
-	const [getContent] = useLazyGetContentQuery();
 	const [formData, setFormData] = useState<any>("idle");
 	const [formEndpoint, setFormEndpoint] = useState<string>();
 	const fieldsData: {type: string, name: string}[] = [];
-	const [loadingFields, setLoadingFields] = useState({});
 
 	useEffect(() => {
 		if (isSuccess) {
@@ -120,13 +120,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 		)
 	}
 
-	const setLoading = (key: string, value: boolean) => {
-		const loadingObj = {...loadingFields}
-		loadingObj[key] = value
-		setLoadingFields(loadingObj)
-	}
-
-	const renderField = async (label: string, name: string, node: any, required: boolean) => {
+	const renderField = (label: string, name: string, node: any, required: boolean) => {
 		const rules: any[] = [];
 		if (required) {
 			rules.push({required: true, message: "Insert a value"})
@@ -212,27 +206,13 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 								min && max && (max - min < 100) ?
 								<Slider step={1} min={min} max={max} />
 								:
-								<InputNumber min={min ? min : 0} max={max ? max : undefined} step={1} />
+								<InputNumber min={min ? min : 0} max={max ? max : undefined} step={1} style={{width: '100%'}} />
 							}
 						</Form.Item>
 					</div>
 				)
 			
 			case "selectWithFilters":
-				let options;
-				if (node.source) {
-					options = node.source.map(opt => ({value: opt, label: opt}))
-				}
-				if (node.endpoint) {
-					try {
-						setLoading(name, true)
-						const result = await getContent({endpoint: node.endpoint}).unwrap()
-						options = result.map(opt => ({value: opt, label: opt}))
-						setLoading(name, false)
-					} catch(error) {
-						catchError({ message: "Unable to retrieve field data"})
-					}
-				}
 				return (
 					<div id={name} className={styles.formField}>
 						<Form.Item
@@ -241,14 +221,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 							name={name.split(".")}
 							rules={rules}
 						>
-							<Select
-								placeholder={node.description ? node.description : undefined}
-								loading={loadingFields[name]}
-								options={options}
-								allowClear
-								showSearch
-								optionFilterProp="label"
-							/>
+							<SelectWithFilters node={node} />
 						</Form.Item>
 					</div>
 				)
@@ -302,7 +275,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 			arrEndPoint.push(name);
 
 			const postEndpoint = arrEndPoint.join("/");
-			
+
 			// remove metadata from values
 			delete values['metadata']
 
@@ -319,10 +292,17 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 			
 			// submit values
 			if (!postLoading && !isPostError && !isPostSuccess) {
-				await postContent({
-					endpoint: postEndpoint,
-					body: payload,
-				});
+				try {
+					await postContent({
+						endpoint: postEndpoint,
+						body: payload,
+					});
+					// close panel
+					onClose()
+				} catch(error) {
+					catchError({ message: "Unable to send data"})
+					// keep panel opened
+				}
 			}
 		}
 
@@ -336,10 +316,9 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 				}
 			})
 			dispatch(setFilters({filters, prefix}))
+			// close panel
+			onClose()
 		}
-
-		// close panel
-		onClose()
 	}
 
 	useEffect(() => {
@@ -352,16 +331,24 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 		if (isPostSuccess) {
 			message.success('Operation successful');
 			// go to created element page if a specific props is true
-			console.log("postData", postData);
 			// navigate("");
 		}
 	}, [message, isPostSuccess, postData]);
 
 	useEffect(() => {
-    if (isLoading || postLoading) {
+    if (isLoading) {
       message.loading('Receiving data...');
     }
-  }, [isLoading, postLoading, message]);
+  }, [isLoading, message]);
+
+	useEffect(() => {
+    if (postLoading) {
+			disableButtons(true)
+      message.loading('Sending data...');
+    } else {
+			disableButtons(false)
+		}
+  }, [postLoading, message]);
 
 	return (
 		isLoading || isFetching ?
@@ -385,8 +372,10 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 											<div className={styles.metadataFields}>
 												{ renderMetadataFields() }
 											</div>
-											{ renderFields() }
-											{ generateInitialValues() }
+											<>
+												{ renderFields() }
+												{ generateInitialValues() }
+											</>
 										</Form>
 								</div>
 						</Col>

@@ -1,6 +1,7 @@
 @import '../../../theme/global.scss';
 
 .card {
+  background-color: $light-color;
 
   :global .ant-card-head {
     border: none;

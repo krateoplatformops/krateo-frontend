@@ -4,6 +4,7 @@ import widgets from "../Widgets/index";
 // import { selectFilters } from "../../features/dataList/dataListSlice";
 // import dayjs from "dayjs";
 import styles from "./styles.module.scss";
+import { useState } from "react";
 
 type DrawerPanelType = {
   panel: {
@@ -35,10 +36,12 @@ const DrawerPanel = ({panel, isOpen, onClose}: DrawerPanelType) => {
   // const filters = useSelector(selectFilters);
   const [form] = Form.useForm();
   const panelProps = {...panel.content.props};
+  const [disableButtons, setDisableButtons] = useState<boolean>(false);
 
   if (panel.type === "form") {
     // add form object to panel
     panelProps["form"] = form;
+    panelProps["disableButtons"] = setDisableButtons
   }
 
   // const generateInitialValues = () => {
@@ -77,7 +80,7 @@ const DrawerPanel = ({panel, isOpen, onClose}: DrawerPanelType) => {
         panel.type === "form" &&
         <Space>
           {
-            panel.buttons?.map((but, i) => <Button key={`btn_${i}`} type={but.type} onClick={() => onClickButton(but.action)}>{but.label}</Button>)
+            panel.buttons?.map((but, i) => <Button key={`btn_${i}`} type={but.type} onClick={() => onClickButton(but.action)} disabled={disableButtons}>{but.label}</Button>)
           }
         </Space>
       }
