@@ -637,3 +637,15 @@ Copy content of _/build_ folder in your web server
   }[]
 }
 ```
+
+### YamlViewer
+
+![YamlViewer](/widgets-samples/yamlviewer.png) 
+
+#### Properties
+
+```
+{
+  yaml: string
+}
+```
