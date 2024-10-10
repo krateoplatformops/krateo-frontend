@@ -8,8 +8,6 @@ import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../features/auth/authSlice";
-import YamlViewer from "../Widgets/YamlViewer/YamlViewer";
-import Panel from "../Widgets/Panel/Panel";
 
 const Page = ({clientId, endpoint}: PageType) => {
   const isMock = useRef(false);
@@ -2068,61 +2066,6 @@ const Page = ({clientId, endpoint}: PageType) => {
 
   return (
     <section className={styles.page}>
-      <Panel  title="This is the Krateo Yaml Viewer" content={
-        <YamlViewer yaml={
-`---
-# yaml document beginning
-# comment syntax
-
-# Basic syntax - key and value separated by colon and space before the value
-key: value
-
-# Scalar data types
-integerValue: 1                     # integer value
-octalNumber: 0123                     # Octal Numeric vale
-hexaNumber: 0x4dea1                     # Hexa Decimal Numeric vale
-
-floatingValue: 1                     # floating vale
-
-stringValue: "456"                   # string with double quotes
-stringValue: 'abc'                  # string with single quotes
-stringValue: wer                   # string without quotes
-
-booleanValue:true                   # boolean values - true or false
-
-
-# Multiline string with literal block syntax -preserved new lines
-string1: |
-  Line1
-  line2
-  "line3"
-  line4
-
-# Multiline strings with folded block syntax - new lines are not preserved, leading and trailing spaces are ignored
-  string1: >
-  Line1
-  line2
-  "line3"
-  line4
-# Collection sequence data types
-# sequence ArrayList example
-- One
-- two
-- Three
-
-  # Another way of sequence  syntax example
-  [one, two, three]
-
-### dictionary
-  mysqldatabase:
-    hostname: localhost
-    port: 3012
-    username: root
-    password: root`
-}
-        />
-      } />
-
       { isLoading && <Skeleton /> }
       { ((data !== undefined && data.code === undefined && isSuccess === true) || isMock) && getContentPage() }
       { (isError && !isMock.current) && catchError(error, "result") }

@@ -19,9 +19,9 @@ import TerminalPanel from "./TerminalPanel/TerminalPanel";
 
 const widgets = {
   "chartPie": ChartPie,
-  "ChartLine": ChartLine,
-  "ChartBars": ChartBars,
-  "ChartMultipleBars": ChartMultipleBars,
+  "chartLine": ChartLine,
+  "chartBars": ChartBars,
+  "chartMultipleBars": ChartMultipleBars,
   "chartflow": ChartFlow,
   "CardTemplateList": CardTemplateList,
   "card": CardTemplate,
