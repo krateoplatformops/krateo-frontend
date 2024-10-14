@@ -13,6 +13,7 @@ import SelectWithFilters from "./SelectWithFilters";
 type FormGeneratorType = {
 	title?: string,
 	description?: string,
+	descriptionTooltip: boolean,
 	fieldsEndpoint?: string,
 	form: FormInstance<any>,
 	prefix?: string,
@@ -20,7 +21,7 @@ type FormGeneratorType = {
 	disableButtons: (value: boolean) => void
 }
 
-const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClose, disableButtons }: FormGeneratorType) => {
+const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEndpoint, form, prefix, onClose, disableButtons }: FormGeneratorType) => {
 
 	const [postContent, { data: postData, isLoading: postLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
 	const { message } = App.useApp();
@@ -138,11 +139,12 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 							label={renderLabel(name, label)}
 							name={name.split(".")}
 							rules={rules}
+							tooltip={descriptionTooltip && node.description ? node.description : undefined}
+							extra={!descriptionTooltip && node.description ? node.description : undefined}
 						>
 							{node.enum ? (
 								node.enum.length > 4 ? (
 									<Select
-										placeholder={node.description ? node.description : undefined}
 										options={node.enum.map(opt => ({value: opt, label: opt}))}
 										allowClear
 									/>
@@ -150,9 +152,7 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 									:
 									<Radio.Group>{node.enum.map((el) => <Radio key={`radio_${el}`} value={el}>{el}</Radio>)}</Radio.Group>
 								) : 
-								<Input
-									placeholder={node.description ? node.description : undefined}
-								/>
+								<Input />
 							}
 						</Form.Item>
 					</div>
@@ -169,6 +169,8 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 								name={name.split(".")}
 								valuePropName="checked"
 								rules={rules}
+								tooltip={descriptionTooltip && node.description ? node.description : undefined}
+								extra={!descriptionTooltip && node.description ? node.description : undefined}
 							>
 								<Switch />
 							</Form.Item>
@@ -184,6 +186,8 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 							label={renderLabel(name, label)}
 							name={name.split(".")}
 							rules={rules}
+							tooltip={descriptionTooltip && node.description ? node.description : undefined}
+							extra={!descriptionTooltip && node.description ? node.description : undefined}
 						>
 							<ListEditor onChange={(values) => {form.setFieldValue(name, values)}} />
 						</Form.Item>
@@ -201,6 +205,8 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 							label={renderLabel(name, label)}
 							name={name.split(".")}
 							rules={rules}
+							tooltip={descriptionTooltip && node.description ? node.description : undefined}
+							extra={!descriptionTooltip && node.description ? node.description : undefined}
 						>
 							{
 								min && max && (max - min < 100) ?
@@ -220,6 +226,8 @@ const FormGenerator = ({title, description, fieldsEndpoint, form, prefix, onClos
 							label={renderLabel(name, label)}
 							name={name.split(".")}
 							rules={rules}
+							tooltip={descriptionTooltip && node.description ? node.description : undefined}
+							extra={!descriptionTooltip && node.description ? node.description : undefined}
 						>
 							<SelectWithFilters node={node} />
 						</Form.Item>

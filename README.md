@@ -478,6 +478,7 @@ Copy content of _/build_ folder in your web server
 	title?: string,
 	description?: string,
 	fieldsEndpoint?: string,
+	descriptionTooltip: boolean,
 	prefix?: string,
 }
 ```
@@ -489,6 +490,7 @@ Copy content of _/build_ folder in your web server
 	title: "lorem ipsum dolor sit amet",
 	description: "lorem ipsum dolor sit amet",
 	fieldsEndpoint: "/lorem/ipsum",
+	descriptionTooltip: true,
 	prefix: "filtersCompositions",
 }
 ```
