@@ -49,17 +49,21 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 	}, [data, isSuccess])
 
 	const parseData = (node, name) => {
-		return Object.keys(node.properties).map(k => {
-			const currentName = name ? `${name}.${k}` : k;
-			if (node.properties[k].type === "object") {
-				return parseData(node.properties[k], currentName)
-			} else {
-				// return field
-				const required = Array.isArray(node?.required) && node.required.indexOf(k) > -1;
-				fieldsData.push({type: node.properties[k].type, name: currentName});
-				return renderField(k, currentName, node.properties[k], required);
-			}
-		})
+		if (node.properties) {
+			return Object.keys(node.properties).map(k => {
+				const currentName = name ? `${name}.${k}` : k;
+				if (node.properties[k].type === "object") {
+					return parseData(node.properties[k], currentName)
+				} else {
+					// return field
+					const required = Array.isArray(node?.required) && node.required.indexOf(k) > -1;
+					fieldsData.push({type: node.properties[k].type, name: currentName});
+					return renderField(k, currentName, node.properties[k], required);
+				}
+			})
+		} else {
+			return []
+		}
 	}
 
 	const renderMetadataFields = () => {
@@ -78,17 +82,21 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 
 	const generateInitialValues = () => {
 		const parseData = (node, name) => {
-			return Object.keys(node.properties).map(k => {
-				const currentName = name ? `${name}.${k}` : k;
-				if (node.properties[k].type === "object") {
-					return parseData(node.properties[k], currentName)
-				} else {
-					// set default value
-					if (node.properties[k].default) {
-						form.setFieldValue(currentName.split("."), node.properties[k].default);
+			if (node.properties) {
+				return Object.keys(node.properties).map(k => {
+					const currentName = name ? `${name}.${k}` : k;
+					if (node.properties[k].type === "object") {
+						return parseData(node.properties[k], currentName)
+					} else {
+						// set default value
+						if (node.properties[k].default) {
+							form.setFieldValue(currentName.split("."), node.properties[k].default);
+						}
 					}
-				}
-			})
+				})
+			} else {
+				return []
+			}
 		}
 		if (formData.spec) parseData(formData.spec, "");
 	}
@@ -238,26 +246,30 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 
 	const getAnchorList = () => {
 		const parseData = (node, name) => {
-			return Object.keys(node.properties).map(k => {
-								const currentName = name ? `${name}.${k}` : k;
-				if (node.properties[k].type === "object") {
-					// create children
-					return {
-						key: currentName,
-						title: <span className={styles.anchorObjectLabel}>{k}</span>,
-						children: parseData(node.properties[k], currentName),
+			if (node.properties) {
+				return Object.keys(node.properties).map(k => {
+									const currentName = name ? `${name}.${k}` : k;
+					if (node.properties[k].type === "object") {
+						// create children
+						return {
+							key: currentName,
+							title: <span className={styles.anchorObjectLabel}>{k}</span>,
+							children: parseData(node.properties[k], currentName),
+						}
+					} else {
+						// return obj
+						return {
+							key: currentName,
+							href: `#${currentName}`,
+							title: k
+						}
 					}
-				} else {
-					// return obj
-					return {
-						key: currentName,
-						href: `#${currentName}`,
-						title: k
-					}
-				}
-			})
+				})
+			} else {
+				return []
+			}
 		}
-		return [...parseData(formData.spec, "")];
+		if (formData.spec) return [...parseData(formData.spec, "")];
 	}
 
 	const onSubmit = async (values: object) => {
@@ -342,12 +354,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 			// navigate("");
 		}
 	}, [message, isPostSuccess, postData]);
-
-	useEffect(() => {
-    if (isLoading) {
-      message.loading('Receiving data...');
-    }
-  }, [isLoading, message]);
 
 	useEffect(() => {
     if (postLoading) {

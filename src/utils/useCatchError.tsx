@@ -1,6 +1,8 @@
 import { SerializedError } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { App, Result } from "antd";
+import { useAppDispatch } from "../redux/hooks";
+import { logout } from "../features/auth/authSlice";
 
 const useCatchError = () => {
   const { notification } = App.useApp();
@@ -11,6 +13,7 @@ const useCatchError = () => {
     // Adjust to account for potentially nested error structure
     let actualErrorCode: number;
     let actualErrorMessage: string = "";
+    const dispatch = useAppDispatch();
 
     if (error?.message && JSON.parse(error.message).data?.code) {
       // error from API with status 200
@@ -19,8 +22,15 @@ const useCatchError = () => {
       
       const clientErrorRegex = /^4\d{2}$/; // Regex for 4xx client errors
       if (clientErrorRegex.test(String(actualErrorCode))) {
-        message = actualErrorMessage;
-        description = "There was an error processing your request. Please check your input or permissions.";
+        if (actualErrorCode === 401) {
+          // not authorized
+          dispatch(logout());
+          message = "Your session has expired";
+          description = "Sign in again"
+        } else {
+          message = actualErrorMessage;
+          description = "There was an error processing your request. Please check your input or permissions.";
+        }
       } else {
         switch (actualErrorCode) {
           // Handle other specific codes if necessary
@@ -47,7 +57,7 @@ const useCatchError = () => {
         notification.error({
           description: description,
           message: message,
-          duration: 2,
+          duration: 4,
         });
     }
   }
