@@ -7,7 +7,6 @@ import useCatchError from "../../utils/useCatchError";
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
-import { logout } from "../../features/auth/authSlice";
 
 const Page = ({clientId, endpoint}: PageType) => {
   const isMock = useRef(false);
@@ -22,11 +21,7 @@ const Page = ({clientId, endpoint}: PageType) => {
   useEffect(() => {
     if (endpoint || endpointQs) {
       const loadData = async () => {
-        const response = await getContent({endpoint: endpointQs || endpoint });
-        if (response.isError && JSON.parse((error as {message: string}).message)?.data?.code === 401) {
-          // not authorized
-          dispatch(logout());
-        }
+        await getContent({endpoint: endpointQs || endpoint });
       }
       loadData();
     }

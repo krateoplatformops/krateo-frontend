@@ -1,5 +1,5 @@
 import { apiSlice } from "../../api/apiSlice"
-import { AuthModeType, AuthRequestType, AuthResponseType, LoginFormType } from "../../pages/Login/type"
+import { AuthModeType, AuthRequestType, AuthResponseType, LoginFormType, OidcFormType } from "../../pages/Login/type"
 import { getBaseUrl } from "../../utils/config"
 
 // const baseAuthUrl = import.meta.env.VITE_AUTHN_API_BASE_URL;
@@ -23,6 +23,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         headers: {
           Authorization: `Basic ${btoa(`${data.body.username}:${data.body.password}`)}`
         },
+      }),
+    }),
+    authOidc: builder.mutation<AuthResponseType, {body: OidcFormType, url: string}>({
+      query: (data) => ({
+        url: `${getBaseUrl("AUTH")}${data.url}`,
+        method: 'POST',
+        body: data.body
       }),
     }),
     socialAuthentication: builder.query<AuthResponseType, AuthRequestType>({
@@ -59,6 +66,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetAuthModesQuery,
   useLazyAuthenticationQuery,
+  useAuthOidcMutation,
   useLazySocialAuthenticationQuery
   // useGetPageContentQuery,
   // useGetLicenseStateQuery,

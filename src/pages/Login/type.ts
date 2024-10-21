@@ -3,7 +3,7 @@ export type LoginFormType = {
   password: string;
 };
 
-export type LoginRequestType = {
+export type OidcFormType = {
   username: string;
   password: string;
 };

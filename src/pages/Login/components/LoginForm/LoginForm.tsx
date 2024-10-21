@@ -4,13 +4,12 @@ import { LoginFormType } from '../../type';
 import styles from './styles.module.scss';
 
 type LoginType = {
+  type: "basic" | "oidc",
   onSubmit: (data:LoginFormType) => void,
   isLoading: boolean
 }
 
-const LoginForm = ({
-  onSubmit, isLoading
-}: LoginType) => {
+const LoginForm = ({ type, onSubmit, isLoading }: LoginType) => {
 
   return (
     <section className={styles.loginForm}>
@@ -21,7 +20,6 @@ const LoginForm = ({
         autoComplete="off"
         disabled={isLoading}
         requiredMark={false}
-        // initialValues={{username: 'cyberjoker', password: '123456'}}
       >
         <Form.Item
           label="Username"
@@ -39,9 +37,11 @@ const LoginForm = ({
           <Input.Password size='large' />
         </Form.Item>
 
-        <div className={styles.linkPassword}>
-          <Link to="/forgotpassword">Forgot password?</Link>
-        </div>
+        { type === "basic" &&
+          <div className={styles.linkPassword}>
+            <Link to="/forgotpassword">Forgot password?</Link>
+          </div>
+        }
         
         <Form.Item>
           <Button size='large' className={styles.loginButton} type="primary" htmlType="submit">

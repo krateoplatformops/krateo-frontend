@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import Panel from "../../components/Panel/Panel";
-import { useLazyAuthenticationQuery, useGetAuthModesQuery } from "../../features/auth/authApiSlice";
+import { useLazyAuthenticationQuery, useGetAuthModesQuery, useAuthOidcMutation } from "../../features/auth/authApiSlice";
 import { setUser } from "../../features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import LoginForm from "./components/LoginForm/LoginForm";
-import { LoginFormType } from "./type";
+import { LoginFormType, OidcFormType } from "./type";
 import { Divider, Result } from "antd";
 import useCatchError from "../../utils/useCatchError";
 import Skeleton from "../../components/Skeleton/Skeleton";
@@ -14,6 +14,7 @@ import SocialLogin from './components/SocialLogin/SocialLogin';
 const Login = () => {
   const clientId = getClientIdFromPath();
   const [authentication, { isLoading: AuhLoading }] = useLazyAuthenticationQuery();
+  const [authOidc, { isLoading: isOidcLoading }] = useAuthOidcMutation();
   const {data, isLoading, isError, isFetching} = useGetAuthModesQuery(clientId);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -35,6 +36,23 @@ const Login = () => {
     }
   };
 
+  const onOidcSubmit = async (body: OidcFormType) => {
+    const name = data?.find((el) => el.kind === "oidc")?.name;
+    const url = `${data?.find((el) => el.kind === "oidc")?.path}?name=${name}`;
+
+    if (body.username && body.password && url) {
+      try {
+        const userData = await authOidc({body, url}).unwrap();
+        dispatch(setUser(userData));
+        navigate("/");
+      } catch (err) {
+        catchError(err);
+      }
+    } else {
+      catchError("Wrong username or password, try again with different credentials");
+    }
+  }
+
   const renderPanelContent = () => (
     data?.length === 0 ?
       <Result status="warning" title="There are no authentication methods" subTitle="Please create some authentication methods and try again" />
@@ -43,11 +61,18 @@ const Login = () => {
       switch (el.kind) {
         case "basic":
             return <div key={`login_${i}`}>
-              <LoginForm onSubmit={onBasicSubmit} isLoading={AuhLoading} />
+              <LoginForm onSubmit={onBasicSubmit} type="basic" isLoading={AuhLoading} />
               {(data?.length > 1) && <Divider plain>OR</Divider> }
             </div>
           break;
-        
+
+        case "oidc":
+            return <div key={`login_${i}`}>
+              <LoginForm onSubmit={onOidcSubmit} type="oidc" isLoading={isOidcLoading} />
+              {(data?.length > 1) && <Divider plain>OR</Divider> }
+            </div>
+          break;
+
         default:
           return <SocialLogin key={`login_${i}`} method={el} />
           break;
