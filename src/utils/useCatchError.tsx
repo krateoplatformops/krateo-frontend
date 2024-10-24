@@ -10,10 +10,11 @@ const useCatchError = () => {
   const catchError = (error?: SerializedError | FetchBaseQueryError | any, type: "result" | "notification" = "notification") => {
     let message: string = "Ops! Something didn't work";
     let description: string = "Unable to complete the operation, please try later";
+
+    /*
     // Adjust to account for potentially nested error structure
     let actualErrorCode: number;
     let actualErrorMessage: string = "";
-    const dispatch = useAppDispatch();
 
     if (error?.message && JSON.parse(error.message).data?.code) {
       // error from API with status 200
@@ -45,6 +46,35 @@ const useCatchError = () => {
     } else if (error?.message) {
       // classic catch with error object
       message = actualErrorMessage; // override message only
+    }
+    */
+
+    if (error?.status === 401) {
+      // logout
+      const dispatch = useAppDispatch();
+      dispatch(logout());
+      message = "Your session has expired";
+      description = "Sign in again"
+
+    } else if (error?.status === 500) {
+      // critical error
+      message = "Internal Server Error";
+      description = "The server encountered an unexpected condition.";
+
+    } else if ((/^4\d{2}$/).test(String(error?.status))) {
+      if (error?.error) {
+        // override error message
+        message = error.error;
+      }
+      if (error?.message) {
+        // override error message
+        message = error.message
+      }
+      description = "There was an error processing your request. Please check your input or permissions.";
+
+    } else if (error?.message) {
+      // override error message
+      message = error.message
     }
 
     switch (type) {
