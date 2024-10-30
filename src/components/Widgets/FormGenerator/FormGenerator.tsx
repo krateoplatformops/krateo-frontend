@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Anchor, App, Col, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import { useGetContentQuery, usePostContentMutation } from "../../../features/common/commonApiSlice";
+import { useGetContentQuery, useLazyGetContentQuery, usePostContentMutation, usePutContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 import { DataListFilterType, setFilters } from "../../../features/dataList/dataListSlice";
 import ListEditor from "../ListEditor/ListEditor";
@@ -23,7 +23,11 @@ type FormGeneratorType = {
 
 const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEndpoint, form, prefix, onClose, disableButtons }: FormGeneratorType) => {
 
-	const [postContent, { data: postData, isLoading: postLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
+	// submit methods
+	const [getContent, { isLoading: isGetLoading, isSuccess: isGetSuccess, isError: isGetError, error: getError }] = useLazyGetContentQuery();
+	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
+	const [putContent, { isLoading: isPutLoading, isSuccess: isPutSuccess, isError: isPutError, error: putError }] = usePutContentMutation();
+
 	const { message } = App.useApp();
   const { catchError } = useCatchError();
 
@@ -32,7 +36,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 	// get fields
 	const {data, isLoading, isFetching, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint?.replace("/form/", "/forms/")});
 	const [formData, setFormData] = useState<any>("idle");
-	const [formEndpoint, setFormEndpoint] = useState<string>();
 	const fieldsData: {type: string, name: string}[] = [];
 
 	useEffect(() => {
@@ -41,9 +44,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				setFormData(data.status.content.schema.properties); // set root node (/spec /metadata)
 			} else {
 				setFormData(undefined)
-			}
-			if (data?.status?.actions) {
-				setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
 			}
 		}
 	}, [data, isSuccess])
@@ -272,6 +272,20 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		if (formData.spec) return [...parseData(formData.spec, "")];
 	}
 
+	const updateJson = (values, keyPath, valuePath) => {
+		const getObjectByPath = (obj, path) => path
+																						.split('.')
+																						.reduce((acc, part) => acc && acc[part], obj);
+		const key = getObjectByPath(values, keyPath);
+		
+		const value = getObjectByPath(values, valuePath.prefix); // value: "{ prefix: \"lorem.ipsum\", append: [\"-ns\", \"-xy\"] }"
+		if (key !== undefined && value !== undefined) {
+			values[key] = `${value}${valuePath.append?.join('')}`;
+		}
+		
+		return values;
+	}
+
 	const onSubmit = async (values: object) => {
 		// convert all dayjs date to ISOstring
 		Object.keys(values).forEach(k => {
@@ -280,51 +294,96 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 			}
 		});
 
-		// send all data values to specific endpoint as POST
-		if (formEndpoint) {
-			// update endpoint
-			const name = values['metadata'].name;
-			const namespace = values['metadata'].namespace;
-			const arrEndPoint = formEndpoint.split("/");
+		if (data?.status?.actions?.length > 0) {
+			// setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
+			const formProps = data.status.props
+			const template = data.status.actions.find(el => ((el.template?.name === formProps?.onSubmitName) && (el.template?.verb === formProps?.onSubmitVerb)))
 
-			// add namespace
-			arrEndPoint.splice(arrEndPoint.length - 1, 0, "namespaces");
-			arrEndPoint.splice(arrEndPoint.length - 1, 0, namespace);
-
-			// add name at the end
-			arrEndPoint.push(name);
-
-			const postEndpoint = arrEndPoint.join("/");
-
-			// remove metadata from values
-			delete values['metadata']
-
-			// update payload
-			const payload = {
-				"kind": data.status.content.kind,
-				"apiVersion": data.status.content.apiVersion,
-				"metadata":{
-					"name": name,
-					"namespace": namespace
-				},
-				"spec": values
-			}
+			if (template) {
+				const formEndpoint = template.path;
+				const formVerb = template.verb;
+				const formOverride = template.payloadToOverride;
+				const name = data.metadata.name;
+				const namespace = data.metadata.namespace;
 			
-			// submit values
-			if (!postLoading && !isPostError && !isPostSuccess) {
-				try {
-					await postContent({
-						endpoint: postEndpoint,
-						body: payload,
-					});
-					// close panel
-					onClose()
-				} catch(error) {
-					catchError({ message: "Unable to send data"})
-					// keep panel opened
+				// send all data values to specific endpoint as POST
+				if (formEndpoint && formVerb) {
+					// remove metadata from values
+					delete values['metadata']
+
+					// update payload by payloadToOverride
+					if (formOverride) {
+						formOverride.forEach(el => {
+							values = updateJson(values, el.name, el.value)
+						});
+					}
+
+					const payload = {
+						"kind": data.status.content.kind,
+						"apiVersion": data.status.content.apiVersion,
+						"metadata":{
+							"name": name,
+							"namespace": namespace
+						},
+						"spec": values
+					}
+					
+					// submit values
+					switch (formVerb.toLowerCase()) {
+						case "get":
+							if (!isGetLoading && !isGetError && !isGetSuccess) {
+								try {
+									await getContent({
+										endpoint: formEndpoint,
+										body: payload,
+									});
+									// close panel
+									onClose()
+								} catch(error) {
+									catchError({ message: "Unable to send data"})
+									// keep panel opened
+								}
+							}
+						break;
+
+						case "post":
+							if (!isPostLoading && !isPostError && !isPostSuccess) {
+								try {
+									await postContent({
+										endpoint: formEndpoint,
+										body: payload,
+									});
+									// close panel
+									onClose()
+								} catch(error) {
+									catchError({ message: "Unable to send data"})
+									// keep panel opened
+								}
+							}
+						break;
+
+						case "put":
+							if (!isPutLoading && !isPutError && !isPutSuccess) {
+								try {
+									await putContent({
+										endpoint: formEndpoint,
+										body: payload,
+									});
+									// close panel
+									onClose()
+								} catch(error) {
+									catchError({ message: "Unable to send data"})
+									// keep panel opened
+								}
+							}
+						break;	
+					}
 				}
+			
 			}
 		}
+
+		
 
 		// save all data values on Redux to use them with another linked component (same prefix) 
 		if (prefix) {
@@ -342,30 +401,36 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 	}
 
 	useEffect(() => {
+		if (isGetError) {
+			catchError(getError);
+		}
 		if (isPostError) {
 			catchError(postError);
 		}
-	}, [catchError, isPostError, postError]);
+		if (isPutError) {
+			catchError(putError);
+		}
+	}, [catchError, isGetError, isPostError, postError, getError, isPutError, putError]);
 
 	useEffect(() => {
-		if (isPostSuccess) {
+		if (isPostSuccess || isPutSuccess || isGetSuccess) {
 			message.success('Operation successful');
 			// go to created element page if a specific props is true
 			// navigate("");
 		}
-	}, [message, isPostSuccess, postData]);
+	}, [message, isPostSuccess, isPutSuccess, isGetSuccess]);
 
 	useEffect(() => {
-    if (postLoading) {
+    if (isPostLoading || isPutLoading || isGetLoading) {
 			disableButtons(true)
       message.loading('Sending data...');
     } else {
 			disableButtons(false)
 		}
-  }, [postLoading, message]);
+  }, [isPostLoading, isPutLoading, isGetLoading, message]);
 
 	return (
-		isLoading || isFetching ?
+		isLoading || isFetching  ?
 				<Skeleton />
 		:
 		formData && formData.spec && isSuccess ?

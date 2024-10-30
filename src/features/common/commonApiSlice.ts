@@ -7,6 +7,8 @@ export const commonApiSlice = apiSlice.injectEndpoints({
     getContent: builder.query({
       query: (data) => ({
         url: `${getBaseUrl()}${data.endpoint}`,
+        method: 'GET',
+        body: data.body,
         headers: getHeaders(),
       }),
     }),
