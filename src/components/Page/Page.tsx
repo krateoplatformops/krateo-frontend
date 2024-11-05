@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 import { logout } from "../../features/auth/authSlice";
 
-const Page = ({clientId, endpoint}: PageType) => {
+const Page = ({clientId, endpoint, body}: PageType) => {
   const isMock = useRef(false);
   const [parseContent] = useParseData()
   const { catchError } = useCatchError();
@@ -22,7 +22,7 @@ const Page = ({clientId, endpoint}: PageType) => {
   useEffect(() => {
     if (endpoint || endpointQs) {
       const loadData = async () => {
-        const response = await getContent({endpoint: endpointQs || endpoint });
+        const response = await getContent({endpoint: endpointQs || endpoint, body: body });
         if (response.isError && JSON.parse((error as {message: string}).message)?.data?.code === 401) {
           // not authorized
           dispatch(logout());

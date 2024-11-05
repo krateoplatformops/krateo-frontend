@@ -278,11 +278,29 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 																						.reduce((acc, part) => acc && acc[part], obj);
 		const key = getObjectByPath(values, keyPath);
 		
-		const value = getObjectByPath(values, valuePath.prefix); // value: "{ prefix: \"lorem.ipsum\", append: [\"-ns\", \"-xy\"] }"
+		/** object mode */
+		// const value = getObjectByPath(values, valuePath.prefix); // value: "{ prefix: \"lorem.ipsum\", append: [\"-ns\", \"-xy\"] }"
+		// if (key !== undefined && value !== undefined) {
+		// 	values[key] = `${value}${valuePath.append?.join('')}`;
+		// }
+
+		/** string mode */
+		const substr = valuePath.replace("${", "").replace("}", "") 
+		const arr = substr.split("+").map(el => el.trim())
+		let append = ""
+		let jsonpath = ""
+		arr.forEach(el => {
+			if ((el.indexOf("\"") > -1) || (el.indexOf("'") > -1)) {
+				append = el.replace("\"", "").replace("'", "")
+			} else {
+				jsonpath = el
+			}
+		});
+		const value = getObjectByPath(values, jsonpath); // value: "${ lorem.ipsum + \"-ns\" + \"-xy\" }"
 		if (key !== undefined && value !== undefined) {
-			values[key] = `${value}${valuePath.append?.join('')}`;
+			values[key] = `${value}${append}`;
 		}
-		
+
 		return values;
 	}
 

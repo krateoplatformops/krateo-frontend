@@ -43,14 +43,32 @@ function App() {
           label: "Templates",
           path: "/templates",
           icon: getIcon('templates'),
-          endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/${configJson.params.FRONTEND_NAMESPACE}/collections/templates-row`,
+          // endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/${configJson.params.FRONTEND_NAMESPACE}/collections/templates-row`,
+          endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/`,
+          body: {
+            apiVersion: "templates.krateo.io/v1alpha1",
+            kind: "Collection",
+            metadata: {
+              name: "templates-row",
+              namespace: configJson.params.FRONTEND_NAMESPACE
+            }
+          },
           menu: true,
         },
         {
           label: "Compositions",
           path: "/compositions",
           icon: getIcon('projects'),
-          endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/${configJson.params.FRONTEND_NAMESPACE}/collections/compositions-row`,
+          // endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/${configJson.params.FRONTEND_NAMESPACE}/collections/compositions-row`,
+          endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/`,
+          body: {
+            apiVersion: "templates.krateo.io/v1alpha1",
+            kind: "Collection",
+            metadata: {
+              name: "compositions-row",
+              namespace: configJson.params.FRONTEND_NAMESPACE
+            }
+          },
           menu: true,
         },
         {
@@ -99,7 +117,7 @@ function App() {
       {
         path: r.path !== "/" ? r.path : undefined,
         index: r.path === "/",
-        element: <Page clientId={clientId} endpoint={r.endpoint} />,
+        element: <Page clientId={clientId} endpoint={r.endpoint} body={r.body} />,
         handle: r.handle,
       }
     ));
