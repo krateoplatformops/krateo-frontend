@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { RouterProvider, createBrowserRouter, RouteObject, Navigate } from "react-router-dom";
 import Skeleton from "./components/Skeleton/Skeleton";
 import Page from "./components/Page/Page"
@@ -9,9 +9,7 @@ import LayoutLogin from "./components/LayoutLogin/LayoutLogin";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import { getIcon } from "./utils/icons";
-import { useGetAppDataQuery } from "./features/app/appApiSlice";
-import { App as AntApp, Space, Spin, Typography, message } from "antd";
-import getClientIdFromPath from "./utils/getClientIdFromPath";
+import { App as AntApp, /* Space, Spin, Typography, message */ } from "antd";
 import AuthGitHub from "./pages/Auth/AuthGitHub";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -19,18 +17,22 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 library.add(fas, far)
 
 function App() {
-  const clientId = getClientIdFromPath();
   const [router, setRouter] = useState<RouteObject[]>([]);
-  const {/*data,*/ isLoading, isFetching, isError} = useGetAppDataQuery(clientId);
-  const [messageApi, contextHolder] = message.useMessage();
-  // const messageKey = 'appMessageKey';
 
-  const fetchMockData = useCallback(async (clientId: string) => {
-    const configFile = await fetch("/config/config.json");
-    const configJson = await configFile.json();
-    localStorage.setItem("K_config", JSON.stringify(configJson));
+  useEffect(() => {
+    const getConfig = async () => {
+      const configFile = await fetch("/config/config.json");
+      const configJson = await configFile.json();
+      localStorage.setItem("K_config", JSON.stringify(configJson));
+
+      createRoutes(configJson)
+    }
+
+    getConfig()
+  }, [])
   
-    const routes = {
+  const createRoutes = (configJson) => {
+    const routesObj = {
       routes: [
         // {
         //   label: "Dashboard",
@@ -95,30 +97,12 @@ function App() {
       ]
     }
 
-    createRoutes(clientId, routes)
-  }, []);
-
-  useEffect(() => {
-    if (clientId) {
-      // get application data (after logged)
-      fetchMockData(clientId);
-    }
-  }, [clientId, fetchMockData]);
-
-  useEffect(() => {
-    if (isError) {
-      // TEMPORARY DISABLED: 
-      // messageApi.open({key: messageKey, type: 'error', content: catchError('application_data_missing')});
-    }
-  }, [isError, messageApi]);
-
-  const createRoutes = (clientId, data) => {
-    const routes:RouteObject[] = data.routes.map((r) => (
+    const routes:RouteObject[] = routesObj.routes.map((r) => (
       {
         path: r.path !== "/" ? r.path : undefined,
         index: r.path === "/",
-        element: <Page clientId={clientId} endpoint={r.endpoint} body={r.body} />,
-        handle: r.handle,
+        element: r.endpoint ? <Page endpoint={r.endpoint} body={r.body} /> : <Page404 />,
+        // handle: r.handle,
       }
     ));
     setRouter(
@@ -144,8 +128,8 @@ function App() {
         {
           path: "/",
           element: <Layout
-                      menu={data.routes.filter(el => el.menu === true)}
-                      // notifications={data.notifications}
+                      menu={routesObj.routes.filter(el => el.menu === true)}
+                      // notifications={routesObj.notifications}
                     />,
           errorElement: <ErrorPage />,
           children: [...routes, {
@@ -163,19 +147,18 @@ function App() {
 
   return (
     <>
-    {contextHolder}
     {
-      (isLoading || isFetching) ?
-        <Space direction="vertical" size="large" style={{width: '100%', height: '100vh', alignItems: 'center', justifyContent: 'center'}}>
-          <Spin size="large" />
-          <Typography.Text>Krateo loading app data...</Typography.Text>
-        </Space>
-      : (
+      // (isLoading || isFetching) ?
+      //   <Space direction="vertical" size="large" style={{width: '100%', height: '100vh', alignItems: 'center', justifyContent: 'center'}}>
+      //     <Spin size="large" />
+      //     <Typography.Text>Krateo loading app data...</Typography.Text>
+      //   </Space>
+      // : (
         router.length > 0 &&
         <AntApp>
           <RouterProvider router={createBrowserRouter(router)} fallbackElement={<Skeleton />} />
         </AntApp>
-      )
+      // )
     }
     </>
   )
