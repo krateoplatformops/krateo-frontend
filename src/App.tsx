@@ -14,6 +14,7 @@ import AuthGitHub from "./pages/Auth/AuthGitHub";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
+import AuthOidc from "./pages/Auth/AuthOidc";
 library.add(fas, far)
 
 function App() {
@@ -105,6 +106,10 @@ function App() {
         {
           path: "/auth/github",
           element: <AuthGitHub />,
+        },
+        {
+          path: "/auth/oidc",
+          element: <AuthOidc />,
         },
         {
           path: "/",

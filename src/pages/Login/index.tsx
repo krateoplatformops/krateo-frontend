@@ -66,13 +66,6 @@ const Login = () => {
             </div>
           break;
 
-        case "oidc":
-            return <div key={`login_${i}`}>
-              <LoginForm onSubmit={onOidcSubmit} type="oidc" isLoading={isOidcLoading} />
-              {(data?.length > 1) && <Divider plain>OR</Divider> }
-            </div>
-          break;
-
         default:
           return <SocialLogin key={`login_${i}`} method={el} />
           break;

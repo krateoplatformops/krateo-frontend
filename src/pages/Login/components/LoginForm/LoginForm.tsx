@@ -4,7 +4,7 @@ import { LoginFormType } from '../../type';
 import styles from './styles.module.scss';
 
 type LoginType = {
-  type: "basic" | "oidc",
+  type: "basic",
   onSubmit: (data:LoginFormType) => void,
   isLoading: boolean
 }
