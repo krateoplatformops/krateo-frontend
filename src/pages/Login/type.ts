@@ -3,11 +3,6 @@ export type LoginFormType = {
   password: string;
 };
 
-export type LoginRequestType = {
-  username: string;
-  password: string;
-};
-
 export type AuthResponseType = {
   code: number;
   user: {

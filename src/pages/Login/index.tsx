@@ -43,11 +43,11 @@ const Login = () => {
       switch (el.kind) {
         case "basic":
             return <div key={`login_${i}`}>
-              <LoginForm onSubmit={onBasicSubmit} isLoading={AuhLoading} />
+              <LoginForm onSubmit={onBasicSubmit} type="basic" isLoading={AuhLoading} />
               {(data?.length > 1) && <Divider plain>OR</Divider> }
             </div>
           break;
-        
+
         default:
           return <SocialLogin key={`login_${i}`} method={el} />
           break;

@@ -1,6 +1,6 @@
 import { Button } from "antd";
 import styles from './styles.module.scss';
-import { GithubOutlined } from "@ant-design/icons";
+import { LoginOutlined, GithubOutlined } from "@ant-design/icons";
 import { ReactElement } from "react";
 import { AuthModeType } from "../../type";
 
@@ -18,6 +18,12 @@ const renderMethodsData: renderMethodsType[] = [
     icon: <GithubOutlined />,
     label: "Sign in with GitHub",
     className: "github",
+  },
+  {
+    name: "oidc",
+    icon: <LoginOutlined />,
+    label: "OpenID Connection",
+    className: "oidc",
   }
 ]
 
@@ -31,8 +37,14 @@ const SocialLogin = ({method}: {method: AuthModeType}) => {
   };
 
   const onSubmit = () => {
-    const url = method.extensions?.authCodeURL.substring(0, method.extensions?.authCodeURL.indexOf("&state="))
-    window.location.href = `${url}&state=${getRandomString()}`;
+    if (method.extensions?.authCodeURL) {
+      if (method.extensions.authCodeURL.indexOf("&state=") > -1) {
+        const url = method.extensions.authCodeURL.substring(0, method.extensions?.authCodeURL.indexOf("&state="))
+        window.location.href = `${url}&state=${getRandomString()}`;
+      } else {
+        window.location.href = method.extensions.authCodeURL
+      }
+    }
   }
 
   return (
