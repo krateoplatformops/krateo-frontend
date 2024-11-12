@@ -8,7 +8,7 @@ import { useEffect} from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks";
 
-const Page = ({endpoint, body}: PageType) => {
+const Page = ({endpoint}: PageType) => {
   const [parseContent] = useParseData()
   const { catchError } = useCatchError();
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ const Page = ({endpoint, body}: PageType) => {
   useEffect(() => {
     if (endpoint || endpointQs) {
       const loadData = async () => {
-        await getContent({endpoint: endpointQs || endpoint, body: body });
+        await getContent({endpoint: endpointQs || endpoint });
       }
       loadData();
     }

@@ -40,8 +40,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 
 	useEffect(() => {
 		if (isSuccess) {
-			if (data?.status?.content?.schema?.properties) {
-				setFormData(data.status.content.schema.properties); // set root node (/spec /metadata)
+			if (data?.status?.content?.schema) {
+				setFormData(data.status.content.schema); // set root node (/spec /metadata)
 			} else {
 				setFormData(undefined)
 			}
@@ -66,16 +66,16 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		}
 	}
 
-	const renderMetadataFields = () => {
-		if (formData && formData.metadata) {
-			const fieldsList = parseData({ properties: {metadata: formData.metadata}, required: [], type: 'object' }, "");
-			return fieldsList;
-		}
-	}
+	// const renderMetadataFields = () => {
+	// 	if (formData && formData.metadata) {
+	// 		const fieldsList = parseData({ properties: {metadata: formData.metadata}, required: [], type: 'object' }, "");
+	// 		return fieldsList;
+	// 	}
+	// }
 
 	const renderFields = () => {
-		if (formData && formData.spec) {
-			const fieldsList = parseData(formData.spec, "");
+		if (formData) {
+			const fieldsList = parseData({properties: formData}, "");
 			return fieldsList;
 		}
 	}
@@ -98,7 +98,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				return []
 			}
 		}
-		if (formData.spec) parseData(formData.spec, "");
+		if (formData) parseData({properties: formData}, "");
 	}
 
 	const renderLabel = (path: string, label: string) => {
@@ -253,7 +253,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 						// create children
 						return {
 							key: currentName,
-							title: <span className={styles.anchorObjectLabel}>{k}</span>,
+							title: <span key={k} className={styles.anchorObjectLabel}>{k}</span>,
 							children: parseData(node.properties[k], currentName),
 						}
 					} else {
@@ -269,7 +269,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				return []
 			}
 		}
-		if (formData.spec) return [...parseData(formData.spec, "")];
+		if (formData) return [...parseData({properties: formData}, "")];
 	}
 
 	const updateJson = (values, keyPath, valuePath) => {
@@ -451,7 +451,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		isLoading || isFetching  ?
 				<Skeleton />
 		:
-		formData && formData.spec && isSuccess ?
+		formData && isSuccess ?
 		<div className={styles.formGenerator}>
 			<Typography.Text strong>{title}</Typography.Text>
 			<Typography.Paragraph>{description}</Typography.Paragraph>
@@ -466,9 +466,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 											name="formGenerator"
 											autoComplete="off"
 										>
-											<div className={styles.metadataFields}>
+											{/* <div className={styles.metadataFields}>
 												{ renderMetadataFields() }
-											</div>
+											</div> */}
 											<>
 												{ renderFields() }
 												{ generateInitialValues() }

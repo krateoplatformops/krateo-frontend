@@ -1,9 +1,9 @@
 {
   "api": {
-    "AUTHN_API_BASE_URL": "http://20.13.199.30:8082",
-    "BFF_API_BASE_URL": "http://20.223.112.117:8081",
-    "EVENTS_API_BASE_URL": "http://20.223.113.116:8083",
-    "EVENTS_PUSH_API_BASE_URL": "http://20.223.113.116:8083",
+    "AUTHN_API_BASE_URL": "http://4.207.199.238:8082",
+    "BFF_API_BASE_URL": "http://4.207.199.253:8081",
+    "EVENTS_API_BASE_URL": "http://4.207.193.117:8083",
+    "EVENTS_PUSH_API_BASE_URL": "http://4.207.193.117:8083",
     "TERMINAL_SOCKET_URL": "http://localhost:8084"
   },
   "params": {

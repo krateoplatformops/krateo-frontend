@@ -25,7 +25,7 @@ function App() {
       const configFile = await fetch("/config/config.json");
       const configJson = await configFile.json();
       localStorage.setItem("K_config", JSON.stringify(configJson));
-
+      console.log(configJson)
       createRoutes(configJson)
     }
 
@@ -46,37 +46,18 @@ function App() {
           label: "Templates",
           path: "/templates",
           icon: getIcon('templates'),
-          // endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/${configJson.params.FRONTEND_NAMESPACE}/collections/templates-row`,
-          endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/`,
-          body: {
-            apiVersion: "templates.krateo.io/v1alpha1",
-            kind: "Collection",
-            metadata: {
-              name: "templates-row",
-              namespace: configJson.params.FRONTEND_NAMESPACE
-            }
-          },
+          endpoint: `/call?apiVersion=templates.krateo.io/v1alpha1&resource=collections&namespace=${configJson.params.FRONTEND_NAMESPACE}&name=templates-row`,
           menu: true,
         },
         {
           label: "Compositions",
           path: "/compositions",
           icon: getIcon('projects'),
-          // endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/${configJson.params.FRONTEND_NAMESPACE}/collections/compositions-row`,
-          endpoint: `/call?uri=/apis/templates.krateo.io/v1alpha1/`,
-          body: {
-            apiVersion: "templates.krateo.io/v1alpha1",
-            kind: "Collection",
-            metadata: {
-              name: "compositions-row",
-              namespace: configJson.params.FRONTEND_NAMESPACE
-            }
-          },
+          endpoint: `/call?apiVersion=templates.krateo.io/v1alpha1&resource=collections&namespace=${configJson.params.FRONTEND_NAMESPACE}&name=compositions-row`,
           menu: true,
         },
         {
           path: "/compositions/:compositionID",
-          // endpoint: "/call?uri=/apis/templates.krateo.io/v1alpha1/namespaces/demo-system/collections/deployment-fireworksapp-tgz-tablist",
           menu: false,
         },
         // {
@@ -102,7 +83,7 @@ function App() {
       {
         path: r.path !== "/" ? r.path : undefined,
         index: r.path === "/",
-        element: r.endpoint ? <Page endpoint={r.endpoint} body={r.body} /> : <Page404 />,
+        element: r.endpoint ? <Page endpoint={r.endpoint} /> : <Page404 />,
         // handle: r.handle,
       }
     ));
