@@ -3,11 +3,12 @@ import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { App, Result } from "antd";
 import { useAppDispatch } from "../redux/hooks";
 import { logout } from "../features/auth/authSlice";
+import { useCallback } from "react";
 
 const useCatchError = () => {
   const { notification } = App.useApp();
 
-  const catchError = (error?: SerializedError | FetchBaseQueryError | any, type: "result" | "notification" = "notification") => {
+  const catchError = useCallback((error?: SerializedError | FetchBaseQueryError | any, type: "result" | "notification" = "notification") => {
     let message: string = "Ops! Something didn't work";
     let description: string = "Unable to complete the operation, please try later";
 
@@ -59,22 +60,14 @@ const useCatchError = () => {
     } else if (error?.status === 500) {
       // critical error
       message = "Internal Server Error";
-      description = "The server encountered an unexpected condition.";
+      description = error?.data?.message || "The server encountered an unexpected condition.";
 
     } else if ((/^4\d{2}$/).test(String(error?.status))) {
-      if (error?.error) {
+      if (error?.data?.message) {
         // override error message
-        message = error.error;
+        message = "There was an error processing your request"
       }
-      if (error?.message) {
-        // override error message
-        message = error.message
-      }
-      description = "There was an error processing your request. Please check your input or permissions.";
-
-    } else if (error?.message) {
-      // override error message
-      message = error.message
+      description =  error?.data?.message || "Please check your input or permissions.";
     }
 
     switch (type) {
@@ -90,7 +83,7 @@ const useCatchError = () => {
           duration: 4,
         });
     }
-  }
+  }, [])
 
   return { catchError }
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Anchor, App, Col, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
-import { useGetContentQuery, useLazyGetContentQuery, usePostContentMutation, usePutContentMutation } from "../../../features/common/commonApiSlice";
+import { useGetContentQuery, usePostContentMutation, usePutContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
 import { DataListFilterType, setFilters } from "../../../features/dataList/dataListSlice";
 import ListEditor from "../ListEditor/ListEditor";
@@ -9,6 +9,7 @@ import styles from "./styles.module.scss";
 import Skeleton from "../../Skeleton/Skeleton";
 import useCatchError from "../../../utils/useCatchError";
 import SelectWithFilters from "./SelectWithFilters";
+import _ from 'lodash';
 
 type FormGeneratorType = {
 	title?: string,
@@ -24,13 +25,11 @@ type FormGeneratorType = {
 const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEndpoint, form, prefix, onClose, disableButtons }: FormGeneratorType) => {
 
 	// submit methods
-	const [getContent, { isLoading: isGetLoading, isSuccess: isGetSuccess, isError: isGetError, error: getError }] = useLazyGetContentQuery();
 	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
 	const [putContent, { isLoading: isPutLoading, isSuccess: isPutSuccess, isError: isPutError, error: putError }] = usePutContentMutation();
 
 	const { message } = App.useApp();
   const { catchError } = useCatchError();
-
 	const dispatch = useAppDispatch();
 
 	// get fields
@@ -272,180 +271,172 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		if (formData) return [...parseData({properties: formData}, "")];
 	}
 
+	const convertStringToObject =(dottedString, value) => {
+    const keys = dottedString.split('.');
+    const result = {};
+    let current = result;
+
+    keys.forEach((key, index) => {
+        if (index === keys.length - 1) {
+            current[key] = value;
+        } else {
+            current[key] = {};
+            current = current[key];
+        }
+    });
+
+    return result;
+	}
+
 	const updateJson = (values, keyPath, valuePath) => {
 		const getObjectByPath = (obj, path) => path
 																						.split('.')
 																						.reduce((acc, part) => acc && acc[part], obj);
-		const key = getObjectByPath(values, keyPath);
+		// const key = getObjectByPath(values, keyPath);
 		
-		/** object mode */
-		// const value = getObjectByPath(values, valuePath.prefix); // value: "{ prefix: \"lorem.ipsum\", append: [\"-ns\", \"-xy\"] }"
-		// if (key !== undefined && value !== undefined) {
-		// 	values[key] = `${value}${valuePath.append?.join('')}`;
-		// }
-
-		/** string mode */
 		const substr = valuePath.replace("${", "").replace("}", "") 
 		const arr = substr.split("+").map(el => el.trim())
 		let append = ""
 		let jsonpath = ""
 		arr.forEach(el => {
 			if ((el.indexOf("\"") > -1) || (el.indexOf("'") > -1)) {
-				append = el.replace("\"", "").replace("'", "")
+				append = el.replace(/"/g, '');
 			} else {
 				jsonpath = el
 			}
 		});
 		const value = getObjectByPath(values, jsonpath); // value: "${ lorem.ipsum + \"-ns\" + \"-xy\" }"
+		
+		/*
 		if (key !== undefined && value !== undefined) {
+			// update value
 			values[key] = `${value}${append}`;
 		}
+		if (key === undefined && value !== undefined) {
+			// add key
+			values = _.merge({}, values, convertStringToObject(keyPath, `${value}${append}`))
+		}
+		*/
+		values = _.merge({}, values, convertStringToObject(keyPath, `${value}${append}`))
 
 		return values;
 	}
 
 	const onSubmit = async (values: object) => {
-		// convert all dayjs date to ISOstring
-		Object.keys(values).forEach(k => {
-			if (dayjs.isDayjs(values[k])) {
-				values[k] = (values[k] as unknown as Dayjs).toISOString()
-			}
-		});
+		try {
+			// convert all dayjs date to ISOstring
+			Object.keys(values).forEach(k => {
+				if (dayjs.isDayjs(values[k])) {
+					values[k] = (values[k] as unknown as Dayjs).toISOString()
+				}
+			});
 
-		if (data?.status?.actions?.length > 0) {
-			// setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
-			const formProps = data.status.props
-			const template = data.status.actions.find(el => ((el.template?.name === formProps?.onSubmitName) && (el.template?.verb === formProps?.onSubmitVerb)))
+			if (data?.status?.actions?.length > 0) {
+				const formProps = data.status.props
+				const template = data.status.actions.find(el => ((el.template?.id?.toLowerCase() === formProps?.onSubmitId?.toLowerCase()) && (el.template?.verb.toLowerCase() === formProps?.onSubmitVerb.toLowerCase())))
 
-			if (template) {
-				const formEndpoint = template.path;
-				const formVerb = template.verb;
-				const formOverride = template.payloadToOverride;
-				const name = data.metadata.name;
-				const namespace = data.metadata.namespace;
-			
-				// send all data values to specific endpoint as POST
-				if (formEndpoint && formVerb) {
-					// remove metadata from values
-					delete values['metadata']
-
-					// update payload by payloadToOverride
-					if (formOverride) {
-						formOverride.forEach(el => {
-							values = updateJson(values, el.name, el.value)
-						});
-					}
-
-					const payload = {
-						"kind": data.status.content.kind,
-						"apiVersion": data.status.content.apiVersion,
-						"metadata":{
-							"name": name,
-							"namespace": namespace
-						},
-						"spec": values
-					}
+				if (template?.template) {
+					const formEndpoint = template.template.path;
+					const formVerb = template.template.verb;
+					const formOverride = template.template.payloadToOverride;
+					const formKey = template.template.payloadFormKey || "spec";
+					let payload = {...template.template.payload, ...values};
 					
-					// submit values
-					switch (formVerb.toLowerCase()) {
-						case "get":
-							if (!isGetLoading && !isGetError && !isGetSuccess) {
-								try {
-									await getContent({
-										endpoint: formEndpoint,
-										body: payload,
-									});
-									// close panel
-									onClose()
-								} catch(error) {
-									catchError({ message: "Unable to send data"})
-									// keep panel opened
-								}
-							}
-						break;
+					const valuesKeys = Object.keys(values);
 
-						case "post":
-							if (!isPostLoading && !isPostError && !isPostSuccess) {
-								try {
-									await postContent({
-										endpoint: formEndpoint,
-										body: payload,
-									});
-									// close panel
-									onClose()
-								} catch(error) {
-									catchError({ message: "Unable to send data"})
-									// keep panel opened
-								}
-							}
-						break;
+					// send all data values to specific endpoint as POST
+					if (formEndpoint && formVerb) {
+						// update payload by payloadToOverride
+						if (formOverride?.length > 0) {
+							formOverride.forEach(el => {
+								payload = updateJson(payload, el.name, el.value)
+							});
+						}
 
-						case "put":
-							if (!isPutLoading && !isPutError && !isPutSuccess) {
-								try {
+						// move all values data under formKey
+						payload[formKey] = {}
+						valuesKeys.forEach(el => {
+							payload[formKey][el] = {...payload[el]}
+							delete payload[el]
+						})
+
+						// add name and namespace on endpoint querystring from payload.metadata
+						const qsParameters = formEndpoint.split("?")[1].split("&").filter(el => el !== "name=" && el !== "namespace=").join("&")
+						const endpointUrl = `${formEndpoint.split("?")[0]}?${qsParameters}&name=${payload.metadata.name}&namespace=${payload.metadata.namespace}`
+						
+						// submit payload
+						switch (formVerb.toLowerCase()) {
+							case "put":
+								if (!isPutLoading && !isPutError && !isPutSuccess) {
 									await putContent({
-										endpoint: formEndpoint,
+										endpoint: endpointUrl,
 										body: payload,
 									});
 									// close panel
 									onClose()
-								} catch(error) {
-									catchError({ message: "Unable to send data"})
-									// keep panel opened
 								}
-							}
-						break;	
+							break;
+
+							case "post":
+							default:
+								if (!isPostLoading && !isPostError && !isPostSuccess) {
+									await postContent({
+										endpoint: endpointUrl,
+										body: payload,
+									});
+									// close panel
+									onClose()
+								}
+							break;
+						}
 					}
+				
 				}
-			
 			}
-		}
 
-		
-
-		// save all data values on Redux to use them with another linked component (same prefix) 
-		if (prefix) {
-			// save data on redux
-			let filters: DataListFilterType[] = [];
-			fieldsData.forEach((field, index) => {
-				if (Object.values(values)[index] !== undefined) {
-					filters = [...filters, {fieldType: field.type, fieldName: field.name, fieldValue: Object.values(values)[index]}]
-				}
-			})
-			dispatch(setFilters({filters, prefix}))
-			// close panel
-			onClose()
+			// save all data values on Redux to use them with another linked component (same prefix) 
+			if (prefix) {
+				// save data on redux
+				let filters: DataListFilterType[] = [];
+				fieldsData.forEach((field, index) => {
+					if (Object.values(values)[index] !== undefined) {
+						filters = [...filters, {fieldType: field.type, fieldName: field.name, fieldValue: Object.values(values)[index]}]
+					}
+				})
+				dispatch(setFilters({filters, prefix}))
+				// close panel
+				onClose()
+			}
+		} catch(error) {
+			catchError(error)
 		}
 	}
 
 	useEffect(() => {
-		if (isGetError) {
-			catchError(getError);
-		}
 		if (isPostError) {
 			catchError(postError);
 		}
 		if (isPutError) {
 			catchError(putError);
 		}
-	}, [catchError, isGetError, isPostError, postError, getError, isPutError, putError]);
+	}, [catchError, isPostError, postError, isPutError, putError]);
 
 	useEffect(() => {
-		if (isPostSuccess || isPutSuccess || isGetSuccess) {
+		if (isPostSuccess || isPutSuccess) {
 			message.success('Operation successful');
 			// go to created element page if a specific props is true
 			// navigate("");
 		}
-	}, [message, isPostSuccess, isPutSuccess, isGetSuccess]);
+	}, [message, isPostSuccess, isPutSuccess]);
 
 	useEffect(() => {
-    if (isPostLoading || isPutLoading || isGetLoading) {
+    if (isPostLoading || isPutLoading) {
 			disableButtons(true)
       message.loading('Sending data...');
     } else {
 			disableButtons(false)
 		}
-  }, [isPostLoading, isPutLoading, isGetLoading, message]);
+  }, [isPostLoading, isPutLoading, message]);
 
 	return (
 		isLoading || isFetching  ?
