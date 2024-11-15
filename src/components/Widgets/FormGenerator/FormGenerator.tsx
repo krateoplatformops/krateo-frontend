@@ -392,6 +392,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					}
 				
 				}
+			
 			}
 
 			// save all data values on Redux to use them with another linked component (same prefix) 
