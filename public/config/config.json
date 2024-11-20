@@ -1,13 +1,13 @@
-  {
-    "api":{
-      "AUTHN_API_BASE_URL": "https://authn-krateo-v2.galdi.it",
-      "BFF_API_BASE_URL": "https://bff-krateo-v2.galdi.it",
-      "EVENTS_API_BASE_URL": "https://events-krateo-v2.galdi.it",
-      "EVENTS_PUSH_API_BASE_URL": "https://events-krateo-v2.galdi.it",
-      "TERMINAL_SOCKET_URL": "https://terminal-krateo-v2.galdi.it"
-    },
-    "params":{
-      "FRONTEND_NAMESPACE": "krateo-v2-system",
-      "DELAY_SAVE_NOTIFICATION": 10000
+{
+  "api": {
+    "AUTHN_API_BASE_URL": "https://authn.krateoplatformops.io",
+    "BFF_API_BASE_URL": "https://bff.krateoplatformops.io",
+    "EVENTS_API_BASE_URL": "https://eventsse.krateoplatformops.io",
+    "EVENTS_PUSH_API_BASE_URL": "https://eventsse.krateoplatformops.io",
+    "TERMINAL_SOCKET_URL": "http://localhost:8084"
+  },
+  "params": {
+    "FRONTEND_NAMESPACE": "krateo-system",
+    "DELAY_SAVE_NOTIFICATION": 10000
   }
 }

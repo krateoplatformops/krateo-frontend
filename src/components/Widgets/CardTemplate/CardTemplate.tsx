@@ -15,15 +15,15 @@ const CardTemplate = (props) => {
 
   // TEMP: keep until BE send route, endpoint or panel props
   let cardProps = {...props};
-  if (cardProps.panel !== "true") {
+  if (cardProps.panel?.toLowerCase() !== "true") {
     delete cardProps.panel; // keep "panel: true" only
     // cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb === "get")?.path}`;
-    if (actions?.find(el => el.verb === "get")) {
+    if (actions?.find(el => el.verb?.toLowerCase() === "get")) {
       // cardProps.route = `/compositions/${id}`;
-      cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb === "get")?.path}`;
+      cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb?.toLowerCase() === "get")?.path}`;
     }
   }
-  if (!props.route && !props.endpoint && props.panel === "true" && actions?.find(el => el.verb === "get")?.path) {
+  if (!props.route && !props.endpoint && props.panel === "true" && actions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     // add "panel" props to open panel and get form fields as default CTA of card
     cardProps = {...cardProps,
       panel: {
@@ -34,13 +34,13 @@ const CardTemplate = (props) => {
         content: {
           element: "FormGenerator",
           props: {
-            fieldsEndpoint: actions?.find(el => el.verb === "get")?.path
+            fieldsEndpoint: actions?.find(el => el.verb?.toLowerCase() === "get")?.path
           }
         }
       },
     }
   } 
-  if (props.panel === "true" && !actions?.find(el => el.verb === "get")?.path) {
+  if (props.panel === "true" && !actions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     // avoid wrong panel open
     delete cardProps.panel;
   }
@@ -55,11 +55,11 @@ const CardTemplate = (props) => {
   }
 
   const isAllowed = (verb) => {
-    return actions?.find(el => el.verb === verb) !== undefined
+    return actions?.find(el => el.verb?.toLowerCase() === verb) !== undefined
   }
 
   const onDeleteAction = async () => {
-    const endpoint = actions?.find(el => el.verb === "delete")?.path;
+    const endpoint = actions?.find(el => el.verb?.toLowerCase() === "delete")?.path;
     await deleteContent({endpoint: endpoint});
   }
 

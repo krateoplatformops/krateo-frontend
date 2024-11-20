@@ -46,9 +46,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				// old form
 				setFormData(data.status.content.schema.properties)
 				if (data?.status?.actions) {
-					setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
+					setFormEndpoint(data.status.actions.find(el => el.verb?.toLowerCase() === "post")?.path); // set submit endpoint
 				}
-			} else if (data?.status?.type === "customform" && data?.status?.content?.schema) {
+			} else if (data?.status?.type?.toLowerCase() === "customform" && data?.status?.content?.schema) {
 				setFormData(data.status.content.schema);
 			} else {
 				setFormData(undefined)
@@ -350,6 +350,12 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		return values;
 	}
 
+	const updateNameNamespace = (path, name, namespace) => {
+		// add name and namespace on endpoint querystring from payload.metadata
+		const qsParameters = path.split("?")[1].split("&").filter(el => el.indexOf("name=") === -1 && el.indexOf("namespace=") === -1).join("&")
+		return `${path.split("?")[0]}?${qsParameters}&name=${name}&namespace=${namespace}` 
+	}
+
 	const onSubmit = async (values: object) => {
 		try {
 			// convert all dayjs date to ISOstring
@@ -390,10 +396,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 								delete payload[el]
 							})
 	
-							// add name and namespace on endpoint querystring from payload.metadata
-							const qsParameters = formEndpoint.split("?")[1].split("&").filter(el => el !== "name=" && el !== "namespace=").join("&")
-							const endpointUrl = `${formEndpoint.split("?")[0]}?${qsParameters}&name=${payload.metadata.name}&namespace=${payload.metadata.namespace}`
-							
+							const endpointUrl = updateNameNamespace(formEndpoint, payload.metadata.name, payload.metadata.namespace)
+
 							// submit payload
 							switch (formVerb.toLowerCase()) {
 								case "put":
@@ -430,16 +434,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					// update endpoint
 					const name = values['metadata'].name;
 					const namespace = values['metadata'].namespace;
-					const arrEndPoint = formEndpoint.split("/");
-		
-					// add namespace
-					arrEndPoint.splice(arrEndPoint.length - 1, 0, "namespaces");
-					arrEndPoint.splice(arrEndPoint.length - 1, 0, namespace);
-		
-					// add name at the end
-					arrEndPoint.push(name);
-		
-					const postEndpoint = arrEndPoint.join("/");
+
+					const endpointUrl = updateNameNamespace(formEndpoint, name, namespace)
 		
 					// remove metadata from values
 					delete values['metadata']
@@ -459,7 +455,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					if (!isPostLoading && !isPostError && !isPostSuccess) {
 						try {
 							await postContent({
-								endpoint: postEndpoint,
+								endpoint: endpointUrl,
 								body: payload,
 							});
 							// close panel
