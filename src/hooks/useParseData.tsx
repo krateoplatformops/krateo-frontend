@@ -39,7 +39,7 @@ const useParseData = () => {
         case "eventlist":
           return <EventsList key={data.uid} {...data.props} events={ data.items?.filter(el => el.app?.event !== undefined).map(el => JSON.parse(el.app?.event)) } />
         case "grid":
-          return <Flex wrap key={data.uid}>{ data.items?.map(item => <div style={{ width: data.props.width ? `${100 / 24 * parseInt(data.props.width)}%` : "100%", padding: "0 10px 20px" }}>{ parseContent(item, index+1) }</div>  )}</Flex>  
+          return <Flex wrap key={data.uid}>{ data.items?.filter(el => el !== undefined && el !== null).map(item => <div style={{ width: data.props.width ? `${100 / 24 * parseInt(data.props.width)}%` : "100%", padding: "0 10px 20px" }}>{ parseContent(item, index+1) }</div>  )}</Flex>  
         default:
           if (data?.type) {
             const Component = widgets[data.type];
