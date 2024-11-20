@@ -37,10 +37,19 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 	const [formData, setFormData] = useState<any>("idle");
 	const fieldsData: {type: string, name: string}[] = [];
 
+	// old form
+	const [formEndpoint, setFormEndpoint] = useState<string>();
+
 	useEffect(() => {
-		if (isSuccess) {
-			if (data?.status?.content?.schema) {
-				setFormData(data.status.content.schema); // set root node (/spec /metadata)
+		if (isSuccess) { // set root node
+			if (data?.status?.content?.schema?.properties) {
+				// old form
+				setFormData(data.status.content.schema.properties)
+				if (data?.status?.actions) {
+					setFormEndpoint(data.status.actions.find(el => el.verb === "create")?.path); // set submit endpoint
+				}
+			} else if (data?.status?.type === "customform" && data?.status?.content?.schema) {
+				setFormData(data.status.content.schema);
 			} else {
 				setFormData(undefined)
 			}
@@ -65,17 +74,22 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		}
 	}
 
-	// const renderMetadataFields = () => {
-	// 	if (formData && formData.metadata) {
-	// 		const fieldsList = parseData({ properties: {metadata: formData.metadata}, required: [], type: 'object' }, "");
-	// 		return fieldsList;
-	// 	}
-	// }
+	// old form
+	const renderMetadataFields = () => {
+		if (formData && formData.metadata) {
+			const fieldsList = parseData({ properties: {metadata: formData.metadata}, required: [], type: 'object' }, "");
+			return fieldsList;
+		}
+	}
 
 	const renderFields = () => {
 		if (formData) {
-			const fieldsList = parseData({properties: formData}, "");
-			return fieldsList;
+			if (data?.status?.type === "customform") {
+				return parseData({properties: formData}, "");
+			} else if (formData.spec) {
+				// old form
+				return parseData(formData.spec, "");
+			}
 		}
 	}
 
@@ -97,7 +111,14 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				return []
 			}
 		}
-		if (formData) parseData({properties: formData}, "");
+		if (formData) {
+			if (data?.status?.type === "customform") {
+				parseData({properties: formData}, "");
+			} else if (formData.spec) {
+				// old form
+				parseData(formData.spec, "");
+			}
+		}
 	}
 
 	const renderLabel = (path: string, label: string) => {
@@ -268,7 +289,14 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				return []
 			}
 		}
-		if (formData) return [...parseData({properties: formData}, "")];
+		if (formData) {
+			if (data?.status?.type === "customform") {
+				return [...parseData({properties: formData}, "")]
+			} else if (formData.spec) {
+				// old form
+				return [...parseData(formData.spec, "")]
+			}
+		}
 	}
 
 	const convertStringToObject =(dottedString, value) => {
@@ -305,7 +333,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				jsonpath = el
 			}
 		});
-		const value = getObjectByPath(values, jsonpath); // value: "${ lorem.ipsum + \"-ns\" + \"-xy\" }"
+		const value = getObjectByPath(values, jsonpath) || ""; // value: "${ lorem.ipsum + \"-ns\" + \"-xy\" }"
 		
 		/*
 		if (key !== undefined && value !== undefined) {
@@ -331,69 +359,120 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				}
 			});
 
-			if (data?.status?.actions?.length > 0) {
-				const formProps = data.status.props
-				const template = data.status.actions.find(el => ((el.template?.id?.toLowerCase() === formProps?.onSubmitId?.toLowerCase()) && (el.template?.verb.toLowerCase() === formProps?.onSubmitVerb.toLowerCase())))
-
-				if (template?.template) {
-					const formEndpoint = template.template.path;
-					const formVerb = template.template.verb;
-					const formOverride = template.template.payloadToOverride;
-					const formKey = template.template.payloadFormKey || "spec";
-					let payload = {...template.template.payload, ...values};
-					
-					const valuesKeys = Object.keys(values);
-
-					// send all data values to specific endpoint as POST
-					if (formEndpoint && formVerb) {
-						// update payload by payloadToOverride
-						if (formOverride?.length > 0) {
-							formOverride.forEach(el => {
-								payload = updateJson(payload, el.name, el.value)
-							});
-						}
-
-						// move all values data under formKey
-						payload[formKey] = {}
-						valuesKeys.forEach(el => {
-							payload[formKey][el] = {...payload[el]}
-							delete payload[el]
-						})
-
-						// add name and namespace on endpoint querystring from payload.metadata
-						const qsParameters = formEndpoint.split("?")[1].split("&").filter(el => el !== "name=" && el !== "namespace=").join("&")
-						const endpointUrl = `${formEndpoint.split("?")[0]}?${qsParameters}&name=${payload.metadata.name}&namespace=${payload.metadata.namespace}`
+			if (data?.status?.type === "customform") {
+				// custom form submit
+				if (data?.status?.actions?.length > 0) {
+					const formProps = data.status.props
+					const template = data.status.actions.find(el => ((el.template?.id?.toLowerCase() === formProps?.onSubmitId?.toLowerCase()) && (el.template?.verb.toLowerCase() === formProps?.onSubmitVerb.toLowerCase())))
+	
+					if (template?.template) {
+						const formEndpoint = template.template.path;
+						const formVerb = template.template.verb;
+						const formOverride = template.template.payloadToOverride;
+						const formKey = template.template.payloadFormKey || data.status.props.payloadFormKey || "spec";
+						let payload = {...template.template.payload, ...values};
 						
-						// submit payload
-						switch (formVerb.toLowerCase()) {
-							case "put":
-								if (!isPutLoading && !isPutError && !isPutSuccess) {
-									await putContent({
-										endpoint: endpointUrl,
-										body: payload,
-									});
-									// close panel
-									onClose()
-								}
-							break;
+						const valuesKeys = Object.keys(values);
+	
+						// send all data values to specific endpoint as POST
+						if (formEndpoint && formVerb) {
+							// update payload by payloadToOverride
+							if (formOverride?.length > 0) {
+								formOverride.forEach(el => {
+									payload = updateJson(payload, el.name, el.value)
+								});
+							}
+	
+							// move all values data under formKey
+							payload[formKey] = {}
+							valuesKeys.forEach(el => {
+								payload[formKey][el] = typeof payload[el] === 'object' ? {...payload[el]} : payload[el]
+								delete payload[el]
+							})
+	
+							// add name and namespace on endpoint querystring from payload.metadata
+							const qsParameters = formEndpoint.split("?")[1].split("&").filter(el => el !== "name=" && el !== "namespace=").join("&")
+							const endpointUrl = `${formEndpoint.split("?")[0]}?${qsParameters}&name=${payload.metadata.name}&namespace=${payload.metadata.namespace}`
+							
+							// submit payload
+							switch (formVerb.toLowerCase()) {
+								case "put":
+									if (!isPutLoading && !isPutError && !isPutSuccess) {
+										await putContent({
+											endpoint: endpointUrl,
+											body: payload,
+										});
+										// close panel
+										onClose()
+									}
+								break;
+	
+								case "post":
+								default:
+									if (!isPostLoading && !isPostError && !isPostSuccess) {
+										await postContent({
+											endpoint: endpointUrl,
+											body: payload,
+										});
+										// close panel
+										onClose()
+									}
+								break;
+							}
+						}
+					
+					}
+				}
 
-							case "post":
-							default:
-								if (!isPostLoading && !isPostError && !isPostSuccess) {
-									await postContent({
-										endpoint: endpointUrl,
-										body: payload,
-									});
-									// close panel
-									onClose()
-								}
-							break;
+			} else {
+				// old form submit
+				if (formEndpoint) {
+					// update endpoint
+					const name = values['metadata'].name;
+					const namespace = values['metadata'].namespace;
+					const arrEndPoint = formEndpoint.split("/");
+		
+					// add namespace
+					arrEndPoint.splice(arrEndPoint.length - 1, 0, "namespaces");
+					arrEndPoint.splice(arrEndPoint.length - 1, 0, namespace);
+		
+					// add name at the end
+					arrEndPoint.push(name);
+		
+					const postEndpoint = arrEndPoint.join("/");
+		
+					// remove metadata from values
+					delete values['metadata']
+		
+					// update payload
+					const payload = {
+						"kind": data.status.content.kind,
+						"apiVersion": data.status.content.apiVersion,
+						"metadata":{
+							"name": name,
+							"namespace": namespace
+						},
+						"spec": values
+					}
+
+					// submit values
+					if (!isPostLoading && !isPostError && !isPostSuccess) {
+						try {
+							await postContent({
+								endpoint: postEndpoint,
+								body: payload,
+							});
+							// close panel
+							onClose()
+						} catch(error) {
+							catchError({ message: "Unable to send data"})
+							// keep panel opened
 						}
 					}
-				
 				}
-			
+
 			}
+
 
 			// save all data values on Redux to use them with another linked component (same prefix) 
 			if (prefix) {
@@ -458,9 +537,11 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 											name="formGenerator"
 											autoComplete="off"
 										>
-											{/* <div className={styles.metadataFields}>
-												{ renderMetadataFields() }
-											</div> */}
+											{ (data?.status?.type !== "customform") &&
+												<div className={styles.metadataFields}>
+													{ renderMetadataFields() }
+												</div>
+											}
 											<>
 												{ renderFields() }
 												{ generateInitialValues() }
