@@ -83,8 +83,8 @@ function App() {
       {
         path: r.path !== "/" ? r.path : undefined,
         index: r.path === "/",
-        element: r.endpoint ? <Page endpoint={r.endpoint} /> : <Page404 />,
-        // handle: r.handle,
+        element: <Page endpoint={r.endpoint} />,
+        // element: r.endpoint ? <Page endpoint={r.endpoint} /> : <Page404 />,
       }
     ));
     setRouter(

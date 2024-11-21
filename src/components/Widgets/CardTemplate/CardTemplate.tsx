@@ -20,7 +20,7 @@ const CardTemplate = (props) => {
     // cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb === "get")?.path}`;
     if (actions?.find(el => el.verb?.toLowerCase() === "get")) {
       // cardProps.route = `/compositions/${id}`;
-      cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb?.toLowerCase() === "get")?.path}`;
+      cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb?.toLowerCase() === "get")?.path.replace(/&/g, "%26")}`;
     }
   }
   if (!props.route && !props.endpoint && props.panel === "true" && actions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
