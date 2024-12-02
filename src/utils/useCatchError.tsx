@@ -2,15 +2,18 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { App, Result } from "antd";
 import { useAppDispatch } from "../redux/hooks";
-import { logout } from "../features/auth/authSlice";
+import { logout, selectLoggedUser } from "../features/auth/authSlice";
 import { useCallback } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const useCatchError = () => {
   const { notification } = App.useApp();
+  const user = useSelector(selectLoggedUser);
 
   const catchError = useCallback((error?: SerializedError | FetchBaseQueryError | any, type: "result" | "notification" = "notification") => {
     let message: string = "Ops! Something didn't work";
-    let description: string = "Unable to complete the operation, please try later";
+    let description: React.ReactNode = "Unable to complete the operation, please try later";
 
     /*
     // Adjust to account for potentially nested error structure
@@ -50,12 +53,13 @@ const useCatchError = () => {
     }
     */
 
-    if (error?.status === 401) {
+    if ((error?.status === 401) || (user === null)) {
       // logout
       const dispatch = useAppDispatch();
       dispatch(logout());
       message = "Your session has expired";
-      description = "Sign in again"
+      description = <Link to="/login">Sign in again</Link>
+      // window.location.href = `${window.location.origin}/login` // cannot use navigate hoooks out the router
 
     } else if (error?.status === 500) {
       // critical error
