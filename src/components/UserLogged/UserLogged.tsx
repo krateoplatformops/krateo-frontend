@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Avatar, Dropdown, Typography } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
@@ -12,7 +11,8 @@ type UserLoggedProps = {
 }
 
 const UserLogged = ({fullname, role, picture, onLogout}: UserLoggedProps) => {
-  const [ sign, setSign ] = useState('');
+  const arr = fullname.split(" ");
+  const sign  = `${arr[0][0]}${arr[arr.length-1][0]}`;
 
   const items: MenuProps['items'] = [
     {
@@ -25,13 +25,6 @@ const UserLogged = ({fullname, role, picture, onLogout}: UserLoggedProps) => {
       onClick: onLogout
     },
   ];
-
-  useEffect(() => {
-    if (!picture) {
-      const arr = fullname.split(" ");
-      setSign(`${arr[0][0]}${arr[arr.length-1][0]}`);
-    }
-  }, [picture, fullname]);
 
   return (
     <Dropdown
@@ -49,7 +42,7 @@ const UserLogged = ({fullname, role, picture, onLogout}: UserLoggedProps) => {
           gap={2}
           src={picture}
         >
-          {sign}
+          <Typography.Text>{sign}</Typography.Text>
         </Avatar>
       </div>
     </Dropdown>

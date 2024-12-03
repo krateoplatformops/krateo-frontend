@@ -12,7 +12,7 @@ import Notification from '../Notifications/Notifications';
 
 const AppBar = () => {
   const user = useSelector(selectLoggedUser);
-  const userLS = JSON.parse(localStorage.getItem("user") ||"{}");
+  const userLS = JSON.parse(localStorage.getItem("K_user") ||"{}");
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
