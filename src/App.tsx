@@ -47,10 +47,7 @@ function App() {
     },
     {
       path: "/",
-      element: <Layout
-                  menu={[]}
-                  // notifications={routesObj.notifications}
-                />,
+      element: <></>,
       errorElement: <ErrorPage />,
       children: [],
     },
@@ -60,10 +57,10 @@ function App() {
     }
   ]
   const [router, setRouter] = useState<RouteObject[]>(basicRoutes);
-  const [getContent, {isLoading, isFetching, isError, error}] = useLazyGetContentQuery();
+  const [getContent, {data, isSuccess, isLoading, isFetching, isError, error}] = useLazyGetContentQuery();
   const { catchError } = useCatchError();
   const user = useSelector(selectLoggedUser);
-  const userLS = JSON.parse(localStorage.getItem("user") ||"{}");
+  const userLS = JSON.parse(localStorage.getItem("K_user") ||"{}");
   const isRoutesUpdated = useRef<boolean>(false);
 
   const dispatch = useAppDispatch();
@@ -98,10 +95,15 @@ function App() {
     const ls = localStorage.getItem("K_config") || "{}";
     const configJson = JSON.parse(ls);
     if ( configJson?.api?.INIT) {
-      const response = await getContent({ endpoint: configJson.api.INIT });
+      await getContent({ endpoint: configJson.api.INIT })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isSuccess && data) {
       isRoutesUpdated.current = true;
-      if (response?.data?.status?.type?.toLowerCase() === "menu") {
-        const routesList = response.data.status.items?.map(el => (
+      if (data?.status?.type?.toLowerCase() === "menu") {
+        const routesList = data.status.items?.map(el => (
           {
             label: el.status.items[0].app.label,
             path: el.status.items[0].app.path,
@@ -119,7 +121,7 @@ function App() {
           }
         ));
 
-        const mergedRoutes = router.map(el => {
+        let mergedRoutes = router.map(el => {
           if (el.path === "/") return {
             path: "/",
             element: <Layout menu={routesList.filter(el => el.menu.toLowerCase() === "true")} />,
@@ -136,30 +138,27 @@ function App() {
           else return el
         })
 
+        // add default page
+        if (data.status.default) {
+          mergedRoutes = [{
+            path: "/",
+            element: <Navigate to={data.status.default} replace={true} />,
+          }, ...mergedRoutes]
+        }
+
         setRouter(mergedRoutes)
       }
     }
-  }, [])
+  }, [data, isSuccess])
+
+  useEffect(() => {
+    if (isError) {
+      catchError(error)
+    }
+  }, [isError, error])
 
   return (
     <>
-    {/* {
-      (isLoading || isFetching) ?
-        <Space direction="vertical" size="large" style={{width: '100%', height: '100vh', alignItems: 'center', justifyContent: 'center'}}>
-          <Spin size="large" />
-          <Typography.Text>Krateo loading app data...</Typography.Text>
-        </Space>
-      : isSuccess ? (
-        <AntApp>
-          { router.length > 0 ?
-            <RouterProvider router={createBrowserRouter(router)} fallbackElement={<Skeleton />} />
-            :
-            <Result status="warning" title="No application routes have been defined" subTitle="It's not possible to initialize the application at the moment" />
-          }
-        </AntApp>
-      )
-      : isError && <Flex justify="center" align="center" style={{height: '100vh'}} vertical gap={10}><img src={logo} alt="Krateo | PlatformOps" width={400} />{catchError(error, "result")}</Flex>
-    } */}
     {
       (isLoading || isFetching) ?
         <Space direction="vertical" size="large" style={{width: '100%', height: '100vh', alignItems: 'center', justifyContent: 'center'}}>

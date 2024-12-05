@@ -57,9 +57,9 @@ const useCatchError = () => {
       // logout
       const dispatch = useAppDispatch();
       dispatch(logout());
-      message = "Your session has expired";
-      description = <Link to="/login">Sign in again</Link>
-      // window.location.href = `${window.location.origin}/login` // cannot use navigate hoooks out the router
+      // message = "Your session has expired";
+      // description = <Link to="/login">Sign in again</Link>
+      window.location.href = `${window.location.origin}/login` // cannot use navigate hoooks out the router
 
     } else if (error?.status === 500) {
       // critical error
