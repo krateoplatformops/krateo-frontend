@@ -15,7 +15,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
   const isRoutesUpdated = useRef<boolean>(false);
   const user = useSelector(selectLoggedUser);
   const userLS = JSON.parse(localStorage.getItem("K_user") ||"{}");
-  const [getContent, {data, isSuccess, isLoading, isFetching, isError, error}] = useLazyGetContentQuery();
+  const [getContent, {data, isSuccess, isLoading, isFetching, isError}] = useLazyGetContentQuery();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
