@@ -20,7 +20,7 @@ export const authSlice = createSlice({
       state.data = data;
     },
     logout: (state) => {
-      localStorage.removeItem("user");
+      localStorage.removeItem("K_user");
       state.user = initialState.user;
       state.data = initialState.data;
     }
