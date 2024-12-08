@@ -2,64 +2,23 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { App, Result } from "antd";
 import { useAppDispatch } from "../redux/hooks";
-import { logout, selectLoggedUser } from "../features/auth/authSlice";
+import { logout } from "../features/auth/authSlice";
 import { useCallback } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const useCatchError = () => {
   const { notification } = App.useApp();
-  const user = useSelector(selectLoggedUser);
+  const navigate = useNavigate();
 
   const catchError = useCallback((error?: SerializedError | FetchBaseQueryError | any, type: "result" | "notification" = "notification") => {
     let message: string = "Ops! Something didn't work";
     let description: React.ReactNode = "Unable to complete the operation, please try later";
 
-    /*
-    // Adjust to account for potentially nested error structure
-    let actualErrorCode: number;
-    let actualErrorMessage: string = "";
-
-    if (error?.message && JSON.parse(error.message).data?.code) {
-      // error from API with status 200
-      actualErrorCode = JSON.parse(error.message).data.code;
-      actualErrorMessage = JSON.parse(error.message).data.message;
-      
-      const clientErrorRegex = /^4\d{2}$/; // Regex for 4xx client errors
-      if (clientErrorRegex.test(String(actualErrorCode))) {
-        if (actualErrorCode === 401) {
-          // not authorized
-          dispatch(logout());
-          message = "Your session has expired";
-          description = "Sign in again"
-        } else {
-          message = actualErrorMessage;
-          description = "There was an error processing your request. Please check your input or permissions.";
-        }
-      } else {
-        switch (actualErrorCode) {
-          // Handle other specific codes if necessary
-          case 500:
-            message = "Internal Server Error";
-            description = "The server encountered an unexpected condition.";
-            break;
-          // Add more cases as needed
-        }
-      }
-    
-    } else if (error?.message) {
-      // classic catch with error object
-      message = actualErrorMessage; // override message only
-    }
-    */
-
-    if ((error?.status === 401) || (user === null)) {
+    if ((error?.status === 401) /* || (user === null) */) {
       // logout
       const dispatch = useAppDispatch();
       dispatch(logout());
-      // message = "Your session has expired";
-      // description = <Link to="/login">Sign in again</Link>
-      window.location.href = `${window.location.origin}/login` // cannot use navigate hoooks out the router
+      navigate("/login");
 
     } else if (error?.status === 500) {
       // critical error
