@@ -1,4 +1,4 @@
-import { Avatar, Divider, Flex, Menu, Popover, Space, Typography } from 'antd';
+import { Avatar, Divider, Flex, Menu, Popover, Typography } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link } from 'react-router-dom';
 import styles from './styles.module.scss';
