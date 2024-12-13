@@ -35,7 +35,7 @@ const UserLogged = ({fullname, role, groups, picture, onLogout}: UserLoggedProps
       trigger='click'
       content={
         <section className={styles.panel}>
-          <Flex align='center' vertical gap={20}>
+          <Flex className={styles.userData} align='center' vertical gap={20}>
             <Avatar
               size={80}
               gap={2}
@@ -50,8 +50,6 @@ const UserLogged = ({fullname, role, groups, picture, onLogout}: UserLoggedProps
               <Typography.Text className={styles.groups}>{groups.join(", ")}</Typography.Text>
             </Flex>  
           </Flex>
-
-          <Divider />
 
           <Menu style={{border: 'none'}}
             mode="vertical"

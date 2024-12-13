@@ -9,6 +9,13 @@
   min-width: 200px;
   max-width: 300px;
 
+  .userData {
+    background-color: $background-color;
+    border-radius: 15px 15px 0 0;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
   .sign {
     font-size: $lTitleSize;
   }
