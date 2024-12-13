@@ -30,7 +30,7 @@ const CardTemplate = (props) => {
         type: "form",
         title: title,
         size: "large",
-        buttons: [{label: "cancel", type: "default", action: "reset"}, {label: "submit", type: "primary", action: "submit"} ],
+        buttons: [{label: "reset", type: "default", action: "reset"}, {label: "submit", type: "primary", action: "submit"} ],
         content: {
           element: "FormGenerator",
           props: {

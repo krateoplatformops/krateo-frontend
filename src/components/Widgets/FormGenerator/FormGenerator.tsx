@@ -514,6 +514,12 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		}
   }, [isPostLoading, isPutLoading, message]);
 
+	const handleAnchorClick  = (
+		e: React.MouseEvent<HTMLElement>,
+	) => {
+		e.preventDefault();
+	};
+
 	return (
 		isLoading || isFetching  ?
 				<Skeleton />
@@ -549,6 +555,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 						<Col span={12} className={styles.anchorLabelWrapper}>
 								<Anchor
 									affix={false}
+									onClick={handleAnchorClick}
 									getContainer={() => document.getElementById("anchor-content") as HTMLDivElement}
 									items={getAnchorList()}
 								/>
