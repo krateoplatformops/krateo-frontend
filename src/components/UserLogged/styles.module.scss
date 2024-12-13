@@ -6,7 +6,8 @@
 
 .panel {
   padding: 0px;
-  min-width: 200;
+  min-width: 200px;
+  max-width: 300px;
 
   .sign {
     font-size: $lTitleSize;
@@ -16,6 +17,7 @@
     padding: 0 40px;
 
     .fullname {
+      text-align: center;
       font-size: $lTextSize;
       font-weight: 600;
       line-height: 1.3;
@@ -28,6 +30,7 @@
     }
 
     .groups {
+      text-align: center;
       color: $gray-color;
     }
 
