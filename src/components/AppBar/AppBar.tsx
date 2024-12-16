@@ -39,7 +39,8 @@ const AppBar = () => {
         {user &&
           <UserLogged
             fullname={user.displayName !== "" ? user.displayName : user.username}
-            role="" // {user.role}
+            role="administrator" // {user.role}
+            groups={["devOps", "managers"]}
             picture={user.avatarURL}
             onLogout={onLogout}
           />
