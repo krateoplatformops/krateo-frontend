@@ -14,18 +14,18 @@ const useCatchError = () => {
     let message: string = "Ops! Something didn't work";
     let description: React.ReactNode = "Unable to complete the operation, please try later";
 
-    if ((error?.status === 401) /* || (user === null) */) {
+    if ((error?.status === 401 || error?.code === 401) /* || (user === null) */) {
       // logout
       const dispatch = useAppDispatch();
       dispatch(logout());
       navigate("/login");
 
-    } else if (error?.status === 500) {
+    } else if (error?.status === 500 || error?.code === 500) {
       // critical error
       message = "Internal Server Error";
       description = error?.data?.message || "The server encountered an unexpected condition.";
 
-    } else if ((/^4\d{2}$/).test(String(error?.status))) {
+    } else if ((/^4\d{2}$/).test(String(error?.status)) || (/^4\d{2}$/).test(String(error?.code))) {
       if (error?.data?.message) {
         // override error message
         message = "There was an error processing your request"
