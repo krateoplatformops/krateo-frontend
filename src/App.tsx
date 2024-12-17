@@ -17,7 +17,6 @@ library.add(fas, far)
 
 function App() {
   const [router, setRouter] = useState<RouteObject[]>([]);
-
   const updateRoutes = (newRoutes) => {
     // merge new routes with basic routes
     const mergedRoutes = [
@@ -28,7 +27,6 @@ function App() {
         element: <Page404 />
       }
     ]
-    console.log("MergedRoutes", mergedRoutes, basicRoutes)
     //update routes
     setRouter(mergedRoutes)
   }

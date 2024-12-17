@@ -25,9 +25,6 @@ const Login = () => {
     if (body.username && body.password && url) {
       try {
         const userData = await authentication({body, url}).unwrap();
-        if (userData.code !== 200) {
-          throw({status: userData.code, data: { message: "Wrong username or password, try again with different credentials"}})
-        }
         dispatch(setUser(userData));
         navigate("/");
       } catch (err) {

@@ -48,7 +48,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
     if (isSuccess && data) {
       isRoutesUpdated.current = true;
       if (data?.status?.type?.toLowerCase() === "menu") {
-        const routesList = data.status.items?.map(el => (
+        const routesList = data.status.items?.filter(el => el !== null).map(el => (
           {
             label: el.status.items[0].app.label,
             path: el.status.items[0].app.path,
@@ -66,7 +66,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
           }
         ));
 
-        let newRoutes = [
+        let newRoutes: RouteObject[] = [
           {
             path: "/",
             element: <Layout menu={routesList.filter(el => el.menu.toLowerCase() === "true")} />,
@@ -79,12 +79,10 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
         ]
 
         // add default page
-        if (data.status.default) {
+        if (data.status?.props?.default) {
           newRoutes = [{
             path: "/",
-            element: <Navigate to={data.status.default} replace={true} />,
-            errorElement: <ErrorPage />,
-            children: []
+            element: <Navigate to={data.status.props.default} replace={true} />
           }, ...newRoutes]
         }
 
@@ -94,7 +92,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
   }, [data, isSuccess])
 
   useEffect(() => {
-    if (isError && data.data.status === 401) {
+    if (isError && data.data.code === 401) {
       // invalid user logged
       dispatch(logout());
       navigate("/login");
