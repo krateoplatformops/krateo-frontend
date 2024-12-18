@@ -64,9 +64,9 @@ function App() {
       const configJson = await configFile.json();
       localStorage.setItem("K_config", JSON.stringify(configJson));
       console.log(configJson)
+      if (router?.length === 0) setRouter(basicRoutes)
     }
     getConfig()
-    if (router?.length === 0) setRouter(basicRoutes)
   }, [])
 
   return (
