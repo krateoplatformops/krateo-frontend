@@ -18,7 +18,7 @@ import CardTemplate from "./CardTemplate/CardTemplate";
 import TerminalPanel from "./TerminalPanel/TerminalPanel";
 
 const widgets = {
-  "chartPie": ChartPie,
+  "chartpie": ChartPie,
   "chartLine": ChartLine,
   "chartBars": ChartBars,
   "chartMultipleBars": ChartMultipleBars,
