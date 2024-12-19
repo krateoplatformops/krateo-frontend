@@ -33,7 +33,7 @@ const useParseData = () => {
         case "tabpane":
           return <TabPane key={data.uid} tab={data.props.label} className={styles.tabpane}>{ data.items?.map(item => parseContent(item, index+1)) }</TabPane>
         case "panel":
-          return <Panel key={data.uid} title={undefined} tooltip={undefined} buttons={undefined} content={data.items?.map(item => parseContent(item, index+1))} />
+          return <Panel key={data.uid} {...data.props} content={data.items?.map(item => parseContent(item, index+1))} />
         case "Toolbar": //TODO
           return <Toolbar key={data.uid}>{ parseContent(data.status.content.items, index+1) }</Toolbar>
         case "eventlist":
