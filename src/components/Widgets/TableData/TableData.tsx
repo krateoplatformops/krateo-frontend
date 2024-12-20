@@ -1,44 +1,64 @@
-import { Table } from "antd"
+import { Result, Table } from "antd"
 
 type TableDataType = {
   pageSize?: number
-  columns: {
-    key: string
-    title: string,
-  }[],
-  data: {
-    rowKey: string
-    dataRow: {
-      columnKey: string,
-      value: string
-    }[]
+  columns: string,
+  data?: string
+}
+
+type ColumnType = {
+  key: string,
+  title: string,
+}
+
+type DataType = {
+  rowKey: string,
+  dataRow: {
+    columnKey: string,
+    value: string,
   }[]
 }
 
 const TableData = ({pageSize = 10, columns, data}: TableDataType) => {
+  let arrColumns: ColumnType[] = [];
+  let arrData: DataType[] = [];
+  let isError:unknown = undefined;
+  let parsedColumns: {
+    title: string,
+    key: string,
+    dataIndex: string
+  }[] = [];
 
-  const parsedData: unknown[] = []
-  data.forEach((el) => {
-    const rowObj = { key: el.rowKey }
-    el.dataRow.forEach((rowEl) => {
-      rowObj[rowEl.columnKey] = rowEl.value
-    })
-    parsedData.push(rowObj)
-  })
-  
-  const parsedColumns = columns.map((el) => (
-    {
-      title: el.title,
-      key: el.key,
-      dataIndex: el.key
-    }
-  ))
+  try {
+    if (typeof columns === "string") arrColumns = JSON.parse(columns)
+    if (Array.isArray(columns)) arrColumns = columns
+
+    if (typeof data === "string") arrData = JSON.parse(data)
+    if (Array.isArray(data)) arrData = data
+
+    parsedColumns = arrColumns.map((el) => (
+      {
+        title: el.title,
+        key: el.key,
+        dataIndex: el.key
+      }
+    ))
+  } catch(error) {
+    isError = error
+  }
 
   return (
+    isError ? (
+      <Result
+        status="warning"
+        subTitle="Unable to get table data"
+      />
+    ): 
     <Table
       columns={parsedColumns}
-      dataSource={parsedData}
+      dataSource={arrData}
       pagination={{ defaultPageSize: pageSize }}
+      scroll={{ x: 'max-content' }}
     />
   )
 }
