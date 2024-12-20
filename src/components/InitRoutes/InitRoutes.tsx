@@ -52,7 +52,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
           {
             label: el.status.items[0].app.label,
             path: el.status.items[0].app.path,
-            icon: <FontAwesomeIcon icon={el.status.items[0].app.icon} />,
+            icon: <div><FontAwesomeIcon icon={el.status.items[0].app.icon} /></div>,
             endpoint: el.status.items[0].actions ? el.status.items[0].actions[0]?.path : undefined,
             menu: el.status.items[0].app.menu,
           }

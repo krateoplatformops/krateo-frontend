@@ -9,6 +9,11 @@
   .menu {
     background-color: transparent;
 
+    :global .ant-menu-item-icon {
+      width: 34px;
+      justify-content: center;
+    }
+
     :global .ant-menu-item {
       color: $menuitem-color;
       text-transform: capitalize;
@@ -23,6 +28,10 @@
         min-width: 22px;
         opacity: .5;
         transition: all 300ms;
+      }
+
+      :global .ant-menu-title-content {
+        display: initial;
       }
     }
 
