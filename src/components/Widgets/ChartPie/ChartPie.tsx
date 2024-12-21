@@ -50,7 +50,7 @@ const ChartPie = ({title, description, series}: ChartPieType) => {
       series: arrSeries.map((serie, index) => (
         {
           type: 'pie',
-          radius: [`${(90 - ringWidth) - (ringWidth * index)}%`, `${90 - (ringWidth * index)}%`],
+          radius: [`${(100 - ringWidth) - (ringWidth * index)}%`, `${100 - (ringWidth * index)}%`],
           itemStyle: {
             borderRadius: 5,
             borderColor: "#FFF",
