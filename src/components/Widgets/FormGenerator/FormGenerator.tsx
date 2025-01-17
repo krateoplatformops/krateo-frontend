@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Anchor, App, Col, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
+import { Anchor, App, Button, Col, Flex, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, usePostContentMutation, usePutContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -10,6 +10,7 @@ import Skeleton from "../../Skeleton/Skeleton";
 import useCatchError from "../../../utils/useCatchError";
 import SelectWithFilters from "./SelectWithFilters";
 import _ from 'lodash';
+import { ButtonType } from "../Button/Button";
 
 type FormGeneratorType = {
 	title?: string,
@@ -17,12 +18,15 @@ type FormGeneratorType = {
 	descriptionTooltip: boolean,
 	fieldsEndpoint?: string,
 	form: FormInstance<any>,
+	simple?: boolean | string,
 	prefix?: string,
-	onClose: () => void,
-	disableButtons: (value: boolean) => void
+	simpleButtons?: ButtonType[],
+	onClose?: () => void,
+	disableButtons?: (value: boolean) => void
 }
 
-const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEndpoint, form, prefix, onClose, disableButtons }: FormGeneratorType) => {
+const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons }: FormGeneratorType) => {
+  const [simpleForm] = Form.useForm();
 
 	// submit methods
 	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
@@ -103,7 +107,11 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					} else {
 						// set default value
 						if (node.properties[k].default) {
-							form.setFieldValue(currentName.split("."), node.properties[k].default);
+							if (form) {
+								form.setFieldValue(currentName.split("."), node.properties[k].default);
+							} else {
+								simpleForm.setFieldValue(currentName.split("."), node.properties[k].default);
+							}
 						}
 					}
 				})
@@ -186,8 +194,12 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					</div>
 				)
 
-			case "boolean": 
-				form.setFieldValue(name.split("."), false);
+			case "boolean":
+				if (form) {
+					form.setFieldValue(name.split("."), false);
+				} else {
+					simpleForm.setFieldValue(name.split("."), false);
+				}
 				return (
 					<div id={name} className={styles.formField}>
 						<Space direction="vertical" style={{width: '100%'}}>
@@ -217,13 +229,17 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 							tooltip={descriptionTooltip && node.description ? node.description : undefined}
 							extra={!descriptionTooltip && node.description ? node.description : undefined}
 						>
-							<ListEditor onChange={(values) => {form.setFieldValue(name, values)}} />
+							<ListEditor onChange={(values) => { form ? form.setFieldValue(name.split("."), values) : simpleForm.setFieldValue(name.split("."), values) }} />
 						</Form.Item>
 					</div>
 				)
 
 			case "integer":
-				form.setFieldValue(name.split("."), (node.minimum || 0));
+				if (form) {
+					form.setFieldValue(name.split("."), (node.minimum || 0));
+				} else {
+					simpleForm.setFieldValue(name.split("."), (node.minimum || 0));
+				}
 				const min = node.minimum
 				const max = node.maximum
 				return (
@@ -320,9 +336,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		const getObjectByPath = (obj, path) => path
 																						.split('.')
 																						.reduce((acc, part) => acc && acc[part], obj);
-		// const key = getObjectByPath(values, keyPath);
-		
-		const substr = valuePath.replace("${", "").replace("}", "") 
+
+		const substr = valuePath.replace("${", "").replace("}", "")
 		const arr = substr.split("+").map(el => el.trim())
 		let append = ""
 		let jsonpath = ""
@@ -334,17 +349,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 			}
 		});
 		const value = getObjectByPath(values, jsonpath) || ""; // value: "${ lorem.ipsum + \"-ns\" + \"-xy\" }"
-		
-		/*
-		if (key !== undefined && value !== undefined) {
-			// update value
-			values[key] = `${value}${append}`;
-		}
-		if (key === undefined && value !== undefined) {
-			// add key
-			values = _.merge({}, values, convertStringToObject(keyPath, `${value}${append}`))
-		}
-		*/
+
 		values = _.merge({}, values, convertStringToObject(keyPath, `${value}${append}`))
 
 		return values;
@@ -376,10 +381,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 						const formVerb = template.template.verb;
 						const formOverride = template.template.payloadToOverride;
 						const formKey = template.template.payloadFormKey || data.status.props.payloadFormKey || "spec";
+						
 						let payload = {...template.template.payload, ...values};
 						
-						const valuesKeys = Object.keys(values);
-	
 						// send all data values to specific endpoint as POST
 						if (formEndpoint && formVerb) {
 							// update payload by payloadToOverride
@@ -388,7 +392,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 									payload = updateJson(payload, el.name, el.value)
 								});
 							}
-	
+
+							const valuesKeys = Object.keys(payload).filter(el => Object.keys(template.template.payload).indexOf(el) === -1);
 							// move all values data under formKey
 							payload[formKey] = {}
 							valuesKeys.forEach(el => {
@@ -406,8 +411,13 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 											endpoint: endpointUrl,
 											body: payload,
 										});
-										// close panel
-										onClose()
+										// if into a panel -> close panel
+										if (onClose) {
+											onClose()
+										} else {
+											// clear form
+											simpleForm.resetFields()
+										}
 									}
 								break;
 	
@@ -418,8 +428,13 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 											endpoint: endpointUrl,
 											body: payload,
 										});
-										// close panel
-										onClose()
+										// if into a panel -> close panel
+										if (onClose) {
+											onClose()
+										} else {
+											// clear form
+											simpleForm.resetFields()
+										}
 									}
 								break;
 							}
@@ -458,8 +473,13 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 								endpoint: endpointUrl,
 								body: payload,
 							});
-							// close panel
-							onClose()
+							// if into a panel -> close panel
+							if (onClose) {
+								onClose()
+							} else {
+								// clear form
+								simpleForm.resetFields()
+							}
 						} catch(error) {
 							catchError({ message: "Unable to send data"})
 							// keep panel opened
@@ -480,8 +500,17 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					}
 				})
 				dispatch(setFilters({filters, prefix}))
-				// close panel
-				onClose()
+				// if into a panel -> close panel
+				if (onClose) {
+					onClose()
+				} else {
+					// clear form
+					if (form) {
+						form.resetFields()
+					} else {
+						simpleForm.resetFields()
+					}
+				}
 			}
 		} catch(error) {
 			catchError(error)
@@ -507,10 +536,10 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 
 	useEffect(() => {
     if (isPostLoading || isPutLoading) {
-			disableButtons(true)
+			if (disableButtons) disableButtons(true)
       message.loading('Sending data...');
     } else {
-			disableButtons(false)
+			if (disableButtons) disableButtons(false)
 		}
   }, [isPostLoading, isPutLoading, message]);
 
@@ -522,47 +551,77 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 
 	return (
 		isLoading || isFetching  ?
-				<Skeleton />
+			<Skeleton />
 		:
-		formData && isSuccess ?
-		<div className={styles.formGenerator}>
-			<Typography.Text strong>{title}</Typography.Text>
-			<Typography.Paragraph>{description}</Typography.Paragraph>
-			<div className={styles.anchorWrapper}>
-				<Row className={styles.anchorRow}>
-						<Col className={styles.formWrapper} span={12}>
+		formData && isSuccess ? (
+			simple === true || simple === "true" ? (
+				<div className={styles.simpleForm}>
+					<Typography.Text strong>{title}</Typography.Text>
+					<Typography.Paragraph>{description}</Typography.Paragraph>
+					<Form
+						form={simpleForm}
+						layout="vertical"
+						onFinish={onSubmit}
+						name="simpleForm"
+						autoComplete="off"
+					>
+						{ (data?.status?.type !== "customform") &&
+							<div className={styles.metadataFields}>
+								{ renderMetadataFields() }
+							</div>
+						}
+						<>
+							{ renderFields() }
+							{ generateInitialValues() }
+						</>
+					</Form>
+					<Flex justify="flex-end" gap={5}>
+						<Button type="text" htmlType="reset">Reset</Button>
+						<Button type="primary" htmlType="submit">Submit</Button>
+					</Flex>
+				</div>
+			)
+			: (
+				<div className={styles.formGenerator}>
+					<Typography.Text strong>{title}</Typography.Text>
+					<Typography.Paragraph>{description}</Typography.Paragraph>
+					<div className={styles.anchorWrapper}>
+						<Row className={styles.anchorRow}>
+							<Col className={styles.formWrapper} span={12}>
 								<div className={styles.form} id="anchor-content">
-										<Form
-											form={form}
-											layout="vertical"
-											onFinish={onSubmit}
-											name="formGenerator"
-											autoComplete="off"
-										>
-											{ (data?.status?.type !== "customform") &&
-												<div className={styles.metadataFields}>
-													{ renderMetadataFields() }
-												</div>
-											}
-											<>
-												{ renderFields() }
-												{ generateInitialValues() }
-											</>
-										</Form>
+									<Form
+										form={form}
+										layout="vertical"
+										onFinish={onSubmit}
+										name="formGenerator"
+										autoComplete="off"
+									>
+										{ (data?.status?.type !== "customform") &&
+											<div className={styles.metadataFields}>
+												{ renderMetadataFields() }
+											</div>
+										}
+										<>
+											{ renderFields() }
+											{ generateInitialValues() }
+										</>
+									</Form>
 								</div>
-						</Col>
+							</Col>
 
-						<Col span={12} className={styles.anchorLabelWrapper}>
+							<Col span={12} className={styles.anchorLabelWrapper}>
 								<Anchor
 									affix={false}
 									onClick={handleAnchorClick}
 									getContainer={() => document.getElementById("anchor-content") as HTMLDivElement}
 									items={getAnchorList()}
 								/>
-						</Col>
-				</Row>
-			</div>
-		</div>
+							</Col>
+						</Row>
+					</div>
+				</div>
+			)
+		)
 		:
 		(formData === undefined || (formData && Object.keys(formData).length === 0)) && isSuccess ? <Result status="warning" title="Ops! Something didn't work" subTitle="Unable to retrieve content data" />
 		:
