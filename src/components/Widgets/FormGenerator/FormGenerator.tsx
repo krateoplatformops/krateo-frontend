@@ -397,7 +397,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 							// move all values data under formKey
 							payload[formKey] = {}
 							valuesKeys.forEach(el => {
-								payload[formKey][el] = typeof payload[el] === 'object' ? {...payload[el]} : payload[el]
+								payload[formKey][el] = (typeof payload[el] === 'object' && !Array.isArray(payload[el])) ? {...payload[el]} : payload[el]
 								delete payload[el]
 							})
 	
