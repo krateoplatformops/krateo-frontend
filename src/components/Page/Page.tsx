@@ -17,6 +17,7 @@ const Page = ({endpoint}: PageType) => {
   const [searchParams] = useSearchParams();
   const endpointQs = searchParams.get("endpoint");
 
+/*
   const mockForm = {
     "status": {
         "items": [
@@ -68,7 +69,8 @@ const Page = ({endpoint}: PageType) => {
         "uid": "3179f03f-21fd-44d0-af48-e07de9272fe2"
     }
 }
-  
+*/
+
   useEffect(() => {
     if (endpoint || endpointQs) {
       const loadData = async () => {
