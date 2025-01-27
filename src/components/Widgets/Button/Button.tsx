@@ -8,7 +8,7 @@ import styles from "./styles.module.scss";
 import useEvents from "../../../hooks/useEvents";
 import { RootState } from "../../../redux/store";
 
-type ButtonType = {
+export type ButtonType = {
   endPoint?: string,
   icon?: string,
   label?: string,
