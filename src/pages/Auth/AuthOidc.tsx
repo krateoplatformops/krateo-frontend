@@ -6,6 +6,7 @@ import { Result, Space, Spin, Typography } from "antd";
 import { useGetAuthModesQuery, useLazySocialAuthenticationQuery } from "../../features/auth/authApiSlice";
 import getClientIdFromPath from "../../utils/getClientIdFromPath";
 import { AuthModeType, AuthRequestType } from "../Login/type";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const AuthOidc = () => {
   const clientId = getClientIdFromPath();
@@ -50,7 +51,7 @@ const AuthOidc = () => {
     />
     :
     <Space direction="vertical" size="large" style={{width: '100%', height: '100vh', alignItems: 'center', justifyContent: 'center'}}>
-      <Spin size="large" />
+      <Spin indicator={<LoadingOutlined />} size="large" />
       <Typography.Text>Authentication in progress...</Typography.Text>
     </Space>
     )

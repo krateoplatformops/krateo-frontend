@@ -10,6 +10,7 @@ import Layout from "../Layout/Layout";
 import ErrorPage from "../../pages/ErrorPage";
 import Profile from "../../pages/Profile";
 import { Result, Space, Spin, Typography } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => void}) => {
   const isRoutesUpdated = useRef<boolean>(false);
@@ -102,7 +103,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
   return (
     isLoading || isFetching ?
       <Space direction="vertical" size="large" style={{width: '100%', height: '100vh', alignItems: 'center', justifyContent: 'center'}}>
-        <Spin size="large" />
+        <Spin indicator={<LoadingOutlined />} size="large" />
         <Typography.Text>Krateo loading app data...</Typography.Text>
       </Space>
     :
