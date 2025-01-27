@@ -15,7 +15,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
   const isRoutesUpdated = useRef<boolean>(false);
   const user = useSelector(selectLoggedUser);
   const userLS = JSON.parse(localStorage.getItem("K_user") ||"{}");
-  const [getContent, {data, isSuccess, isLoading, isFetching, isError}] = useLazyGetContentQuery();
+  const [getContent, {data, isSuccess, isLoading, isFetching, isError, error}] = useLazyGetContentQuery();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -92,12 +92,12 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
   }, [data, isSuccess])
 
   useEffect(() => {
-    if (isError && data.data.code === 401) {
+    if (isError && ('status' in error && error.status === 401)) {
       // invalid user logged
       dispatch(logout());
       navigate("/login");
     }
-  })
+  }, [data, isError])
 
   return (
     isLoading || isFetching ?

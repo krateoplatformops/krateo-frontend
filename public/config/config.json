@@ -1,11 +1,11 @@
 {
   "api": {
-    "AUTHN_API_BASE_URL": "http://72.145.46.160:8082",
-        "BFF_API_BASE_URL": "http://72.145.46.166:8081",
-        "EVENTS_API_BASE_URL": "http://135.236.224.41:8083",
-        "EVENTS_PUSH_API_BASE_URL": "http://135.236.224.41:8083",
-        "INIT": "/call?apiVersion=templates.krateo.io%2Fv1alpha1&resource=collections&name=menu&namespace=krateo-system",
-        "TERMINAL_SOCKET_URL": "http://localhost:8084"
+    "AUTHN_API_BASE_URL": "http://4.209.167.70:8082",
+    "BFF_API_BASE_URL": "http://4.209.167.86:8081",
+    "EVENTS_API_BASE_URL": "http://172.205.27.74:8083",
+    "EVENTS_PUSH_API_BASE_URL": "http://172.205.27.74:8083",
+    "INIT": "/call?apiVersion=templates.krateo.io%2Fv1alpha1&resource=collections&name=menu&namespace=krateo-system",
+    "TERMINAL_SOCKET_URL": "http://localhost:8084"
   },
   "params": {
     "FRONTEND_NAMESPACE": "krateo-system",

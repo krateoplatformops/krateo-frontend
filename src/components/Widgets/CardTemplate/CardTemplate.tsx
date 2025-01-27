@@ -12,18 +12,18 @@ import useCatchError from "../../../utils/useCatchError";
 const CardTemplate = (props) => {
   const {id, icon, color, title, status, date, content, tags, actions} = props;
   const { catchError } = useCatchError();
-
-  // TEMP: keep until BE send route, endpoint or panel props
   let cardProps = {...props};
-  if (cardProps.panel?.toLowerCase() !== "true") {
+
+  // ROUTE
+  if (cardProps.route) {
     delete cardProps.panel; // keep "panel: true" only
-    // cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb === "get")?.path}`;
     if (actions?.find(el => el.verb?.toLowerCase() === "get")) {
-      // cardProps.route = `/compositions/${id}`;
-      cardProps.route = `/compositions/${id}?endpoint=${actions?.find(el => el.verb?.toLowerCase() === "get")?.path.replace(/&/g, "%26")}`;
+      cardProps.route = `${cardProps.route}?endpoint=${actions?.find(el => el.verb?.toLowerCase() === "get")?.path.replace(/&/g, "%26")}`;
     }
   }
-  if (!props.route && !props.endpoint && props.panel === "true" && actions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
+
+  // TEMP: PANEL should be an object with a content (eg: FormGenerator) instead of boolean value
+  if (!cardProps.route && !cardProps.endpoint && cardProps.panel === "true" && actions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     // add "panel" props to open panel and get form fields as default CTA of card
     cardProps = {...cardProps,
       panel: {
