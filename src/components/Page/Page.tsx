@@ -3,10 +3,9 @@ import styles from "./styles.module.scss";
 import { useLazyGetContentQuery } from "../../features/common/commonApiSlice";
 import useParseData from "../../hooks/useParseData";
 import useCatchError from "../../utils/useCatchError";
-import { useEffect, useMemo} from "react";
+import { useEffect, useMemo, useState} from "react";
 import { useSearchParams } from "react-router-dom";
-import { Space, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
+import { Skeleton } from "antd";
 
 const Page = ({endpoint}: PageType) => {
   const [parseContent] = useParseData()
@@ -16,22 +15,25 @@ const Page = ({endpoint}: PageType) => {
   const [searchParams] = useSearchParams();
   const endpointQs = searchParams.get("endpoint");
   
+  const [isPageLoading, setIsPageLoading] = useState(true);
+
   useEffect(() => {
     if (endpoint || endpointQs) {
       const loadData = async () => {
-        await getContent({endpoint: endpointQs || endpoint });
+        try {
+          setIsPageLoading(true)
+          await getContent({ endpoint: endpointQs || endpoint })
+        } finally {
+          setIsPageLoading(false)
+        }
       }
       loadData();
     }
   }, [endpoint, endpointQs, getContent]);
 
   const content = useMemo(() => {
-    if (isLoading) {
-      return (
-        <Space className={styles.loading} direction="vertical" size="large">
-          <Spin indicator={<LoadingOutlined />} size="large" />
-        </Space>
-      )
+    if (isLoading || isPageLoading) {
+      return <Skeleton />
     }
 
     if (isError) {
@@ -43,7 +45,7 @@ const Page = ({endpoint}: PageType) => {
     }
 
     return null
-  }, [isLoading, isError, isSuccess, data])
+  }, [isLoading, isPageLoading, isError, isSuccess, data])
 
   return (
     <section className={styles.page}>
