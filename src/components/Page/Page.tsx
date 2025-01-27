@@ -1,17 +1,16 @@
 import { PageType } from "./type";
 import styles from "./styles.module.scss";
-import Skeleton from "../Skeleton/Skeleton";
 import { useLazyGetContentQuery } from "../../features/common/commonApiSlice";
 import useParseData from "../../hooks/useParseData";
 import useCatchError from "../../utils/useCatchError";
-import { useEffect} from "react";
+import { useEffect, useMemo} from "react";
 import { useSearchParams } from "react-router-dom";
-import { useAppDispatch } from "../../redux/hooks";
+import { Space, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Page = ({endpoint}: PageType) => {
   const [parseContent] = useParseData()
   const { catchError } = useCatchError();
-  const dispatch = useAppDispatch();
   
   const [getContent, {data, isLoading, isSuccess, isError, error}] = useLazyGetContentQuery();
   const [searchParams] = useSearchParams();
@@ -78,22 +77,31 @@ const Page = ({endpoint}: PageType) => {
       }
       loadData();
     }
-  }, [dispatch, endpoint, endpointQs, getContent]);
+  }, [endpoint, endpointQs, getContent]);
 
-  // get data by API
-  const getContentPage = () => {
-    if (data && isSuccess) {
-      return parseContent(data, 1);
-    } else {
-      return <></>
+  const content = useMemo(() => {
+    if (isLoading) {
+      return (
+        <Space className={styles.loading} direction="vertical" size="large">
+          <Spin indicator={<LoadingOutlined />} size="large" />
+        </Space>
+      )
     }
-  }
+
+    if (isError) {
+      return catchError(error, 'result')
+    }
+
+    if (data !== undefined && data.code === undefined && isSuccess) {
+      return parseContent(data, 1)
+    }
+
+    return null
+  }, [isLoading, isError, isSuccess, data])
 
   return (
     <section className={styles.page}>
-      { isLoading && <Skeleton /> }
-      { (data !== undefined && data.code === undefined && isSuccess === true) && getContentPage() }
-      { isError && catchError(error, "result") }
+      {content}
     </section>
   );
 }
