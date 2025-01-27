@@ -20,6 +20,7 @@ jobs:
           - runner: buildjet-2vcpu-ubuntu-2204
             platform: linux/amd64
     runs-on: ${{ matrix.runner }}
+
     permissions:
       contents: read
       packages: write
