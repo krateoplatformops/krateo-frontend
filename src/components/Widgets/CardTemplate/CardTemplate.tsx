@@ -13,17 +13,16 @@ const CardTemplate = (props) => {
   const {id, icon, color, title, status, date, content, tags, actions} = props;
   const { catchError } = useCatchError();
   let cardProps = {...props};
+  let cardActions = [...actions];
 
   // ROUTE
-  if (cardProps.route) {
+  if (cardProps.route && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     delete cardProps.panel; // keep "panel: true" only
-    if (actions?.find(el => el.verb?.toLowerCase() === "get")) {
-      cardProps.route = `${cardProps.route}?endpoint=${actions?.find(el => el.verb?.toLowerCase() === "get")?.path.replace(/&/g, "%26")}`;
-    }
+    cardProps.route = `${cardProps.route}?endpoint=${cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path.replace(/&/g, "%26")}`;
   }
 
   // TEMP: PANEL should be an object with a content (eg: FormGenerator) instead of boolean value
-  if (!cardProps.route && !cardProps.endpoint && cardProps.panel === "true" && actions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
+  else if (!cardProps.route && !cardProps.endpoint && cardProps.panel === "true" && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     // add "panel" props to open panel and get form fields as default CTA of card
     cardProps = {...cardProps,
       panel: {
@@ -34,14 +33,20 @@ const CardTemplate = (props) => {
         content: {
           element: "FormGenerator",
           props: {
-            fieldsEndpoint: actions?.find(el => el.verb?.toLowerCase() === "get")?.path
+            fieldsEndpoint: cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path
           }
         }
       },
     }
   } 
-  if (props.panel === "true" && !actions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
+  else if (props.panel === "true" && !cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     // avoid wrong panel open
+    delete cardProps.panel;
+  }
+
+  else {
+    // no link -> remove action "get" from actions
+    cardActions = cardActions.filter(el => el.verb?.toLowerCase() !== "get");
     delete cardProps.panel;
   }
   // END TEMP
@@ -55,11 +60,11 @@ const CardTemplate = (props) => {
   }
 
   const isAllowed = (verb) => {
-    return actions?.find(el => el.verb?.toLowerCase() === verb) !== undefined
+    return cardActions?.find(el => el.verb?.toLowerCase() === verb) !== undefined
   }
 
   const onDeleteAction = async () => {
-    const endpoint = actions?.find(el => el.verb?.toLowerCase() === "delete")?.path;
+    const endpoint = cardActions?.find(el => el.verb?.toLowerCase() === "delete")?.path;
     await deleteContent({endpoint: endpoint});
   }
 
