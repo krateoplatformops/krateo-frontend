@@ -48,7 +48,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
   useEffect(() => {
     if (isSuccess && data) {
       isRoutesUpdated.current = true;
-      if (data?.status?.type?.toLowerCase() === "menu") {
+      if (data?.status?.type?.toLowerCase() === "routes") {
         const routesList = data.status.items?.filter(el => el !== null).map(el => (
           {
             label: el.status.items[0].app.label,
@@ -56,6 +56,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
             icon: <div><FontAwesomeIcon icon={el.status.items[0].app.icon} /></div>,
             endpoint: el.status.items[0].actions ? el.status.items[0].actions[0]?.path : undefined,
             menu: el.status.items[0].app.menu,
+            default: el.status.items[0].app.default ?? "false",
           }
         ))
 
@@ -79,11 +80,12 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
           }
         ]
 
+        const defaultRoute = routesList.find(route => route?.default === "true")
         // add default page
-        if (data.status?.props?.default) {
+        if (defaultRoute) {
           newRoutes = [{
             path: "/",
-            element: <Navigate to={data.status.props.default} replace={true} />
+            element: <Navigate to={defaultRoute.path} replace={true} />
           }, ...newRoutes]
         }
 
