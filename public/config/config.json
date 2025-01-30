@@ -1,13 +1,12 @@
 {
   "api":{
-    "AUTHN_API_BASE_URL": "http://20.166.97.59:8082",
-    "BFF_API_BASE_URL": "http://20.166.97.74:8081",
-    "EVENTS_API_BASE_URL": "http://20.166.98.178:8083",
-    "EVENTS_PUSH_API_BASE_URL": "http://20.166.98.178:8083",
+    "AUTHN_API_BASE_URL": "http://4.209.158.173:8082",
+    "BFF_API_BASE_URL": "http://68.219.45.107:8081",
+    "EVENTS_API_BASE_URL": "http://20.166.139.80:8083",
+    "EVENTS_PUSH_API_BASE_URL": "http://20.166.139.80:8083",
     "INIT": "/call?apiVersion=templates.krateo.io%2Fv1alpha1&resource=collectioniterators&name=routes&namespace=krateo-system",
-    "TERMINAL_SOCKET_URL": "http://localhost:8084"
-  },
-    "params":{
+    "TERMINAL_SOCKET_URL": "http://localhost:8084"},
+  "params":{
     "FRONTEND_NAMESPACE": "krateo-system",
     "DELAY_SAVE_NOTIFICATION": "10000"
   }

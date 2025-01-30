@@ -285,12 +285,14 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		const parseData = (node, name) => {
 			if (node.properties) {
 				return Object.keys(node.properties).map(k => {
-									const currentName = name ? `${name}.${k}` : k;
+					const currentName = name ? `${name}.${k}` : k;
+					const label = node.properties[k].title || k;
+
 					if (node.properties[k].type === "object") {
 						// create children
 						return {
 							key: currentName,
-							title: <span key={k} className={styles.anchorObjectLabel}>{k}</span>,
+							title: <span key={k} className={styles.anchorObjectLabel}>{label}</span>,
 							children: parseData(node.properties[k], currentName),
 						}
 					} else {
@@ -298,7 +300,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 						return {
 							key: currentName,
 							href: `#${currentName}`,
-							title: k
+							title: label
 						}
 					}
 				})
