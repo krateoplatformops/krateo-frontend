@@ -70,7 +70,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					// return field
 					const required = Array.isArray(node?.required) && node.required.indexOf(k) > -1;
 					fieldsData.push({type: node.properties[k].type, name: currentName});
-					return renderField(k, currentName, node.properties[k], required);
+					const label = node.properties[k].title || k;
+					return renderField(label, currentName, node.properties[k], required);
 				}
 			})
 		} else {

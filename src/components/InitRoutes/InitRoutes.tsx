@@ -48,7 +48,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
   useEffect(() => {
     if (isSuccess && data) {
       isRoutesUpdated.current = true;
-      if (data?.status?.type?.toLowerCase() === "menu") {
+      if (data?.status?.type?.toLowerCase() === "routes") {
         const routesList = data.status.items?.filter(el => el !== null).map(el => (
           {
             label: el.status.items[0].app.label,
