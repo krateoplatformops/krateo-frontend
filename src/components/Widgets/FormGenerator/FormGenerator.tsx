@@ -598,6 +598,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 										onFinish={onSubmit}
 										name="formGenerator"
 										autoComplete="off"
+										scrollToFirstError={true}
 									>
 										{ (data?.status?.type !== "customform") &&
 											<div className={styles.metadataFields}>
