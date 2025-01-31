@@ -70,7 +70,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					// return field
 					const required = Array.isArray(node?.required) && node.required.indexOf(k) > -1;
 					fieldsData.push({type: node.properties[k].type, name: currentName});
-					return renderField(k, currentName, node.properties[k], required);
+					const label = node.properties[k].title || k;
+					return renderField(label, currentName, node.properties[k], required);
 				}
 			})
 		} else {
@@ -284,12 +285,14 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 		const parseData = (node, name) => {
 			if (node.properties) {
 				return Object.keys(node.properties).map(k => {
-									const currentName = name ? `${name}.${k}` : k;
+					const currentName = name ? `${name}.${k}` : k;
+					const label = node.properties[k].title || k;
+
 					if (node.properties[k].type === "object") {
 						// create children
 						return {
 							key: currentName,
-							title: <span key={k} className={styles.anchorObjectLabel}>{k}</span>,
+							title: <span key={k} className={styles.anchorObjectLabel}>{label}</span>,
 							children: parseData(node.properties[k], currentName),
 						}
 					} else {
@@ -297,7 +300,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 						return {
 							key: currentName,
 							href: `#${currentName}`,
-							title: k
+							title: label
 						}
 					}
 				})
