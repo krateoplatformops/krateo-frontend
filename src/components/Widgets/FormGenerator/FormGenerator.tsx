@@ -47,7 +47,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 
 	useEffect(() => {
 		if (isSuccess) { // set root node
-			console.log(data)
 			if (data?.status?.content?.schema?.required) {
 				setRequiredFields(data?.status?.content?.schema?.required)
 			}
