@@ -40,12 +40,18 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 	const {data, isLoading, isFetching, isSuccess, isError, error} = useGetContentQuery({endpoint: fieldsEndpoint?.replace("/form/", "/forms/")});
 	const [formData, setFormData] = useState<any>("idle");
 	const fieldsData: {type: string, name: string}[] = [];
+	const [requiredFields, setRequiredFields] = useState<string[]>([])
 
 	// old form
 	const [formEndpoint, setFormEndpoint] = useState<string>();
 
 	useEffect(() => {
 		if (isSuccess) { // set root node
+			console.log(data)
+			if (data?.status?.content?.schema?.required) {
+				setRequiredFields(data?.status?.content?.schema?.required)
+			}
+
 			if (data?.status?.content?.schema?.properties) {
 				// old form
 				setFormData(data.status.content.schema.properties)
@@ -67,8 +73,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				if (node.properties[k].type === "object") {
 					return parseData(node.properties[k], currentName)
 				} else {
-					// return field
-					const required = Array.isArray(node?.required) && node.required.indexOf(k) > -1;
+					const required = (Array.isArray(node?.required) && node.required.indexOf(k) > -1) || requiredFields.indexOf(k) > -1
 					fieldsData.push({type: node.properties[k].type, name: currentName});
 					const label = node.properties[k].title || k;
 					return renderField(label, currentName, node.properties[k], required);
