@@ -339,27 +339,27 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
     return result;
 	}
 
+	// Example input: valuePath = "${ git.toRepo.name + \"-\" + git.toRepo.org }"
+	// Example parts: ["git.toRepo.name", "\"-\"", "git.toRepo.org"]
+	// Example transformation:
+		// getObjectByPath(values, "git.toRepo.name") → "name"
+		// getObjectByPath(values, "git.toRepo.org") → "org"
+		// Result: value = "name-org"
+
 	const updateJson = (values, keyPath, valuePath) => {
-		const getObjectByPath = (obj, path) => path
-																						.split('.')
-																						.reduce((acc, part) => acc && acc[part], obj);
-
+		const getObjectByPath = (obj, path) =>
+			path.split('.').reduce((acc, part) => acc && acc[part], obj)
+	
 		const substr = valuePath.replace("${", "").replace("}", "")
-		const arr = substr.split("+").map(el => el.trim())
-		let append = ""
-		let jsonpath = ""
-		arr.forEach(el => {
-			if ((el.indexOf("\"") > -1) || (el.indexOf("'") > -1)) {
-				append = el.replace(/"/g, '');
-			} else {
-				jsonpath = el
-			}
-		});
-		const value = getObjectByPath(values, jsonpath) || ""; // value: "${ lorem.ipsum + \"-ns\" + \"-xy\" }"
-
-		values = _.merge({}, values, convertStringToObject(keyPath, `${value}${append}`))
-
-		return values;
+		const parts = substr.split("+").map(el => el.trim())
+	
+		const value = parts.map(el =>
+			el.startsWith("\"") || el.startsWith("'")
+				? el.replace(/"/g, '')
+				: getObjectByPath(values, el) || ""
+		).join("")
+	
+		return _.merge({}, values, convertStringToObject(keyPath, value))
 	}
 
 	const updateNameNamespace = (path, name, namespace) => {
@@ -390,7 +390,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 						const formKey = template.template.payloadFormKey || data.status.props.payloadFormKey || "spec";
 						
 						let payload = {...template.template.payload, ...values};
-						
+
 						// send all data values to specific endpoint as POST
 						if (formEndpoint && formVerb) {
 							// update payload by payloadToOverride
