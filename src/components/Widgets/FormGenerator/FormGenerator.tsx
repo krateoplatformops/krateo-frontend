@@ -387,13 +387,10 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 						const formEndpoint = template.template.path;
 						const formVerb = template.template.verb;
 						const formOverride = template.template.payloadToOverride;
-						console.log(formOverride)
 						const formKey = template.template.payloadFormKey || data.status.props.payloadFormKey || "spec";
 						
 						let payload = {...template.template.payload, ...values};
 
-						console.log(payload)
-						
 						// send all data values to specific endpoint as POST
 						if (formEndpoint && formVerb) {
 							// update payload by payloadToOverride
@@ -402,8 +399,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 									payload = updateJson(payload, el.name, el.value)
 								});
 							}
-
-							console.log(payload)
 
 							const valuesKeys = Object.keys(payload).filter(el => Object.keys(template.template.payload).indexOf(el) === -1);
 							// move all values data under formKey
