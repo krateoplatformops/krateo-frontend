@@ -5,6 +5,7 @@ import { Button } from 'antd'
 import { CopyOutlined } from '@ant-design/icons'
 import styles from './styles.module.scss'
 import { useState } from 'react'
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 const YamlViewer = ({ json }: { json: string }) => {
   const [isCopied, setIsCopied] = useState(false)
@@ -17,15 +18,15 @@ const YamlViewer = ({ json }: { json: string }) => {
       <div className={styles.button}>
         {isCopied && 'Copied to clipboard'}
         
-        <Button 
-          icon={<CopyOutlined />}
-          onClick={() => {
+        <CopyToClipboard
+          onCopy={() => {
             setIsCopied(true)
-            navigator.clipboard.writeText(yamlString)
             setTimeout(() => setIsCopied(false), 2500)
           }}
-          size='large' 
-        />
+          text={yamlString}
+        >
+          <Button icon={<CopyOutlined />} size='large' />
+        </CopyToClipboard>
       </div>
 
       <div className={styles.codeViewer}>
