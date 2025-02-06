@@ -648,6 +648,6 @@ Copy content of _/build_ folder in your web server
 
 ```
 {
-  yaml: string
+  json: string
 }
 ```

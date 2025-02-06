@@ -17,6 +17,7 @@ import CardTemplateList from "./CardTemplateList/CardTemplateList";
 import CardTemplate from "./CardTemplate/CardTemplate";
 import TerminalPanel from "./TerminalPanel/TerminalPanel";
 import TableData from "./TableData/TableData";
+import YamlViewer from "./YamlViewer/YamlViewer";
 
 const widgets = {
   "chartpie": ChartPie,
@@ -38,6 +39,7 @@ const widgets = {
   "EditableList": EditableList,
   "terminal": TerminalPanel,
   "tabledata": TableData,
+  "yamlviewer": YamlViewer,
 }
 
 export default widgets;
