@@ -13,7 +13,6 @@ import Paragraph from "./Paragraph/Paragraph";
 import DynamicContent from "./DynamicContent/DynamicContent";
 import EditableContent from "./EditableContent/EditableContent";
 import EditableList from "./EditableList/EditableList";
-import CardTemplateList from "./CardTemplateList/CardTemplateList";
 import CardTemplate from "./CardTemplate/CardTemplate";
 import TerminalPanel from "./TerminalPanel/TerminalPanel";
 import TableData from "./TableData/TableData";
@@ -25,7 +24,6 @@ const widgets = {
   "chartBars": ChartBars,
   "chartMultipleBars": ChartMultipleBars,
   "chartflow": ChartFlow,
-  "CardTemplateList": CardTemplateList,
   "card": CardTemplate,
   "FormGenerator": FormGenerator,
   "button": Button,
