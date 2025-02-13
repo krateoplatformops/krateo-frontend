@@ -6,6 +6,7 @@ import widgets from "../components/Widgets";
 import styles from "./styleParse.module.scss";
 import Panel from "../components/Widgets/Panel/Panel";
 import EventsList from "../components/Widgets/EventsList/EventsList";
+import DataList from "../components/Widgets/DataList/DataList";
 import { useSearchParams } from "react-router-dom";
 
 
@@ -40,6 +41,8 @@ const useParseData = () => {
           return <EventsList key={data.uid} {...data.props} events={ data.items?.filter(el => el.app?.event !== undefined).map(el => JSON.parse(el.app?.event)) } />
         case "grid":
           return <Flex wrap key={data.uid}>{ data.items?.filter(el => el !== undefined && el !== null).map((item, index) => <div key={`${data.uid}_${index}`} style={{ width: data.props.width ? `${100 / 24 * parseInt(data.props.width)}%` : "100%", padding: "0 10px 20px" }}>{ parseContent(item, index+1) }</div>  )}</Flex>  
+        case "datalist":
+          return <DataList key={data.uid} {...data.props} data={data.items} />
         default:
           if (data?.type) {
             const Component = widgets[data.type];

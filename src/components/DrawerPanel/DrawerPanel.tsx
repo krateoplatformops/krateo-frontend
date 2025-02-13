@@ -1,23 +1,26 @@
 import { Button, Drawer, Form, Space, Typography } from "antd"
-import widgets from "../Widgets/index";
+import widgets, { WidgetNamesType } from "../Widgets/index";
 // import { useSelector } from "react-redux";
 // import { selectFilters } from "../../features/dataList/dataListSlice";
 // import dayjs from "dayjs";
 import styles from "./styles.module.scss";
 import { useState } from "react";
 
+export type DrawerPanelContent = {
+  title: string,
+  form?: "true" | "false",
+  description?: string,
+  size?: "default" | "large",
+  type?: "form",
+  buttons?: ButtonType[],
+  content: {
+    element: WidgetNamesType, // widget to render into the panel
+    props?: object // props of widget
+  }
+}
+
 type DrawerPanelType = {
-  panel: {
-    title: string,
-    description?: string,
-    size?: "default" | "large",
-    type?: "form",
-    buttons?: ButtonType[],
-    content: {
-      element: string, // widget to render into the panel
-      props?: object // props of widget
-    }
-  },
+  drawer: DrawerPanelContent,
   isOpen: boolean,
   onClose: () => void,
 }
@@ -31,17 +34,17 @@ type ButtonType = {
   action?: "default" | "submit" | "reset",
 }
 
-const DrawerPanel = ({panel, isOpen, onClose}: DrawerPanelType) => {
-  const Component = widgets[panel.content.element];
+const DrawerPanel = ({drawer, isOpen, onClose}: DrawerPanelType) => {
+  const Component = widgets[drawer.content.element];
   // const filters = useSelector(selectFilters);
   const [form] = Form.useForm();
-  const panelProps = {...panel.content.props};
+  const drawerProps = {...drawer.content.props};
   const [disableButtons, setDisableButtons] = useState<boolean>(false);
 
-  if (panel.type === "form") {
-    // add form object to panel
-    panelProps["form"] = form;
-    panelProps["disableButtons"] = setDisableButtons
+  if (drawer.type === "form") {
+    // add form object to drawer
+    drawerProps["form"] = form;
+    drawerProps["disableButtons"] = setDisableButtons
   }
 
   // const generateInitialValues = () => {
@@ -69,28 +72,29 @@ const DrawerPanel = ({panel, isOpen, onClose}: DrawerPanelType) => {
 
   return (
     <Drawer
-      rootClassName={styles.panel}
-      title={panel.title}
-      size={panel.size}
+      rootClassName={styles.drawer}
+      title={drawer.title}
+      size={drawer.size}
       onClose={onClose}
       open={isOpen}
       closable={true}
       destroyOnClose={true}
       extra={ // if contain FormGenerator only
-        panel.type === "form" &&
+        drawer.type === "form" &&
         <Space>
           {
-            panel.buttons?.map((but, i) => <Button key={`btn_${i}`} type={but.type} onClick={() => onClickButton(but.action)} disabled={disableButtons}>{but.label}</Button>)
+            drawer.buttons?.map((but, i) => <Button key={`btn_${i}`} type={but.type} onClick={() => onClickButton(but.action)} disabled={disableButtons}>{but.label}</Button>)
           }
         </Space>
       }
     >
-      <Space direction="vertical" className={styles.panelContent}>
-        <Typography.Paragraph>{panel.description}</Typography.Paragraph>
+      <Space direction="vertical" className={styles.drawerContent}>
+        <Typography.Paragraph>{drawer.description}</Typography.Paragraph>
         <Component
-          {...panelProps}
-          // initialValues={panel.type === "form" ? generateInitialValues() : undefined}
-          onClose={onClose} />
+          {...drawerProps}
+          // initialValues={drawer.type === "form" ? generateInitialValues() : undefined}
+          onClose={onClose}
+        />
       </Space>
     </Drawer>
   )

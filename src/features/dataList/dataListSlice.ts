@@ -1,23 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
 
-export type DataListType = {
-  kind: string,
-  spec: {
-    app: {
-      props:{
-        prefix: string,
-        asGrid: boolean,
-        data: any[],
-      }
+export type DataListElementType = {
+  status: {
+    uid: string,
+    name: string,
+    type: string,
+    items: {
+      actions: {
+        path: string,
+        verb: string
+      }[],
+      app: object
     }
   }
-  status: {
-    actions: {
-      path: string,
-      verb: string
-    }[]
-  }
+}
+
+export type DataListType = {
+  prefix: string,
+  data: DataListElementType[],
+  asGrid?: boolean
 }
 
 export type DataListFilterType = {
@@ -28,8 +30,8 @@ export type DataListFilterType = {
 
 export type DataListState = {
   prefix: string,
-  data: DataListType[],
-  filteredData: DataListType[],
+  data: DataListElementType[],
+  filteredData: DataListElementType[],
   filters: DataListFilterType[]
 }
 
@@ -39,7 +41,7 @@ export const dataListSlice = createSlice({
   name: 'dataList',
   initialState,
   reducers: {
-    setDataList: (state, action: PayloadAction<{data: DataListType[], prefix: string}>) => {
+    setDataList: (state, action: PayloadAction<{data: DataListElementType[], prefix: string}>) => {
       if (state.find(el => el.prefix === action.payload.prefix)) {
         state = state.map(el => {
           if (el.prefix === action.payload.prefix) {
@@ -57,7 +59,7 @@ export const dataListSlice = createSlice({
         })
       }
     },
-    filterDataList: (state, action: PayloadAction<{data: DataListType[], prefix: string}>) => {
+    filterDataList: (state, action: PayloadAction<{data: DataListElementType[], prefix: string}>) => {
       state = state.map(el => {
         if (el.prefix === action.payload.prefix) {
             el.filteredData = action.payload.data;
@@ -88,12 +90,13 @@ export const dataListSlice = createSlice({
           el.filteredData = el.data.filter(fdata => {
             let valid = true;
             action.payload.filters.forEach(filter => {
-              const index = Object.keys(fdata.spec.app.props).indexOf(filter.fieldName);
-              const valueToCompare: string = Object.values(fdata.spec.app.props)[index] as string;
+              const index = Object.keys(fdata.status.items[0].app).indexOf(filter.fieldName);
+              const valueToCompare: string = Object.values(fdata.status.items[0].app)[index] as string;
               const dateFilter = new Date((filter.fieldValue as string))
               const dateToCompare = new Date(valueToCompare)      
               if (index > -1) {
                 switch (filter.fieldType) {
+                  case "string":
                   case "text":
                   case "textArea": // tested
                     valid = valid && valueToCompare?.toLowerCase().includes((filter.fieldValue as string)?.toLowerCase()) // text, textarea -> include

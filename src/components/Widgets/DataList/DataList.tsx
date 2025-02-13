@@ -1,14 +1,15 @@
-import { List } from "antd";
-import widgets from "../index";
-import { useAppDispatch } from "../../../redux/hooks";
 import { useEffect } from "react";
+import { List } from "antd";
+import { useAppDispatch } from "../../../redux/hooks";
 import { DataListType, selectDataList, setDataList } from "../../../features/dataList/dataListSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
+import useParseData from "../../../hooks/useParseData";
 
-const DataList = ({prefix, data, asGrid = true}: {prefix: string, data: DataListType[], asGrid?: boolean}) => {
+const DataList = ({prefix, data, asGrid = true}: DataListType) => {
   const dispatch = useAppDispatch();
   const datalist = useSelector((state: RootState) => selectDataList(state, prefix));
+  const [parseContent] = useParseData()
 
   // save data on Redux
   useEffect(() => {
@@ -27,11 +28,10 @@ const DataList = ({prefix, data, asGrid = true}: {prefix: string, data: DataList
         xxl: 4,
       } : {gutter: 16, column: 1}}
       dataSource={datalist}
-      renderItem={(item) => {
-        const Component = widgets[item.kind];
+      renderItem={(item, index) => {
         return (
           <List.Item>
-            <Component {...item.spec.app.props} />
+            {parseContent(item, index+1)}
           </List.Item>
         )
       }}
