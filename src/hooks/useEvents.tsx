@@ -14,14 +14,15 @@ export type EventType = {
   showFormStructure?: "true" | "false",
   prefix?: string,
   endpoint?: string,
-  content?: object,
+  verb?: "get" | "put" | "post" | "delete",
+  content?: object[],
   actions?: {
     verb: "get" | "put" | "post" | "delete",
     path: string
   }[]
 }
 
-const useEvents = ({ drawer, drawerTitle, drawerSize, route, form, showFormStructure, prefix, endpoint, content, actions }: EventType) => {
+const useEvents = ({ drawer, drawerTitle, drawerSize, route, form, showFormStructure, prefix, endpoint, verb, content, actions }: EventType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
   const [drawerContent, setDrawerContent] = useState<DrawerPanelContent>();
@@ -89,6 +90,27 @@ const useEvents = ({ drawer, drawerTitle, drawerSize, route, form, showFormStruc
         // }
       } catch (error) {
 
+      }
+    } else if (prefix) {
+      // case 3: change component content
+      if (endpoint) {
+        // load content to show in dynamicData
+        await getContent({endpoint}).unwrap()
+        if (data && isSuccess)
+        dispatch(setDynamicContent({prefix: prefix, status: "success", content: data}))
+      } else {
+        // get content
+        dispatch(setDynamicContent({prefix: prefix, status: "success", content: content || []}))
+      }
+    } else if (endpoint && verb) {
+      if (verb === "get") {
+        await getContent({endpoint}).unwrap();
+      } else if (verb === "post") {
+        await postContent({endpoint}).unwrap();
+      } else if (verb === "put") {
+        await putContent({endpoint}).unwrap();
+      } else if (verb === "delete") {
+        await deleteContent({endpoint}).unwrap();
       }
     }
 

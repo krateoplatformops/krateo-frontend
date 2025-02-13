@@ -13,11 +13,10 @@ export type ButtonType = {
   label?: string,
   type?: "default" | "text" | "link" | "primary" | "dashed",
   action?: "default" | "submit" | "reset",
-  verb?: "get" | "delete",
   filter?: "true" | "false",
 }
 
-const Button = ({icon, label, type, action, verb, drawer, drawerTitle, drawerSize, route, filter, prefix, content, actions}: ButtonType & EventType) => {
+const Button = ({icon, label, type, verb, drawer, drawerTitle, drawerSize, route, filter, prefix, content, actions}: ButtonType & EventType) => {
   const endpointURL = actions?.find(action => action.verb.toLowerCase() === verb)?.path
   const {manageEvent, elementEvent} = useEvents({drawer, drawerTitle, drawerSize, route, form: filter, prefix, endpoint: endpointURL, content, actions})
 
