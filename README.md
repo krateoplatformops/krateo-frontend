@@ -1,34 +1,38 @@
 # Krateo Frontend
 
 ## Installation
+
 Clone repository on your machine
 
 Install dependencies
+
 ```sh
 npm install
 ```
 
 ## Start in local
+
 Launch application
+
 ```sh
-$ export "VITE_BFF_API_BASE_URL=http://4.209.37.15:8081" && export "VITE_AUTHN_API_BASE_URL=http://51.138.231.131:8080" && npm run dev
+$ export "VITE_BACKEND_API_BASE_URL=http://4.209.37.15:8081" && export "VITE_AUTHN_API_BASE_URL=http://51.138.231.131:8080" && npm run dev
 ```
 
 ## Deploying
-Build application 
+
+Build application
+
 ```sh
-$ export "VITE_BFF_API_BASE_URL=http://20.105.44.127:8080" && export "VITE_AUTHN_API_BASE_URL=http://51.138.231.131:8080" &&  npm run vite build
+$ export "VITE_BACKEND_API_BASE_URL=http://20.105.44.127:8080" && export "VITE_AUTHN_API_BASE_URL=http://51.138.231.131:8080" &&  npm run vite build
 ```
 
 Copy content of _/build_ folder in your web server
-
-
 
 ## Widget List
 
 ### Button
 
-![Button](/widgets-samples/button.png) 
+![Button](/widgets-samples/button.png)
 
 #### Properties
 
@@ -70,7 +74,7 @@ Copy content of _/build_ folder in your web server
 
 ### CardTemplate
 
-![CardTemplate](/widgets-samples/card.png) 
+![CardTemplate](/widgets-samples/card.png)
 
 #### Properties
 
@@ -116,7 +120,7 @@ Copy content of _/build_ folder in your web server
 
 ### ChartBars
 
-![ChartBars](/widgets-samples/chartbars.png) 
+![ChartBars](/widgets-samples/chartbars.png)
 
 #### Properties
 
@@ -146,10 +150,9 @@ Copy content of _/build_ folder in your web server
 }
 ```
 
-
 ### ChartFlow
 
-![ChartFlow](/widgets-samples/chartflow.png) 
+![ChartFlow](/widgets-samples/chartflow.png)
 
 #### Properties
 
@@ -197,10 +200,9 @@ Copy content of _/build_ folder in your web server
 ]
 ```
 
-
 ### ChartLine
 
-![ChartLine](/widgets-samples/chartline.png) 
+![ChartLine](/widgets-samples/chartline.png)
 
 #### Properties
 
@@ -228,7 +230,7 @@ Copy content of _/build_ folder in your web server
 
 ### ChartMultipleBars
 
-![ChartMultipleBars](/widgets-samples/chartmultiplebars.png) 
+![ChartMultipleBars](/widgets-samples/chartmultiplebars.png)
 
 #### Properties
 
@@ -271,7 +273,7 @@ Copy content of _/build_ folder in your web server
 
 ### ChartPie
 
-![ChartPie](/widgets-samples/chartpie.png) 
+![ChartPie](/widgets-samples/chartpie.png)
 
 #### Properties
 
@@ -371,51 +373,52 @@ Copy content of _/build_ folder in your web server
 #### Properties
 
 {
-	prefix: string,
-	content: {
-		kind: string,
-		spec: {
-			// widget (es: RichRow)
-		}
-	}[]
+prefix: string,
+content: {
+kind: string,
+spec: {
+// widget (es: RichRow)
+}
+}[]
 }
 
 #### Example
 
 {
-	prefix: "documentList",
-	content: {
-		kind: "Paragraph",
-		spec: {
-			// widget (es: RichRow)
-		}
-	}[]
+prefix: "documentList",
+content: {
+kind: "Paragraph",
+spec: {
+// widget (es: RichRow)
+}
+}[]
 }
 
 ### EditableContent
-/* 
-	WIP: miss update and check markdown editor
-*/
+
+/_
+WIP: miss update and check markdown editor
+_/
 {
-	text: string,
-	editEndpoint: string
+text: string,
+editEndpoint: string
 }
 
-
 ### EditableList
-/* 
-	WIP: miss update, add, remove, fields sort
-*/
+
+/_
+WIP: miss update, add, remove, fields sort
+_/
 {
-	description?: string,
-  data?: { id: string, label: string }[],
-	prefix: string,
-	endpoint: string,
+description?: string,
+data?: { id: string, label: string }[],
+prefix: string,
+endpoint: string,
 }
 
 ### EventsList
 
-![EventsList](/widgets-samples/eventlist.png) 
+![EventsList](/widgets-samples/eventlist.png)
 
 #### Properties
 
@@ -469,7 +472,7 @@ Copy content of _/build_ folder in your web server
 
 ### FormGenerator
 
-![FormGenerator](/widgets-samples/formgenerator.png) 
+![FormGenerator](/widgets-samples/formgenerator.png)
 
 #### Properties
 
@@ -497,7 +500,7 @@ Copy content of _/build_ folder in your web server
 
 ### Panel
 
-![Panel](/widgets-samples/panel.png) 
+![Panel](/widgets-samples/panel.png)
 
 #### Properties
 
@@ -523,7 +526,7 @@ Copy content of _/build_ folder in your web server
 
 ### Paragraph
 
-![Paragraph](/widgets-samples/paragraph.png) 
+![Paragraph](/widgets-samples/paragraph.png)
 
 #### Properties
 
@@ -543,7 +546,7 @@ Copy content of _/build_ folder in your web server
 
 ### RichElement
 
-![RichElement](/widgets-samples/richelement.png) 
+![RichElement](/widgets-samples/richelement.png)
 
 #### Properties
 
@@ -567,7 +570,7 @@ Copy content of _/build_ folder in your web server
 
 ### RichRow
 
-![RichRow](/widgets-samples/richrow.png) 
+![RichRow](/widgets-samples/richrow.png)
 
 #### Properties
 
@@ -597,7 +600,7 @@ Copy content of _/build_ folder in your web server
 
 ### TerminalPanel
 
-![TerminalPanel](/widgets-samples/terminal.png) 
+![TerminalPanel](/widgets-samples/terminal.png)
 
 #### Properties
 
@@ -619,7 +622,7 @@ Copy content of _/build_ folder in your web server
 
 ### TableData
 
-![TableData](/widgets-samples/tabledata.png) 
+![TableData](/widgets-samples/tabledata.png)
 
 #### Properties
 
@@ -642,7 +645,7 @@ Copy content of _/build_ folder in your web server
 
 ### YamlViewer
 
-![YamlViewer](/widgets-samples/yamlviewer.png) 
+![YamlViewer](/widgets-samples/yamlviewer.png)
 
 #### Properties
 

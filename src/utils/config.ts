@@ -1,4 +1,4 @@
-export const getBaseUrl = (type: "AUTH" | "BFF" | "EVENTS_PUSH" | "TERMINAL_SOCKET" | "EVENTS" = "BFF") => {
+export const getBaseUrl = (type: "AUTH" | "BACKEND" | "EVENTS_PUSH" | "TERMINAL_SOCKET" | "EVENTS" = "BACKEND") => {
   let baseUrl = "";
   const useConfig = import.meta.env.VITE_USE_CONFIG;
   if (useConfig === "true") {
@@ -10,8 +10,8 @@ export const getBaseUrl = (type: "AUTH" | "BFF" | "EVENTS_PUSH" | "TERMINAL_SOCK
           baseUrl = configJson.api.AUTHN_API_BASE_URL;
           break;
 
-        case "BFF":
-          baseUrl = configJson.api.BFF_API_BASE_URL;
+        case "BACKEND":
+          baseUrl = configJson.api.BACKEND_API_BASE_URL;
           break;
 
         case "EVENTS":
