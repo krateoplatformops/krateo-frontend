@@ -25,9 +25,9 @@ const widgets = {
   "chartMultipleBars": ChartMultipleBars,
   "chartflow": ChartFlow,
   "card": CardTemplate,
-  "FormGenerator": FormGenerator,
+  "formGenerator": FormGenerator,
   "button": Button,
-  "DataList": DataList,
+  "datalist": DataList,
   "panel": Panel,
   "RichElement": RichElement,
   "richrow": RichRow,
@@ -38,6 +38,9 @@ const widgets = {
   "terminal": TerminalPanel,
   "tabledata": TableData,
   "yamlviewer": YamlViewer,
+  "none": () => null
 }
+
+export type WidgetNamesType = string; //keyof typeof widgets;
 
 export default widgets;

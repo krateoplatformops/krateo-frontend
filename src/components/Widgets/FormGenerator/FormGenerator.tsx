@@ -16,6 +16,7 @@ type FormGeneratorType = {
 	title?: string,
 	description?: string,
 	descriptionTooltip: boolean,
+	showFormStructure?: boolean,
 	fieldsEndpoint?: string,
 	form: FormInstance<any>,
 	simple?: boolean | string,
@@ -25,7 +26,7 @@ type FormGeneratorType = {
 	disableButtons?: (value: boolean) => void
 }
 
-const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons }: FormGeneratorType) => {
+const FormGenerator = ({title, description, descriptionTooltip = false, showFormStructure = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons }: FormGeneratorType) => {
   const [simpleForm] = Form.useForm();
 
 	// submit methods
@@ -377,128 +378,129 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 				}
 			});
 
-			if (data?.status?.type === "customform") {
-				// custom form submit
-				if (data?.status?.actions?.length > 0) {
-					const formProps = data.status.props
-					const template = data.status.actions.find(el => ((el.template?.id?.toLowerCase() === formProps?.onSubmitId?.toLowerCase()) && (el.template?.verb.toLowerCase() === formProps?.onSubmitVerb.toLowerCase())))
-	
-					if (template?.template) {
-						const formEndpoint = template.template.path;
-						const formVerb = template.template.verb;
-						const formOverride = template.template.payloadToOverride;
-						const formKey = template.template.payloadFormKey || data.status.props.payloadFormKey || "spec";
-						
-						let payload = {...template.template.payload, ...values};
+			if (!prefix) {
 
-						// send all data values to specific endpoint as POST
-						if (formEndpoint && formVerb) {
-							// update payload by payloadToOverride
-							if (formOverride?.length > 0) {
-								formOverride.forEach(el => {
-									payload = updateJson(payload, el.name, el.value)
-								});
+				if (data?.status?.type === "customform") {
+					// custom form submit
+					if (data?.status?.actions?.length > 0) {
+						const formProps = data.status.props
+						const template = data.status.actions.find(el => ((el.template?.id?.toLowerCase() === formProps?.onSubmitId?.toLowerCase()) && (el.template?.verb.toLowerCase() === formProps?.onSubmitVerb.toLowerCase())))
+		
+						if (template?.template) {
+							const formEndpoint = template.template.path;
+							const formVerb = template.template.verb;
+							const formOverride = template.template.payloadToOverride;
+							const formKey = template.template.payloadFormKey || data.status.props.payloadFormKey || "spec";
+							
+							let payload = {...template.template.payload, ...values};
+
+							// send all data values to specific endpoint as POST
+							if (formEndpoint && formVerb) {
+								// update payload by payloadToOverride
+								if (formOverride?.length > 0) {
+									formOverride.forEach(el => {
+										payload = updateJson(payload, el.name, el.value)
+									});
+								}
+
+								const valuesKeys = Object.keys(payload).filter(el => Object.keys(template.template.payload).indexOf(el) === -1);
+								// move all values data under formKey
+								payload[formKey] = {}
+								valuesKeys.forEach(el => {
+									payload[formKey][el] = (typeof payload[el] === 'object' && !Array.isArray(payload[el])) ? {...payload[el]} : payload[el]
+									delete payload[el]
+								})
+		
+								const endpointUrl = updateNameNamespace(formEndpoint, payload.metadata.name, payload.metadata.namespace)
+
+								// submit payload
+								switch (formVerb.toLowerCase()) {
+									case "put":
+										if (!isPutLoading && !isPutError && !isPutSuccess) {
+											await putContent({
+												endpoint: endpointUrl,
+												body: payload,
+											});
+											// if into a panel -> close panel
+											if (onClose) {
+												onClose()
+											} else {
+												// clear form
+												simpleForm.resetFields()
+											}
+										}
+									break;
+		
+									case "post":
+									default:
+										if (!isPostLoading && !isPostError && !isPostSuccess) {
+											await postContent({
+												endpoint: endpointUrl,
+												body: payload,
+											});
+											// if into a panel -> close panel
+											if (onClose) {
+												onClose()
+											} else {
+												// clear form
+												simpleForm.resetFields()
+											}
+										}
+									break;
+								}
 							}
+						
+						}
+					}
 
-							const valuesKeys = Object.keys(payload).filter(el => Object.keys(template.template.payload).indexOf(el) === -1);
-							// move all values data under formKey
-							payload[formKey] = {}
-							valuesKeys.forEach(el => {
-								payload[formKey][el] = (typeof payload[el] === 'object' && !Array.isArray(payload[el])) ? {...payload[el]} : payload[el]
-								delete payload[el]
-							})
-	
-							const endpointUrl = updateNameNamespace(formEndpoint, payload.metadata.name, payload.metadata.namespace)
+				} else {
+					// old form submit
+					if (formEndpoint) {
+						// update endpoint
+						const name = values['metadata'].name;
+						const namespace = values['metadata'].namespace;
 
-							// submit payload
-							switch (formVerb.toLowerCase()) {
-								case "put":
-									if (!isPutLoading && !isPutError && !isPutSuccess) {
-										await putContent({
-											endpoint: endpointUrl,
-											body: payload,
-										});
-										// if into a panel -> close panel
-										if (onClose) {
-											onClose()
-										} else {
-											// clear form
-											simpleForm.resetFields()
-										}
-									}
-								break;
-	
-								case "post":
-								default:
-									if (!isPostLoading && !isPostError && !isPostSuccess) {
-										await postContent({
-											endpoint: endpointUrl,
-											body: payload,
-										});
-										// if into a panel -> close panel
-										if (onClose) {
-											onClose()
-										} else {
-											// clear form
-											simpleForm.resetFields()
-										}
-									}
-								break;
+						const endpointUrl = updateNameNamespace(formEndpoint, name, namespace)
+			
+						// remove metadata from values
+						delete values['metadata']
+			
+						// update payload
+						const payload = {
+							"kind": data.status.content.kind,
+							"apiVersion": data.status.content.apiVersion,
+							"metadata":{
+								"name": name,
+								"namespace": namespace
+							},
+							"spec": values
+						}
+
+						// submit values
+						if (!isPostLoading && !isPostError && !isPostSuccess) {
+							try {
+								await postContent({
+									endpoint: endpointUrl,
+									body: payload,
+								});
+								// if into a panel -> close panel
+								if (onClose) {
+									onClose()
+								} else {
+									// clear form
+									simpleForm.resetFields()
+								}
+							} catch(error) {
+								catchError({ message: "Unable to send data"})
+								// keep panel opened
 							}
 						}
-					
 					}
+
 				}
 
 			} else {
-				// old form submit
-				if (formEndpoint) {
-					// update endpoint
-					const name = values['metadata'].name;
-					const namespace = values['metadata'].namespace;
-
-					const endpointUrl = updateNameNamespace(formEndpoint, name, namespace)
-		
-					// remove metadata from values
-					delete values['metadata']
-		
-					// update payload
-					const payload = {
-						"kind": data.status.content.kind,
-						"apiVersion": data.status.content.apiVersion,
-						"metadata":{
-							"name": name,
-							"namespace": namespace
-						},
-						"spec": values
-					}
-
-					// submit values
-					if (!isPostLoading && !isPostError && !isPostSuccess) {
-						try {
-							await postContent({
-								endpoint: endpointUrl,
-								body: payload,
-							});
-							// if into a panel -> close panel
-							if (onClose) {
-								onClose()
-							} else {
-								// clear form
-								simpleForm.resetFields()
-							}
-						} catch(error) {
-							catchError({ message: "Unable to send data"})
-							// keep panel opened
-						}
-					}
-				}
-
-			}
-
-
-			// save all data values on Redux to use them with another linked component (same prefix) 
-			if (prefix) {
+				// save all data values on Redux to use them with another linked component (same prefix) 
 				// save data on redux
 				let filters: DataListFilterType[] = [];
 				fieldsData.forEach((field, index) => {
@@ -594,7 +596,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 					<Typography.Paragraph>{description}</Typography.Paragraph>
 					<div className={styles.anchorWrapper}>
 						<Row className={styles.anchorRow}>
-							<Col className={styles.formWrapper} span={12}>
+							<Col className={styles.formWrapper} span={showFormStructure ? 12 : 24}>
 								<div className={styles.form} id="anchor-content">
 									<Form
 										form={form}
@@ -616,15 +618,17 @@ const FormGenerator = ({title, description, descriptionTooltip = false, fieldsEn
 									</Form>
 								</div>
 							</Col>
-
-							<Col span={12} className={styles.anchorLabelWrapper}>
-								<Anchor
-									affix={false}
-									onClick={handleAnchorClick}
-									getContainer={() => document.getElementById("anchor-content") as HTMLDivElement}
-									items={getAnchorList()}
-								/>
-							</Col>
+							
+							{ showFormStructure &&
+								<Col span={12} className={styles.anchorLabelWrapper}>
+									<Anchor
+										affix={false}
+										onClick={handleAnchorClick}
+										getContainer={() => document.getElementById("anchor-content") as HTMLDivElement}
+										items={getAnchorList()}
+									/>
+								</Col>
+							}
 						</Row>
 					</div>
 				</div>

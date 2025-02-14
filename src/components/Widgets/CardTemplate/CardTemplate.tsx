@@ -3,53 +3,52 @@ import { Card, Avatar, Button, Space, Typography, Tag } from "antd";
 import styles from "./styles.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getColorCode } from "../../../utils/colors";
-import useEvents from "../../../hooks/useEvents";
+import useEvents, { EventType } from "../../../hooks/useEvents";
 import { useDeleteContentMutation } from "../../../features/common/commonApiSlice";
 import { useEffect } from "react";
 import useCatchError from "../../../utils/useCatchError";
-// import { useNavigate } from "react-router-dom";
 
-const CardTemplate = (props) => {
-  const {id, icon, color, title, status, date, content, tags, actions} = props;
+type CardTemplateType = {
+  id: string,
+  icon: any,
+  color: "blue" | "darkBlue" | "orange" | "gray" | "red" | "green",
+  title: string,
+  status: string,
+  date: string,
+  content: JSX.Element,
+  tags: string,
+}
+
+const CardTemplate = (props: CardTemplateType & EventType) => {
+  const {id, icon, color, title, status, date, content, tags } = props;
   const { catchError } = useCatchError();
   let cardProps = {...props};
-  let cardActions = [...actions];
+  let cardActions = [...cardProps.actions!];
 
   // ROUTE
   if (cardProps.route && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
-    delete cardProps.panel; // keep "panel: true" only
+    delete cardProps.form;
+    delete cardProps.drawer;
     cardProps.route = `${cardProps.route}?endpoint=${cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path.replace(/&/g, "%26")}`;
   }
 
-  // TEMP: PANEL should be an object with a content (eg: FormGenerator) instead of boolean value
-  else if (!cardProps.route && !cardProps.endpoint && cardProps.panel === "true" && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
-    // add "panel" props to open panel and get form fields as default CTA of card
-    cardProps = {...cardProps,
-      panel: {
-        type: "form",
-        title: title,
-        size: "large",
-        buttons: [{label: "reset", type: "default", action: "reset"}, {label: "submit", type: "primary", action: "submit"} ],
-        content: {
-          element: "FormGenerator",
-          props: {
-            fieldsEndpoint: cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path
-          }
-        }
-      },
-    }
-  } 
-  else if (props.panel === "true" && !cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
+  else if (!cardProps.route && cardProps.form === "true" && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
+    // open drawer
+    cardProps.drawerTitle = props.drawerTitle ? props.drawerTitle : cardProps.title;
+  }
+
+  else if (props.drawer === "true" && !cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     // avoid wrong panel open
-    delete cardProps.panel;
+    delete cardProps.form;
+    delete cardProps.drawer;
   }
 
   else {
     // no link -> remove action "get" from actions
     cardActions = cardActions.filter(el => el.verb?.toLowerCase() !== "get");
-    delete cardProps.panel;
+    delete cardProps.form;
+    delete cardProps.drawer;
   }
-  // END TEMP
 
   const { manageEvent, elementEvent } = useEvents(cardProps);
   const [deleteContent, {isError: isErrorDelete, error}] = useDeleteContentMutation();
