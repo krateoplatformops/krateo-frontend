@@ -19,7 +19,7 @@ export type DataListElementType = {
 export type DataListType = {
   prefix: string,
   data: DataListElementType[],
-  asGrid?: boolean
+  asGrid?: "true" | "false"
 }
 
 export type DataListFilterType = {
