@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import useParseData from "../../../hooks/useParseData";
 
-const DataList = ({prefix, data, asGrid = true}: DataListType) => {
+const DataList = ({prefix, data, asGrid = "true"}: DataListType) => {
   const dispatch = useAppDispatch();
   const datalist = useSelector((state: RootState) => selectDataList(state, prefix));
   const [parseContent] = useParseData()
@@ -18,7 +18,7 @@ const DataList = ({prefix, data, asGrid = true}: DataListType) => {
 
   return (
     <List
-      grid={asGrid ? {
+      grid={asGrid === "true" && (datalist && datalist?.length > 1) ? {
         gutter: 16,
         xs: 1,
         sm: 1,

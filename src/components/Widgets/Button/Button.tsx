@@ -18,7 +18,7 @@ export type ButtonType = {
 
 const Button = ({icon, label, type, verb, drawer, drawerTitle, drawerSize, route, filter, prefix, content, actions}: ButtonType & EventType) => {
   const endpointURL = actions?.find(action => action.verb.toLowerCase() === verb)?.path
-  const {manageEvent, elementEvent} = useEvents({drawer, drawerTitle, drawerSize, route, form: filter, prefix, endpoint: endpointURL, content, actions})
+  const {manageEvent, elementEvent} = useEvents({drawer, drawerTitle: drawerTitle ? drawerTitle : label, drawerSize, route, form: filter, prefix, endpoint: endpointURL, content, actions})
 
   const btnComp = (
     <ButtonAnt
