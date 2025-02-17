@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { Breadcrumb as AntBreadcrumb } from 'antd';
 import { BreadcrumbItemType, BreadcrumbSeparatorType } from 'antd/es/breadcrumb/Breadcrumb';
 import { Link, useMatches } from 'react-router-dom';
-import styles from "./styles.module.scss";
 
 const Breadcrumb = () => {
   const [items, setItems] = useState<Partial<BreadcrumbItemType & BreadcrumbSeparatorType>[]>();
@@ -38,10 +37,7 @@ const Breadcrumb = () => {
   }
 
   return (
-    <AntBreadcrumb
-      className={styles.breadcrumb}
-      items={items}
-    />
+    <AntBreadcrumb items={items} />
   )
 }
 
