@@ -13,7 +13,8 @@ const DataList = ({prefix, data, asGrid = "true"}: DataListType) => {
 
   // save data on Redux
   useEffect(() => {
-    dispatch(setDataList({data, prefix}))
+    // save data on Redux and remove null values
+    dispatch(setDataList({data: data.filter(el => el !== null), prefix}))
   }, [data, dispatch, prefix])
 
   return (
