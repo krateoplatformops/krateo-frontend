@@ -26,7 +26,7 @@ const ChartFlow = ({ data }) => {
    const { useToken } = theme;
    const { token } = useToken();
 
-   if (data === 'null') {
+   if (data === 'null' || !data) {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
    }
 
@@ -458,6 +458,10 @@ const ChartFlow = ({ data }) => {
    }
    catch(error) {
       parsedEdges = [];
+   }
+
+   if (parsedNodes.length === 0 || parsedEdges.length === 0) {
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
    }
 
    // auto layouting
