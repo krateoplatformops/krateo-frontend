@@ -33,6 +33,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 	
 	const [simpleForm] = Form.useForm();
 
+	const [submitRedirectRoute, setSubmitRedirectRoute] = useState<string>('')
+
 	// submit methods
 	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
 	const [putContent, { isLoading: isPutLoading, isSuccess: isPutSuccess, isError: isPutError, error: putError }] = usePutContentMutation();
@@ -373,6 +375,25 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		return `${path.split("?")[0]}?${qsParameters}&name=${name}&namespace=${namespace}` 
 	}
 
+	function interpolateRoute(payload: any, route: string): string {
+    return route.replace(/\$\{([^}]+)\}/g, (_, key) => {
+        const value = key.split('.').reduce((acc, part) => {
+            if (acc && typeof acc === 'object' && part in acc) {
+                return acc[part];
+            }
+            console.error(`Redirect error: key '${key}' not found in payload`);
+            return undefined;
+        }, payload);
+
+        if (value === undefined) {
+            console.error(`Redirect error: value for '${key}' is undefined`);
+            return '';
+        }
+
+        return String(value);
+    });
+}
+
 	const onSubmit = async (values: object) => {
 		try {
 			// convert all dayjs date to ISOstring
@@ -416,6 +437,11 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 								})
 		
 								const endpointUrl = updateNameNamespace(formEndpoint, payload.metadata.name, payload.metadata.namespace)
+
+								if (redirectRoute) {
+									const interpolatedRoute = interpolateRoute(payload, redirectRoute)
+									setSubmitRedirectRoute(interpolatedRoute)
+								}
 
 								// submit payload
 								switch (formVerb.toLowerCase()) {
@@ -543,11 +569,11 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		if (isPostSuccess || isPutSuccess) {
 			message.success('Operation successful');
 			// go to created element page if a specific props is true
-			if (!isPostLoading && !isPutLoading && redirectRoute) {
-				navigate(redirectRoute)
+			if (!isPostLoading && !isPutLoading) {
+				navigate(submitRedirectRoute)
 			}
 		}
-	}, [message, isPostSuccess, isPutSuccess]);
+	}, [message, isPostSuccess, isPutSuccess, isPostLoading, isPutLoading]);
 
 	useEffect(() => {
     if (isPostLoading || isPutLoading) {
