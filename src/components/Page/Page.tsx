@@ -5,12 +5,13 @@ import { useLazyGetContentQuery } from "../../features/common/commonApiSlice";
 import useParseData from "../../hooks/useParseData";
 import useCatchError from "../../utils/useCatchError";
 import { useEffect, useMemo, useState} from "react";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const Page = ({endpoint}: PageType) => {
   const [parseContent] = useParseData()
-  const { catchError } = useCatchError();
-  
+  const { catchError } = useCatchError()
+  const params = useParams()
+
   const [getContent, {data, isLoading, isSuccess, isError, error}] = useLazyGetContentQuery();
   const [searchParams] = useSearchParams();
   const endpointQs = searchParams.get("endpoint");
@@ -19,14 +20,29 @@ const Page = ({endpoint}: PageType) => {
 
   useEffect(() => {
     if (endpoint || endpointQs) {
+      let parsedEndpoint = endpoint || ""
+      if (params) {
+        const pattern = new RegExp(
+          Object.keys(params)
+              .map(key => `\\{${key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\\}`) // Aggiunge parentesi graffe
+              .join('|'), 
+          'g' // global flag to replace all matches
+      );
+        parsedEndpoint = parsedEndpoint.replace(pattern, match => {
+          const key = match.slice(1, -1)
+          return params[key] || match
+        })
+      }
+      
       const loadData = async () => {
         try {
           setIsPageLoading(true)
-          await getContent({ endpoint: endpointQs || endpoint })
+          await getContent({ endpoint: endpointQs || parsedEndpoint })
         } finally {
           setIsPageLoading(false)
         }
       }
+
       loadData();
     }
   }, [endpoint, endpointQs, getContent]);
