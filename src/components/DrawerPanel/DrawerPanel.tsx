@@ -16,7 +16,7 @@ export type DrawerPanelContent = {
   content: {
     element: WidgetNamesType, // widget to render into the panel
     props?: object // props of widget
-  },
+  }
 }
 
 type DrawerPanelType = {
