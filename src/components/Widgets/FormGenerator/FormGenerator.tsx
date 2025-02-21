@@ -11,6 +11,7 @@ import useCatchError from "../../../utils/useCatchError";
 import SelectWithFilters from "./SelectWithFilters";
 import _ from 'lodash';
 import { ButtonType } from "../Button/Button";
+import { useNavigate } from "react-router-dom";
 
 type FormGeneratorType = {
 	title?: string,
@@ -24,10 +25,13 @@ type FormGeneratorType = {
 	simpleButtons?: ButtonType[],
 	onClose?: () => void,
 	disableButtons?: (value: boolean) => void
+  redirectRoute?: string
 }
 
-const FormGenerator = ({title, description, descriptionTooltip = false, showFormStructure = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons }: FormGeneratorType) => {
-  const [simpleForm] = Form.useForm();
+const FormGenerator = ({title, description, descriptionTooltip = false, showFormStructure = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons, redirectRoute }: FormGeneratorType) => {
+  const navigate = useNavigate()
+	
+	const [simpleForm] = Form.useForm();
 
 	// submit methods
 	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
@@ -539,7 +543,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		if (isPostSuccess || isPutSuccess) {
 			message.success('Operation successful');
 			// go to created element page if a specific props is true
-			// navigate("");
+			if (!isPostLoading && !isPutLoading && redirectRoute) {
+				navigate(redirectRoute)
+			}
 		}
 	}, [message, isPostSuccess, isPutSuccess]);
 
