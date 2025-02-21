@@ -26,10 +26,6 @@ const ChartFlow = ({ data }) => {
    const { useToken } = theme;
    const { token } = useToken();
 
-   if (data === 'null' || !data) {
-      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-   }
-
    const status = [
       {label: "Available", icon: "fa-check", color: token.colorSuccessBg},
       {label: "Healthy", icon: "fa-check", color: token.colorSuccessBg},
@@ -460,7 +456,7 @@ const ChartFlow = ({ data }) => {
       parsedEdges = [];
    }
 
-   if (parsedNodes.length === 0 || parsedEdges.length === 0) {
+   if (data === 'null' || !data || parsedNodes.length === 0 || parsedEdges.length === 0) {
       return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
    }
 

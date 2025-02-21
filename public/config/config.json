@@ -1,5 +1,5 @@
 {
-  "api":{
+  "api": {
     "AUTHN_API_BASE_URL": "http://128.251.108.150:8082",
     "BACKEND_API_BASE_URL": "http://128.251.111.166:8081",
     "EVENTS_API_BASE_URL": "http://128.251.111.7:8083",
@@ -10,5 +10,5 @@
   "params":{
     "FRONTEND_NAMESPACE": "krateo-system",
     "DELAY_SAVE_NOTIFICATION": "10000"
-   }
+  }
 }
