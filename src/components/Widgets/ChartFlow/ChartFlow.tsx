@@ -9,7 +9,7 @@ import ReactFlow, {
   Position,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Avatar, Flex, Space, Spin, Tooltip } from 'antd';
+import { Avatar, Empty, Flex, Space, Spin, Tooltip } from 'antd';
 import dagre from '@dagrejs/dagre';
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import styles from "./styles.module.scss";
@@ -25,6 +25,10 @@ const showNodeDetails = (data) => {
 const ChartFlow = ({ data }) => {
    const { useToken } = theme;
    const { token } = useToken();
+
+   if (data === 'null' || !data) {
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+   }
 
    const status = [
       {label: "Available", icon: "fa-check", color: token.colorSuccessBg},
@@ -456,6 +460,10 @@ const ChartFlow = ({ data }) => {
       parsedEdges = [];
    }
 
+   if (parsedNodes.length === 0 || parsedEdges.length === 0) {
+      return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+   }
+
    // auto layouting
    const getLayoutedElements = (nodes, edges, direction) => {
       dagreGraph.setGraph({ rankdir: direction });
@@ -515,6 +523,5 @@ const ChartFlow = ({ data }) => {
       </div>
    )
 }
-
 
 export default ChartFlow;
