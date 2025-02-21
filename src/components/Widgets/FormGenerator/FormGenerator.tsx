@@ -381,18 +381,19 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
             if (acc && typeof acc === 'object' && part in acc) {
                 return acc[part];
             }
-            console.error(`Redirect error: key '${key}' not found in payload`);
-            return undefined;
+
+						catchError({ message: `Redirect error: key '${key}' not found in payload`})
+            return '';
         }, payload);
 
         if (value === undefined) {
-            console.error(`Redirect error: value for '${key}' is undefined`);
-            return '';
+					catchError({ message: `Redirect error: value for '${key}' is undefined`})
+					return '';
         }
 
         return String(value);
     });
-}
+	}
 
 	const onSubmit = async (values: object) => {
 		try {
