@@ -381,13 +381,11 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
                 return acc[part];
             }
 
-						catchError({ message: `Redirect error: key '${key}' not found in payload`})
-            return undefined;
+            return '__undefined__';
         }, payload);
 
         if (value === undefined) {
-					catchError({ message: `Redirect error: value for '${key}' is undefined`})
-					return '';
+					return '__undefined__';
         }
 
         return String(value);
@@ -438,10 +436,19 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		
 								const endpointUrl = updateNameNamespace(formEndpoint, payload.metadata.name, payload.metadata.namespace)
 
-								const redirectRoute = formProps.redirectRoute
-								if (redirectRoute) {
-									const interpolatedRoute = interpolateRoute(payload, redirectRoute)
-									setSubmitRedirectRoute(interpolatedRoute)
+								if (formProps?.redirectRoute) {
+									const interpolatedRoute = interpolateRoute(payload, formProps.redirectRoute)
+									if (interpolatedRoute.includes('__undefined__')) {
+										catchError({
+											code: 400,
+											data: {
+												message: "Impossible to redirect, the route contains an undefined value"
+											}
+										});
+									}
+									else {
+										setSubmitRedirectRoute(interpolatedRoute)
+									}
 								}
 
 								// submit payload
@@ -583,7 +590,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 			, 1500);
 		}
 	}, [message, isPostSuccess, isPutSuccess, isPostLoading, isPutLoading, submitRedirectRoute]);
-	
+
 	const handleAnchorClick  = (
 		e: React.MouseEvent<HTMLElement>,
 	) => {
