@@ -45,6 +45,11 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
     }
   }, [user])
 
+  const normalizeRouteParameters = (route: string) => {
+    const pattern = /\{([^}]+)\}/g;
+    return route.replace(pattern, ":$1");
+  }
+
   useEffect(() => {
     if (isSuccess && data) {
       isRoutesUpdated.current = true;
@@ -52,11 +57,11 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
         const routesList = data.status.items?.filter(el => el !== null).map(el => (
           {
             label: el.status.items[0].app.label,
-            path: el.status.items[0].app.path,
-            icon: <div><FontAwesomeIcon icon={el.status.items[0].app.icon} /></div>,
-            endpoint: el.status.items[0].actions ? el.status.items[0].actions[0]?.path : undefined,
-            menu: el.status.items[0].app.menu,
-            default: el.status.items[0].app.default ?? "false",
+            path: el.status.items[0].app.path ? normalizeRouteParameters(el.status.items[0].app.path) : undefined,
+            icon: el.status.items[0].app.icon ? <div><FontAwesomeIcon icon={el.status.items[0].app.icon} /></div> : undefined,
+            endpoint: el.status.items[0].app.endpoint ? el.status.items[0].app.endpoint : undefined,
+            menu: el.status.items[0].app.menu === "true",
+            default: el.status.items[0].app.default === "true",
           }
         ))
 
@@ -71,7 +76,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
         let newRoutes: RouteObject[] = [
           {
             path: "/",
-            element: <Layout menu={routesList.filter(el => el.menu.toLowerCase() === "true")} />,
+            element: <Layout menu={routesList.filter(el => el.menu)} />,
             errorElement: <ErrorPage />,
             children: [...routes, {
               path: "/profile",
