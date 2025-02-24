@@ -374,7 +374,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		return `${path.split("?")[0]}?${qsParameters}&name=${name}&namespace=${namespace}` 
 	}
 
-	function interpolateRoute(payload: any, route: string): string {
+	const interpolateRoute = (payload: any, route: string) => {
     return route.replace(/\$\{([^}]+)\}/g, (_, key) => {
         const value = key.split('.').reduce((acc, part) => {
             if (acc && typeof acc === 'object' && part in acc) {
@@ -390,6 +390,22 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
         return String(value);
     });
+	}
+
+	const handleRedirectRoute = (payload: any, route: string) => {
+		const interpolatedRoute = interpolateRoute(payload, route)
+
+		if (interpolatedRoute.includes('__undefined__')) {
+			catchError({
+				code: 400,
+				data: {
+					message: "Impossible to redirect, the route contains an undefined value"
+				}
+			});
+		}
+		else {
+			setSubmitRedirectRoute(interpolatedRoute)
+		}
 	}
 
 	const onSubmit = async (values: object) => {
@@ -436,19 +452,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		
 								const endpointUrl = updateNameNamespace(formEndpoint, payload.metadata.name, payload.metadata.namespace)
 
+								// Sets correct redirect route value to be used on success
 								if (formProps?.redirectRoute) {
-									const interpolatedRoute = interpolateRoute(payload, formProps.redirectRoute)
-									if (interpolatedRoute.includes('__undefined__')) {
-										catchError({
-											code: 400,
-											data: {
-												message: "Impossible to redirect, the route contains an undefined value"
-											}
-										});
-									}
-									else {
-										setSubmitRedirectRoute(interpolatedRoute)
-									}
+									handleRedirectRoute(payload, formProps?.redirectRoute)
 								}
 
 								// submit payload
