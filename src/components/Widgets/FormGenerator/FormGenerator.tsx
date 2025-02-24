@@ -383,7 +383,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
             }
 
 						catchError({ message: `Redirect error: key '${key}' not found in payload`})
-            return '';
+            return undefined;
         }, payload);
 
         if (value === undefined) {
