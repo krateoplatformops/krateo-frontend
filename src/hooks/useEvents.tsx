@@ -19,22 +19,10 @@ export type EventType = {
   actions?: {
     verb: "get" | "put" | "post" | "delete",
     path: string
-  }[],
+  }[]
 }
 
-const useEvents = ({ 
-  drawer,
-  drawerTitle, 
-  drawerSize, 
-  route, 
-  form,
-  showFormStructure,
-  prefix,
-  endpoint,
-  verb,
-  content,
-  actions,
-}: EventType) => {
+const useEvents = ({ drawer, drawerTitle, drawerSize, route, form, showFormStructure, prefix, endpoint, verb, content, actions }: EventType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
   const [drawerContent, setDrawerContent] = useState<DrawerPanelContent>();
@@ -91,7 +79,7 @@ const useEvents = ({
                 showFormStructure: showFormStructure,
                 fieldsEndpoint: actions?.find(el => el.verb?.toLowerCase() === "get")?.path
               }
-            },
+            }
           }
           setDrawerContent(drawerContent);
         }
