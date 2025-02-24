@@ -10,5 +10,5 @@
   "params":{
     "FRONTEND_NAMESPACE": "krateo-system",
     "DELAY_SAVE_NOTIFICATION": "10000"
-  }
+   }
 }
