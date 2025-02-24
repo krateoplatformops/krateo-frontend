@@ -20,7 +20,6 @@ export type EventType = {
     verb: "get" | "put" | "post" | "delete",
     path: string
   }[],
-  redirectRoute?: string
 }
 
 const useEvents = ({ 
@@ -35,7 +34,6 @@ const useEvents = ({
   verb,
   content,
   actions,
-  redirectRoute
 }: EventType) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
@@ -91,8 +89,7 @@ const useEvents = ({
               props: {
                 prefix: prefix,
                 showFormStructure: showFormStructure,
-                fieldsEndpoint: actions?.find(el => el.verb?.toLowerCase() === "get")?.path,
-                redirectRoute
+                fieldsEndpoint: actions?.find(el => el.verb?.toLowerCase() === "get")?.path
               }
             },
           }

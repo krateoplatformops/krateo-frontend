@@ -25,10 +25,9 @@ type FormGeneratorType = {
 	simpleButtons?: ButtonType[],
 	onClose?: () => void,
 	disableButtons?: (value: boolean) => void
-  redirectRoute?: string
 }
 
-const FormGenerator = ({title, description, descriptionTooltip = false, showFormStructure = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons, redirectRoute }: FormGeneratorType) => {
+const FormGenerator = ({title, description, descriptionTooltip = false, showFormStructure = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons }: FormGeneratorType) => {
   const navigate = useNavigate()
 	
 	const [simpleForm] = Form.useForm();
@@ -439,6 +438,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		
 								const endpointUrl = updateNameNamespace(formEndpoint, payload.metadata.name, payload.metadata.namespace)
 
+								const redirectRoute = formProps.redirectRoute
 								if (redirectRoute) {
 									const interpolatedRoute = interpolateRoute(payload, redirectRoute)
 									setSubmitRedirectRoute(interpolatedRoute)
@@ -559,32 +559,31 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	useEffect(() => {
 		if (isPostError) {
-			catchError(postError);
+			setTimeout(() => catchError(postError), 1500);
 		}
 		if (isPutError) {
-			catchError(putError);
+			setTimeout(() => catchError(putError), 1500);
 		}
 	}, [catchError, isPostError, postError, isPutError, putError]);
 
 	useEffect(() => {
-		if (isPostSuccess || isPutSuccess) {
-			message.success('Operation successful');
-			// go to created element page if a specific props is true
-			if (!isPostLoading && !isPutLoading) {
-				navigate(submitRedirectRoute)
-			}
-		}
-	}, [message, isPostSuccess, isPutSuccess, isPostLoading, isPutLoading]);
-
-	useEffect(() => {
     if (isPostLoading || isPutLoading) {
 			if (disableButtons) disableButtons(true)
-      message.loading('Sending data...');
+      message.loading('Sending data...', 1.5);
     } else {
 			if (disableButtons) disableButtons(false)
 		}
   }, [isPostLoading, isPutLoading, message]);
 
+	useEffect(() => {
+		if (isPostSuccess || isPutSuccess) {
+			setTimeout(() => message
+				.success('Operation successful', 1.5)
+				.then(() => navigate(submitRedirectRoute))
+			, 1500);
+		}
+	}, [message, isPostSuccess, isPutSuccess, isPostLoading, isPutLoading, submitRedirectRoute]);
+	
 	const handleAnchorClick  = (
 		e: React.MouseEvent<HTMLElement>,
 	) => {
