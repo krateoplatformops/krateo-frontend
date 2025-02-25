@@ -11,6 +11,7 @@ import useCatchError from "../../../utils/useCatchError";
 import SelectWithFilters from "./SelectWithFilters";
 import _ from 'lodash';
 import { ButtonType } from "../Button/Button";
+import { useNavigate } from "react-router-dom";
 
 type FormGeneratorType = {
 	title?: string,
@@ -27,7 +28,11 @@ type FormGeneratorType = {
 }
 
 const FormGenerator = ({title, description, descriptionTooltip = false, showFormStructure = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons }: FormGeneratorType) => {
-  const [simpleForm] = Form.useForm();
+  const navigate = useNavigate()
+	
+	const [simpleForm] = Form.useForm();
+
+	const [submitRedirectRoute, setSubmitRedirectRoute] = useState<string>('')
 
 	// submit methods
 	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
@@ -369,6 +374,39 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		return `${path.split("?")[0]}?${qsParameters}&name=${name}&namespace=${namespace}` 
 	}
 
+	const interpolateRoute = (payload: any, route: string): string | null => {
+    let allReplacementsSuccessful = true;
+
+    const interpolatedRoute = route.replace(/\$\{([^}]+)\}/g, (_, key) => {
+        const value = key.split('.').reduce((acc: any, part) => acc?.[part], payload);
+
+        if (value === undefined) {
+            allReplacementsSuccessful = false;
+            return '';
+        }
+				
+        return String(value);
+    });
+
+		return allReplacementsSuccessful ? interpolatedRoute : null;
+};
+
+	const handleRedirectRoute = (payload: any, route: string) => {
+		const interpolatedRoute = interpolateRoute(payload, route)
+
+		if (!interpolatedRoute) {
+			catchError({
+				code: 400,
+				data: {
+					message: "Impossible to redirect, the route contains an undefined value"
+				}
+			});
+		}
+		else {
+			setSubmitRedirectRoute(interpolatedRoute)
+		}
+	}
+
 	const onSubmit = async (values: object) => {
 		try {
 			// convert all dayjs date to ISOstring
@@ -412,6 +450,11 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 								})
 		
 								const endpointUrl = updateNameNamespace(formEndpoint, payload.metadata.name, payload.metadata.namespace)
+
+								// Sets correct redirect route value to be used on success
+								if (formProps?.redirectRoute) {
+									handleRedirectRoute(payload, formProps?.redirectRoute)
+								}
 
 								// submit payload
 								switch (formVerb.toLowerCase()) {
@@ -528,29 +571,32 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	useEffect(() => {
 		if (isPostError) {
+			message.destroy()
 			catchError(postError);
 		}
 		if (isPutError) {
+			message.destroy()
 			catchError(putError);
 		}
-	}, [catchError, isPostError, postError, isPutError, putError]);
-
-	useEffect(() => {
-		if (isPostSuccess || isPutSuccess) {
-			message.success('Operation successful');
-			// go to created element page if a specific props is true
-			// navigate("");
-		}
-	}, [message, isPostSuccess, isPutSuccess]);
+	}, [message, catchError, isPostError, postError, isPutError, putError]);
 
 	useEffect(() => {
     if (isPostLoading || isPutLoading) {
 			if (disableButtons) disableButtons(true)
-      message.loading('Sending data...');
+      message.loading('Sending data...', 1.5);
     } else {
 			if (disableButtons) disableButtons(false)
 		}
   }, [isPostLoading, isPutLoading, message]);
+
+	useEffect(() => {
+		if (isPostSuccess || isPutSuccess) {
+			message.destroy()
+			message
+				.success('Operation successful', 1.5)
+				.then(() => navigate(submitRedirectRoute))
+		}
+	}, [message, isPostSuccess, isPutSuccess, submitRedirectRoute]);
 
 	const handleAnchorClick  = (
 		e: React.MouseEvent<HTMLElement>,
