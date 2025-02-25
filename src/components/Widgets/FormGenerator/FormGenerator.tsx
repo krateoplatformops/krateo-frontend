@@ -596,7 +596,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 				.success('Operation successful', 1.5)
 				.then(() => navigate(submitRedirectRoute))
 		}
-	}, [message, isPostSuccess, isPutSuccess, isPostLoading, isPutLoading, submitRedirectRoute]);
+	}, [message, isPostSuccess, isPutSuccess, submitRedirectRoute]);
 
 	const handleAnchorClick  = (
 		e: React.MouseEvent<HTMLElement>,
