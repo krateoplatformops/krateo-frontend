@@ -374,28 +374,27 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		return `${path.split("?")[0]}?${qsParameters}&name=${name}&namespace=${namespace}` 
 	}
 
-	const interpolateRoute = (payload: any, route: string) => {
-    return route.replace(/\$\{([^}]+)\}/g, (_, key) => {
-        const value = key.split('.').reduce((acc, part) => {
-            if (acc && typeof acc === 'object' && part in acc) {
-                return acc[part];
-            }
+	const interpolateRoute = (payload: any, route: string): string | null => {
+    let allReplacementsSuccessful = true;
 
-            return '__undefined__';
-        }, payload);
+    const interpolatedRoute = route.replace(/\$\{([^}]+)\}/g, (_, key) => {
+        const value = key.split('.').reduce((acc: any, part) => acc?.[part], payload);
 
         if (value === undefined) {
-					return '__undefined__';
+            allReplacementsSuccessful = false;
+            return '';
         }
-
+				
         return String(value);
     });
-	}
+
+		return allReplacementsSuccessful ? interpolatedRoute : null;
+};
 
 	const handleRedirectRoute = (payload: any, route: string) => {
 		const interpolatedRoute = interpolateRoute(payload, route)
 
-		if (interpolatedRoute.includes('__undefined__')) {
+		if (!interpolatedRoute) {
 			catchError({
 				code: 400,
 				data: {
@@ -572,12 +571,14 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	useEffect(() => {
 		if (isPostError) {
-			setTimeout(() => catchError(postError), 1500);
+			message.destroy()
+			catchError(postError);
 		}
 		if (isPutError) {
-			setTimeout(() => catchError(putError), 1500);
+			message.destroy()
+			catchError(putError);
 		}
-	}, [catchError, isPostError, postError, isPutError, putError]);
+	}, [message, catchError, isPostError, postError, isPutError, putError]);
 
 	useEffect(() => {
     if (isPostLoading || isPutLoading) {
@@ -590,10 +591,10 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	useEffect(() => {
 		if (isPostSuccess || isPutSuccess) {
-			setTimeout(() => message
+			message.destroy()
+			message
 				.success('Operation successful', 1.5)
 				.then(() => navigate(submitRedirectRoute))
-			, 1500);
 		}
 	}, [message, isPostSuccess, isPutSuccess, isPostLoading, isPutLoading, submitRedirectRoute]);
 
