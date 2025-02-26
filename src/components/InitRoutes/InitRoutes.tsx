@@ -46,8 +46,12 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
   }, [user])
 
   const normalizeRouteParameters = (route: string) => {
+    let normalizeRoute = route;
+    if (normalizeRoute.endsWith("/")) {
+      normalizeRoute = normalizeRoute.slice(0, -1);
+    }
     const pattern = /\{([^}]+)\}/g;
-    return route.replace(pattern, ":$1");
+    return normalizeRoute.replace(pattern, ":$1");
   }
 
   useEffect(() => {
@@ -85,7 +89,7 @@ const InitRoutes = ({updateRoutes}: {updateRoutes: (routes: RouteObject[]) => vo
           }
         ]
 
-        const defaultRoute = routesList.find(route => route?.default === "true")
+        const defaultRoute = routesList.find(route => route?.default)
         // add default page
         if (defaultRoute) {
           newRoutes = [{
