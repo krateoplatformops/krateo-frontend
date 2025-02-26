@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Anchor, App, Button, Col, Flex, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, usePostContentMutation, usePutContentMutation } from "../../../features/common/commonApiSlice";
@@ -569,6 +569,26 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		}
 	}
 
+	const onFinishFailed = useCallback(({ errorFields }: any) => {
+		const errorField = errorFields[0].name.join('.') 
+		const errorFieldElement = document.querySelector(`#${CSS.escape(errorField)}`)
+	
+		if (errorFieldElement) {
+			errorFieldElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+	
+			const inputElement = errorFieldElement.querySelector('input, textarea, select') as HTMLElement
+			if (inputElement) {
+				requestAnimationFrame(() => inputElement.focus())
+			}
+		}
+	
+		const anchorLink = document.querySelector(`a[href='#${CSS.escape(errorField)}']`) as HTMLAnchorElement
+		if (anchorLink) {
+			anchorLink.click()
+			anchorLink.scrollIntoView({ behavior: 'smooth', block: 'center' })
+		}
+	}, [])
+
 	useEffect(() => {
 		if (isPostError) {
 			message.destroy()
@@ -648,9 +668,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 										form={form}
 										layout="vertical"
 										onFinish={onSubmit}
+										onFinishFailed={onFinishFailed}
 										name="formGenerator"
 										autoComplete="off"
-										scrollToFirstError={true}
 									>
 										{ (data?.status?.type !== "customform") &&
 											<div className={styles.metadataFields}>
