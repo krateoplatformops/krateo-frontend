@@ -28,7 +28,7 @@ type FormGeneratorType = {
 }
 
 const FormGenerator = ({title, description, descriptionTooltip = false, showFormStructure = false, fieldsEndpoint, form, simple, prefix, onClose, disableButtons }: FormGeneratorType) => {
-  const navigate = useNavigate() 
+  const navigate = useNavigate()
 	
 	const [simpleForm] = Form.useForm();
 
