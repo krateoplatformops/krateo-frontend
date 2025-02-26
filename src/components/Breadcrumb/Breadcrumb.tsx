@@ -22,7 +22,7 @@ const Breadcrumb = () => {
       })
       setItems(items);
     } else {
-      setItems([{title: "Dashboard"}])
+      setItems([{title: ""}])
     }
   }, [matches]);
 
