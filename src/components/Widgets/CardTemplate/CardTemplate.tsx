@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getColorCode } from "../../../utils/colors";
 import useEvents, { EventType } from "../../../hooks/useEvents";
 import { useDeleteContentMutation } from "../../../features/common/commonApiSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useCatchError from "../../../utils/useCatchError";
 
 type CardTemplateType = {
@@ -17,6 +17,7 @@ type CardTemplateType = {
   date: string,
   content: JSX.Element,
   tags: string,
+  onDelete?: () => void,
 }
 
 const CardTemplate = (props: CardTemplateType & EventType) => {
@@ -51,7 +52,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
   }
 
   const { manageEvent, elementEvent } = useEvents(cardProps);
-  const [deleteContent, {isError: isErrorDelete, error}] = useDeleteContentMutation();
+  const [deleteContent, {isSuccess: isErrorSuccess, isLoading: isErrorLoading, isError: isErrorDelete, error}] = useDeleteContentMutation();
 
   const onClick = () => {
     if (isAllowed("get"))
@@ -66,6 +67,12 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
     const endpoint = cardActions?.find(el => el.verb?.toLowerCase() === "delete")?.path;
     await deleteContent({endpoint: endpoint});
   }
+
+  useEffect(() => {
+    if (isErrorSuccess) {
+      if (props.onDelete) props.onDelete();
+    }
+  }, [isErrorSuccess]);
 
   useEffect(() => {
     if (isErrorDelete) {
@@ -94,7 +101,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
         }
         actions={[
           <Space wrap key='1'>{tags?.split(",")?.map((tag, i) => <Tag key={`Tag_${i}`}>{tag}</Tag>)}</Space>,
-          <Button key='2' onClick={(e) => {e.stopPropagation(); onDeleteAction()}} icon={<DeleteOutlined />} type="text" disabled={!isAllowed("delete")} />
+          <Button key='2' onClick={(e) => {e.stopPropagation(); onDeleteAction()}} icon={<DeleteOutlined />} type="text" disabled={!isAllowed("delete") || isErrorLoading} />
         ]}
       >
         {content}
