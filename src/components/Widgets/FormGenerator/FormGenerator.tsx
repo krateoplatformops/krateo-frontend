@@ -12,6 +12,7 @@ import SelectWithFilters from "./SelectWithFilters";
 import _ from 'lodash';
 import { ButtonType } from "../Button/Button";
 import { useNavigate } from "react-router-dom";
+import { getBaseUrl } from "../../../utils/config";
 
 type FormGeneratorType = {
 	title?: string,
@@ -33,6 +34,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 	const [simpleForm] = Form.useForm();
 
 	const [submitRedirectRoute, setSubmitRedirectRoute] = useState<string>('')
+	const [eventReceived, setEventReceived] = useState(false);
+	const [shouldRedirect, setShouldRedirect] = useState(false);
 
 	// submit methods
 	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
@@ -50,6 +53,25 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	// old form
 	const [formEndpoint, setFormEndpoint] = useState<string>();
+
+	useEffect(() => {
+		// opening a connection to the server to begin receiving events from it
+		const eventsEndpoint = `${getBaseUrl("EVENTS_PUSH")}/notifications`;
+		const eventSource = new EventSource(eventsEndpoint, {
+				withCredentials: false,
+		});
+
+		eventSource.addEventListener('krateo', (event) => {
+			const data = JSON.parse(event.data);
+			// TODO: add check on UID data?.involvedObject?.uid === id di qualcosa che viene dalla response
+			if (data?.reason === 'CompositionCreated') {
+				setEventReceived(true)
+			}
+		});
+
+		// terminating the connection on component unmount
+		return () => eventSource.close();
+	}, []);
 
 	useEffect(() => {
 		if (isSuccess) { // set root node
@@ -614,9 +636,15 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 			message.destroy()
 			message
 				.success('Operation successful', 1.5)
-				.then(() => navigate(submitRedirectRoute))
+				.then(() => setShouldRedirect(true))
 		}
-	}, [message, isPostSuccess, isPutSuccess, submitRedirectRoute]);
+	}, [message, isPostSuccess, isPutSuccess]);
+
+	useEffect(() => {
+		if (shouldRedirect && eventReceived) {
+			navigate(submitRedirectRoute);
+		}
+	}, [shouldRedirect, eventReceived, submitRedirectRoute]);
 
 	const handleAnchorClick  = (
 		e: React.MouseEvent<HTMLElement>,
