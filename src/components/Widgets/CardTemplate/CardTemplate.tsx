@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getColorCode } from "../../../utils/colors";
 import useEvents, { EventType } from "../../../hooks/useEvents";
 import { useDeleteContentMutation } from "../../../features/common/commonApiSlice";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useCatchError from "../../../utils/useCatchError";
 
 type CardTemplateType = {
