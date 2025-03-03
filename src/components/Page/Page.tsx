@@ -6,7 +6,6 @@ import useParseData from "../../hooks/useParseData";
 import useCatchError from "../../utils/useCatchError";
 import { useEffect, useMemo, useState} from "react";
 import { useParams, useSearchParams } from "react-router-dom";
-import { getBaseUrl } from "../../utils/config";
 
 const Page = ({endpoint}: PageType) => {
   const [parseContent] = useParseData()
@@ -18,22 +17,6 @@ const Page = ({endpoint}: PageType) => {
   const endpointQs = searchParams.get("endpoint");
   
   const [isPageLoading, setIsPageLoading] = useState(true);
-
-   useEffect(() => {
-      // opening a connection to the server to begin receiving events from it
-        const eventsEndpoint = `${getBaseUrl("EVENTS_PUSH")}/notifications`;
-        const eventSource = new EventSource(eventsEndpoint, {
-            withCredentials: false,
-        });
-  
-        eventSource.addEventListener('krateo', (event) => {
-          const data = JSON.parse(event.data);
-          console.log(data)
-        });
-  
-        // terminating the connection on component unmount
-        return () => eventSource.close();
-    }, []);
 
   useEffect(() => {
     if (endpoint || endpointQs) {

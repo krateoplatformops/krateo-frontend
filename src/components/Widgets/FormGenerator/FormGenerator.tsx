@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { Anchor, App, Button, Col, Flex, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Anchor, App, Button, Col, Flex, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Spin, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, usePostContentMutation, usePutContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -34,8 +34,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 	const [simpleForm] = Form.useForm();
 
 	const [submitRedirectRoute, setSubmitRedirectRoute] = useState<string>('')
-	const [eventReceived, setEventReceived] = useState(false);
 	const [shouldRedirect, setShouldRedirect] = useState(false);
+	const [eventReceived, setEventReceived] = useState(false);
+	const eventReceivedRef = useRef(eventReceived);
 
 	// submit methods
 	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
@@ -54,8 +55,8 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 	// old form
 	const [formEndpoint, setFormEndpoint] = useState<string>();
 
+	// Check on CompositionCreated event for redirect
 	useEffect(() => {
-		// opening a connection to the server to begin receiving events from it
 		const eventsEndpoint = `${getBaseUrl("EVENTS_PUSH")}/notifications`;
 		const eventSource = new EventSource(eventsEndpoint, {
 				withCredentials: false,
@@ -63,13 +64,11 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 		eventSource.addEventListener('krateo', (event) => {
 			const data = JSON.parse(event.data);
-			// TODO: add check on UID data?.involvedObject?.uid === id di qualcosa che viene dalla response
 			if (data?.reason === 'CompositionCreated') {
 				setEventReceived(true)
 			}
 		});
 
-		// terminating the connection on component unmount
 		return () => eventSource.close();
 	}, []);
 
@@ -486,10 +485,13 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 												endpoint: endpointUrl,
 												body: payload,
 											});
+
 											// if into a panel -> close panel
-											if (onClose) {
+											if (onClose && !formProps?.redirectRoute) {
 												onClose()
-											} else {
+											}
+
+											if (!onClose) {
 												// clear form
 												simpleForm.resetFields()
 											}
@@ -503,10 +505,13 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 												endpoint: endpointUrl,
 												body: payload,
 											});
+											
 											// if into a panel -> close panel
-											if (onClose) {
+											if (onClose && !formProps?.redirectRoute) {
 												onClose()
-											} else {
+											}
+
+											if (!onClose) {
 												// clear form
 												simpleForm.resetFields()
 											}
@@ -514,7 +519,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 									break;
 								}
 							}
-						
 						}
 					}
 
@@ -640,11 +644,30 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		}
 	}, [message, isPostSuccess, isPutSuccess]);
 
+	// Handlese eventReceived value to avoid rerender
 	useEffect(() => {
-		if (shouldRedirect && eventReceived) {
-			navigate(submitRedirectRoute);
+		eventReceivedRef.current = eventReceived;
+	}, [eventReceived]);
+
+	useEffect(() => {
+		if (shouldRedirect) {
+			message.destroy()
+			message
+				.loading('Redirecting to the new resource...', 0.5)
+				.then(() => {
+					if (onClose) { onClose() }
+
+					if (eventReceivedRef.current) {
+						navigate(submitRedirectRoute);
+					} else {
+						message.info('The resource is not ready for redirect, access it manually.')
+					}
+
+					setShouldRedirect(false)
+					setEventReceived(false)
+				})
 		}
-	}, [shouldRedirect, eventReceived, submitRedirectRoute]);
+	}, [message, shouldRedirect, submitRedirectRoute, onClose, navigate]);
 
 	const handleAnchorClick  = (
 		e: React.MouseEvent<HTMLElement>,
