@@ -652,11 +652,12 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 	useEffect(() => {
 		if (shouldRedirect) {
 			message.destroy()
-			message
-				.loading('Redirecting to the new resource...', 0.5)
-				.then(() => {
-					if (onClose) { onClose() }
 
+			if (onClose) { onClose() }
+			
+			message
+				.loading('Redirecting to the new resource...', 5)
+				.then(() => {
 					if (eventReceivedRef.current) {
 						navigate(submitRedirectRoute);
 					} else {
