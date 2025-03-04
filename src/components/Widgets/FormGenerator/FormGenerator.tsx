@@ -656,7 +656,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 			message.destroy();
 	
 			const timeout = data.status.props?.redirectTimeout || 5;
-			const hideMessage = message.loading('Redirecting to the new resource...', timeout);
+			const hideMessage = message.loading('Creating the new resource and redirecting...', timeout);
 
 			const checkCondition = () => {
 				if (eventReceivedRef.current) {
