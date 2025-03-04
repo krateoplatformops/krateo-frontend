@@ -644,31 +644,43 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 		}
 	}, [message, isPostSuccess, isPutSuccess]);
 
-	// Handlese eventReceived value to avoid rerender
+	// Handles eventReceived value to avoid rerender
 	useEffect(() => {
 		eventReceivedRef.current = eventReceived;
 	}, [eventReceived]);
-
+	
+	// Handles redirect
 	useEffect(() => {
 		if (shouldRedirect) {
-			message.destroy()
+			message.destroy();
+	
+			const timeout = data.status.props?.redirectTimeout || 5;
+			const hideMessage = message.loading('Redirecting to the new resource...', timeout);
 
-			if (onClose) { onClose() }
-
-			const timeout = data.status.props?.redirectTimeout || 5
-			
-			message
-				.loading('Redirecting to the new resource...', timeout)
-				.then(() => {
-					if (eventReceivedRef.current) {
-						navigate(submitRedirectRoute);
-					} else {
-						message.info('The resource is not ready for redirect, access it manually.')
-					}
-
-					setShouldRedirect(false)
-					setEventReceived(false)
-				})
+			const checkCondition = () => {
+				if (eventReceivedRef.current) {
+					if (onClose) onClose();
+					message.destroy();
+					navigate(submitRedirectRoute)
+				} else {
+					requestAnimationFrame(checkCondition);
+				}
+			};
+	
+			requestAnimationFrame(checkCondition);
+	
+			hideMessage.then(() => {
+				if (!eventReceivedRef.current) {
+					message.info('The resource is not ready for redirect, access it manually.');
+				}
+	
+				setShouldRedirect(false);
+				setEventReceived(false);
+			});
+	
+			return () => {
+				message.destroy();
+			};
 		}
 	}, [message, shouldRedirect, submitRedirectRoute, onClose, navigate]);
 
