@@ -654,9 +654,11 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 			message.destroy()
 
 			if (onClose) { onClose() }
+
+			const timeout = data.status.props?.redirectTimeout || 5
 			
 			message
-				.loading('Redirecting to the new resource...', 5)
+				.loading('Redirecting to the new resource...', timeout)
 				.then(() => {
 					if (eventReceivedRef.current) {
 						navigate(submitRedirectRoute);
