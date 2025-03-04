@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Anchor, App, Button, Col, Flex, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
+import { Anchor, App, Button, Col, Flex, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Spin, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, usePostContentMutation, usePutContentMutation } from "../../../features/common/commonApiSlice";
 import { useAppDispatch } from "../../../redux/hooks";
@@ -617,10 +617,12 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	useEffect(() => {
 		if (isPostError) {
+			if (disableButtons) disableButtons(false)
 			message.destroy()
 			catchError(postError);
 		}
 		if (isPutError) {
+			if (disableButtons) disableButtons(false)
 			message.destroy()
 			catchError(putError);
 		}
@@ -630,9 +632,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
     if (isPostLoading || isPutLoading) {
 			if (disableButtons) disableButtons(true)
       message.loading('Sending data...', 1.5);
-    } else {
-			if (disableButtons) disableButtons(false)
-		}
+    }
   }, [isPostLoading, isPutLoading, message]);
 
 	useEffect(() => {
@@ -652,6 +652,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 	// Handles redirect
 	useEffect(() => {
 		if (shouldRedirect) {
+			if (disableButtons) disableButtons(true)
 			message.destroy();
 	
 			const timeout = data.status.props?.redirectTimeout || 5;
@@ -660,7 +661,10 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 			const checkCondition = () => {
 				if (eventReceivedRef.current) {
 					if (onClose) onClose();
+					if (disableButtons) disableButtons(false)
+
 					message.destroy();
+
 					navigate(submitRedirectRoute)
 				} else {
 					requestAnimationFrame(checkCondition);
@@ -670,6 +674,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 			requestAnimationFrame(checkCondition);
 	
 			hideMessage.then(() => {
+				if (onClose) onClose();
+				if (disableButtons) disableButtons(false)
+
 				if (!eventReceivedRef.current) {
 					message.info('The resource is not ready for redirect, access it manually.');
 				}
@@ -677,10 +684,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 				setShouldRedirect(false);
 				setEventReceived(false);
 			});
-	
-			return () => {
-				message.destroy();
-			};
 		}
 	}, [message, shouldRedirect, submitRedirectRoute, onClose, navigate]);
 
