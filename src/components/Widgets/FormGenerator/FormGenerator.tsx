@@ -617,10 +617,12 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	useEffect(() => {
 		if (isPostError) {
+			if (disableButtons) disableButtons(false)
 			message.destroy()
 			catchError(postError);
 		}
 		if (isPutError) {
+			if (disableButtons) disableButtons(false)
 			message.destroy()
 			catchError(putError);
 		}
@@ -630,9 +632,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
     if (isPostLoading || isPutLoading) {
 			if (disableButtons) disableButtons(true)
       message.loading('Sending data...', 1.5);
-    } else {
-			if (disableButtons) disableButtons(false)
-		}
+    }
   }, [isPostLoading, isPutLoading, message]);
 
 	useEffect(() => {
@@ -652,15 +652,19 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 	// Handles redirect
 	useEffect(() => {
 		if (shouldRedirect) {
+			if (disableButtons) disableButtons(true)
 			message.destroy();
 	
 			const timeout = data.status.props?.redirectTimeout || 5;
-			const hideMessage = message.loading('Redirecting to the new resource...', timeout);
+			const hideMessage = message.loading('Creating the new resource and redirecting...', timeout);
 
 			const checkCondition = () => {
 				if (eventReceivedRef.current) {
 					if (onClose) onClose();
+					if (disableButtons) disableButtons(false)
+
 					message.destroy();
+
 					navigate(submitRedirectRoute)
 				} else {
 					requestAnimationFrame(checkCondition);
@@ -670,6 +674,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 			requestAnimationFrame(checkCondition);
 	
 			hideMessage.then(() => {
+				if (onClose) onClose();
+				if (disableButtons) disableButtons(false)
+
 				if (!eventReceivedRef.current) {
 					message.info('The resource is not ready for redirect, access it manually.');
 				}
@@ -677,10 +684,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 				setShouldRedirect(false);
 				setEventReceived(false);
 			});
-	
-			return () => {
-				message.destroy();
-			};
 		}
 	}, [message, shouldRedirect, submitRedirectRoute, onClose, navigate]);
 
