@@ -31,6 +31,8 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
   let cardActions = [...cardProps.actions!];
   const [showPanel, setShowPanel] = useState<boolean>(false);
 
+  const { Title, Paragraph } = Typography;
+
   // ROUTE
   if (cardProps.route && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     delete cardProps.form;
@@ -96,7 +98,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
           <Space size="large" className={styles.header}>
             <Avatar style={{ backgroundColor: getColorCode(color) }} size={64} icon={<FontAwesomeIcon icon={icon} />} />
             <div className={styles.details}>
-              <Typography.Title className={styles.title} ellipsis level={2} title={title}>{title}</Typography.Title>
+              <Title className={styles.title} ellipsis level={2} title={title}>{title}</Title>
               <Space className={styles.subTitle}>
                 <div className={styles.status} style={{ color: getColorCode(color) }}>{status}</div>
                 <div className={styles.date}>{date}</div>
@@ -109,7 +111,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
           <Button key='2' onClick={(e) => {e.stopPropagation(); onDeleteAction()}} icon={<DeleteOutlined />} type="text" disabled={!isAllowed("delete") || isErrorLoading} />
         ]}
       >
-        <Typography.Paragraph>{content}</Typography.Paragraph>
+        <Paragraph>{content}</Paragraph>
         {additionalButtonLabel && additionalDrawerContent && <Button type="link" className={styles.buttonLink} onClick={(e) => {e.stopPropagation(); setShowPanel(true)}}>{additionalButtonLabel}</Button>}
       </Card>
       
@@ -119,7 +121,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
           onClose={() => setShowPanel(false)}
           title={additionalDrawerTitle}
         >
-          <Typography.Paragraph>{additionalDrawerContent}</Typography.Paragraph>
+          <Paragraph>{additionalDrawerContent}</Paragraph>
         </Drawer>
       }
     </>
