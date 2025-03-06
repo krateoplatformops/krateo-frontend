@@ -24,7 +24,7 @@ const Button = ({icon, label, type, verb, drawer, drawerTitle, drawerSize, route
     <ButtonAnt
       type={type ? type : undefined}
       icon={icon ? <FontAwesomeIcon icon={icon as IconProp} /> : undefined}
-      onClick={manageEvent}
+      onClick={(e) => {e.stopPropagation(); manageEvent()}}
     >
       {label}
     </ButtonAnt>

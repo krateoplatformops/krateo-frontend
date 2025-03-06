@@ -33,7 +33,7 @@ const Panel = ({title, tooltip, buttons, content}: PanelType) => {
       extra={
         tooltip && <Tooltip className={styles.tooltip} title={tooltip}><QuestionCircleOutlined /></Tooltip>
       }
-      actions={buttons ? [parseContent(buttons, "")] : []}
+      actions={buttons ? [parseContent(buttons)] : []}
     >
       {/* {panelContent} */}
       {content}

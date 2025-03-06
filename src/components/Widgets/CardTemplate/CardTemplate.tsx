@@ -1,11 +1,11 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Card, Avatar, Button, Space, Typography, Tag } from "antd";
+import { Card, Avatar, Button as Button, Space, Typography, Tag, Drawer } from "antd";
 import styles from "./styles.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getColorCode } from "../../../utils/colors";
 import useEvents, { EventType } from "../../../hooks/useEvents";
 import { useDeleteContentMutation } from "../../../features/common/commonApiSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useCatchError from "../../../utils/useCatchError";
 
 type CardTemplateType = {
@@ -17,14 +17,19 @@ type CardTemplateType = {
   date: string,
   content: JSX.Element,
   tags: string,
+  drawerTitle?: string,
+  additionalButtonLabel?: string, // TEMP: used to show button in card
+  additionalDrawerTitle?: string, // TEMP: the drawer title when button clicked
+  additionalDrawerContent?: string, // TEMP: the drawer text when button clicked
   onDelete?: () => void,
 }
 
 const CardTemplate = (props: CardTemplateType & EventType) => {
-  const {id, icon, color, title, status, date, content, tags } = props;
+  const {id, icon, color, title, status, date, content, tags, additionalButtonLabel, drawerTitle, additionalDrawerTitle, additionalDrawerContent } = props;
   const { catchError } = useCatchError();
   let cardProps = {...props};
   let cardActions = [...cardProps.actions!];
+  const [showPanel, setShowPanel] = useState<boolean>(false);
 
   // ROUTE
   if (cardProps.route && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
@@ -35,7 +40,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
 
   else if (!cardProps.route && cardProps.form === "true" && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
     // open drawer
-    cardProps.drawerTitle = props.drawerTitle ? props.drawerTitle : cardProps.title;
+    cardProps.drawerTitle = drawerTitle ? drawerTitle : cardProps.title;
   }
 
   else if (props.drawer === "true" && !cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
@@ -104,8 +109,19 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
           <Button key='2' onClick={(e) => {e.stopPropagation(); onDeleteAction()}} icon={<DeleteOutlined />} type="text" disabled={!isAllowed("delete") || isErrorLoading} />
         ]}
       >
-        {content}
+        <Typography.Paragraph>{content}</Typography.Paragraph>
+        {additionalButtonLabel && additionalDrawerContent && <Button type="link" className={styles.buttonLink} onClick={(e) => {e.stopPropagation(); setShowPanel(true)}}>{additionalButtonLabel}</Button>}
       </Card>
+      
+      { additionalDrawerContent &&
+        <Drawer
+          open={showPanel}
+          onClose={() => setShowPanel(false)}
+          title={additionalDrawerTitle}
+        >
+          <Typography.Paragraph>{additionalDrawerContent}</Typography.Paragraph>
+        </Drawer>
+      }
     </>
   )
 }

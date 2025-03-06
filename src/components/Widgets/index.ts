@@ -43,4 +43,19 @@ const widgets = {
 
 export type WidgetNamesType = string; //keyof typeof widgets;
 
+export type WidgetType = {
+  status: {
+    uid: string,
+    name: string,
+    type: string,
+    items: {
+      actions: {
+        path: string,
+        verb: string
+      }[],
+      app: object
+    }
+  }
+}
+
 export default widgets;

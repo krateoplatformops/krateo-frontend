@@ -47,6 +47,10 @@
     font-size: $mTextSize;
   }
 
+  .buttonLink {
+    padding: 0;
+  }
+
   :global .ant-card-actions {
     border: none;
 
