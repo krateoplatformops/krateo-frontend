@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Anchor, App, Button, Col, Flex, Form, FormInstance, Input, InputNumber, Radio, Result, Row, Select, Slider, Space, Switch, Typography } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import { useGetContentQuery, usePostContentMutation, usePutContentMutation } from "../../../features/common/commonApiSlice";
@@ -12,6 +12,7 @@ import SelectWithFilters from "./SelectWithFilters";
 import _ from 'lodash';
 import { ButtonType } from "../Button/Button";
 import { useNavigate } from "react-router-dom";
+import { getBaseUrl } from "../../../utils/config";
 
 type FormGeneratorType = {
 	title?: string,
@@ -33,6 +34,9 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 	const [simpleForm] = Form.useForm();
 
 	const [submitRedirectRoute, setSubmitRedirectRoute] = useState<string>('')
+	const [shouldRedirect, setShouldRedirect] = useState(false);
+	const [eventReceived, setEventReceived] = useState(false);
+	const eventReceivedRef = useRef(eventReceived);
 
 	// submit methods
 	const [postContent, { isLoading: isPostLoading, isSuccess: isPostSuccess, isError: isPostError, error: postError }] = usePostContentMutation();
@@ -50,6 +54,23 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	// old form
 	const [formEndpoint, setFormEndpoint] = useState<string>();
+
+	// Check on CompositionCreated event for redirect
+	useEffect(() => {
+		const eventsEndpoint = `${getBaseUrl("EVENTS_PUSH")}/notifications`;
+		const eventSource = new EventSource(eventsEndpoint, {
+				withCredentials: false,
+		});
+
+		eventSource.addEventListener('krateo', (event) => {
+			const data = JSON.parse(event.data);
+			if (data?.reason === 'CompositionCreated') {
+				setEventReceived(true)
+			}
+		});
+
+		return () => eventSource.close();
+	}, []);
 
 	useEffect(() => {
 		if (isSuccess) { // set root node
@@ -464,10 +485,13 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 												endpoint: endpointUrl,
 												body: payload,
 											});
+
 											// if into a panel -> close panel
-											if (onClose) {
+											if (onClose && !formProps?.redirectRoute) {
 												onClose()
-											} else {
+											}
+
+											if (!onClose) {
 												// clear form
 												simpleForm.resetFields()
 											}
@@ -481,10 +505,13 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 												endpoint: endpointUrl,
 												body: payload,
 											});
+											
 											// if into a panel -> close panel
-											if (onClose) {
+											if (onClose && !formProps?.redirectRoute) {
 												onClose()
-											} else {
+											}
+
+											if (!onClose) {
 												// clear form
 												simpleForm.resetFields()
 											}
@@ -492,7 +519,6 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 									break;
 								}
 							}
-						
 						}
 					}
 
@@ -591,10 +617,12 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 
 	useEffect(() => {
 		if (isPostError) {
+			if (disableButtons) disableButtons(false)
 			message.destroy()
 			catchError(postError);
 		}
 		if (isPutError) {
+			if (disableButtons) disableButtons(false)
 			message.destroy()
 			catchError(putError);
 		}
@@ -604,9 +632,7 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
     if (isPostLoading || isPutLoading) {
 			if (disableButtons) disableButtons(true)
       message.loading('Sending data...', 1.5);
-    } else {
-			if (disableButtons) disableButtons(false)
-		}
+    }
   }, [isPostLoading, isPutLoading, message]);
 
 	useEffect(() => {
@@ -614,9 +640,52 @@ const FormGenerator = ({title, description, descriptionTooltip = false, showForm
 			message.destroy()
 			message
 				.success('Operation successful', 1.5)
-				.then(() => navigate(submitRedirectRoute))
+				.then(() => setShouldRedirect(true))
 		}
-	}, [message, isPostSuccess, isPutSuccess, submitRedirectRoute]);
+	}, [message, isPostSuccess, isPutSuccess]);
+
+	// Handles eventReceived value to avoid rerender
+	useEffect(() => {
+		eventReceivedRef.current = eventReceived;
+	}, [eventReceived]);
+	
+	// Handles redirect
+	useEffect(() => {
+		if (shouldRedirect) {
+			if (disableButtons) disableButtons(true)
+			message.destroy();
+	
+			const timeout = data.status.props?.redirectTimeout || 5;
+			const hideMessage = message.loading('Creating the new resource and redirecting...', timeout);
+
+			const checkCondition = () => {
+				if (eventReceivedRef.current) {
+					if (onClose) onClose();
+					if (disableButtons) disableButtons(false)
+
+					message.destroy();
+
+					navigate(submitRedirectRoute)
+				} else {
+					requestAnimationFrame(checkCondition);
+				}
+			};
+	
+			requestAnimationFrame(checkCondition);
+	
+			hideMessage.then(() => {
+				if (onClose) onClose();
+				if (disableButtons) disableButtons(false)
+
+				if (!eventReceivedRef.current) {
+					message.info('The resource is not ready for redirect, access it manually.');
+				}
+	
+				setShouldRedirect(false);
+				setEventReceived(false);
+			});
+		}
+	}, [message, shouldRedirect, submitRedirectRoute, onClose, navigate]);
 
 	const handleAnchorClick  = (
 		e: React.MouseEvent<HTMLElement>,

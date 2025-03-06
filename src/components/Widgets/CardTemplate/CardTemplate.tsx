@@ -21,6 +21,7 @@ type CardTemplateType = {
   additionalButtonLabel?: string, // TEMP: used to show button in card
   additionalDrawerTitle?: string, // TEMP: the drawer title when button clicked
   additionalDrawerContent?: string, // TEMP: the drawer text when button clicked
+  onDelete?: () => void,
 }
 
 const CardTemplate = (props: CardTemplateType & EventType) => {
@@ -56,7 +57,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
   }
 
   const { manageEvent, elementEvent } = useEvents(cardProps);
-  const [deleteContent, {isError: isErrorDelete, error}] = useDeleteContentMutation();
+  const [deleteContent, {isSuccess: isErrorSuccess, isLoading: isErrorLoading, isError: isErrorDelete, error}] = useDeleteContentMutation();
 
   const onClick = () => {
     if (isAllowed("get"))
@@ -71,6 +72,12 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
     const endpoint = cardActions?.find(el => el.verb?.toLowerCase() === "delete")?.path;
     await deleteContent({endpoint: endpoint});
   }
+
+  useEffect(() => {
+    if (isErrorSuccess) {
+      if (props.onDelete) props.onDelete();
+    }
+  }, [isErrorSuccess]);
 
   useEffect(() => {
     if (isErrorDelete) {
@@ -99,7 +106,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
         }
         actions={[
           <Space wrap key='1'>{tags?.split(",")?.map((tag, i) => <Tag key={`Tag_${i}`}>{tag}</Tag>)}</Space>,
-          <Button key='2' onClick={(e) => {e.stopPropagation(); onDeleteAction()}} icon={<DeleteOutlined />} type="text" disabled={!isAllowed("delete")} />
+          <Button key='2' onClick={(e) => {e.stopPropagation(); onDeleteAction()}} icon={<DeleteOutlined />} type="text" disabled={!isAllowed("delete") || isErrorLoading} />
         ]}
       >
         <Typography.Paragraph>{content}</Typography.Paragraph>
