@@ -31,7 +31,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
   let cardActions = [...cardProps.actions!];
   const [showPanel, setShowPanel] = useState<boolean>(false);
 
-  const { Title, Paragraph, Text } = Typography;
+  const { Title, Paragraph } = Typography;
 
   // ROUTE
   if (cardProps.route && cardActions?.find(el => el.verb?.toLowerCase() === "get")?.path) {
@@ -121,7 +121,7 @@ const CardTemplate = (props: CardTemplateType & EventType) => {
           onClose={() => setShowPanel(false)}
           title={additionalDrawerTitle}
         >
-          <Text>{additionalDrawerContent.replace("\n", "\n")}</Text>
+          <Paragraph>{additionalDrawerContent}</Paragraph>
         </Drawer>
       }
     </>
