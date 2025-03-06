@@ -1,24 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
-
-export type DataListElementType = {
-  status: {
-    uid: string,
-    name: string,
-    type: string,
-    items: {
-      actions: {
-        path: string,
-        verb: string
-      }[],
-      app: object
-    }
-  }
-}
+import { WidgetType } from "../../components/Widgets";
 
 export type DataListType = {
   prefix: string,
-  data: DataListElementType[],
+  data: WidgetType[],
   asGrid?: "true" | "false"
 }
 
@@ -30,8 +16,8 @@ export type DataListFilterType = {
 
 export type DataListState = {
   prefix: string,
-  data: DataListElementType[],
-  filteredData: DataListElementType[],
+  data: WidgetType[],
+  filteredData: WidgetType[],
   filters: DataListFilterType[]
 }
 
@@ -41,7 +27,7 @@ export const dataListSlice = createSlice({
   name: 'dataList',
   initialState,
   reducers: {
-    setDataList: (state, action: PayloadAction<{data: DataListElementType[], prefix: string}>) => {
+    setDataList: (state, action: PayloadAction<{data: WidgetType[], prefix: string}>) => {
       if (state.find(el => el.prefix === action.payload.prefix)) {
         state = state.map(el => {
           if (el.prefix === action.payload.prefix) {
@@ -59,7 +45,7 @@ export const dataListSlice = createSlice({
         })
       }
     },
-    filterDataList: (state, action: PayloadAction<{data: DataListElementType[], prefix: string}>) => {
+    filterDataList: (state, action: PayloadAction<{data: WidgetType[], prefix: string}>) => {
       state = state.map(el => {
         if (el.prefix === action.payload.prefix) {
             el.filteredData = action.payload.data;

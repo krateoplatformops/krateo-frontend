@@ -22,7 +22,7 @@ const useParseData = () => {
     }
   }
 
-  const parseContent = (data, i): ReactElement => {
+  const parseContent = (data, i = 1): ReactElement => {
     const renderComponent = (data, index) => {
       switch (data?.type) {
         case "row":
