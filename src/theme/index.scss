@@ -32,6 +32,11 @@ body {
       }
     }
   }
+
+  span.ant-typography,
+  div.ant-typography {
+    white-space: pre-line;
+  }
 }
 
 *::-webkit-scrollbar {
