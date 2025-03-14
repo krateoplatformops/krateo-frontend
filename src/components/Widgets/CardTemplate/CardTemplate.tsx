@@ -6,7 +6,7 @@ import { getColorCode } from "../../../utils/colors";
 import useEvents, { EventType } from "../../../hooks/useEvents";
 import { useDeleteContentMutation } from "../../../features/common/commonApiSlice";
 import { useEffect } from "react";
-import useCatchError from "../../../utils/useCatchError";
+import useCatchError from "../../../hooks/useCatchError";
 
 type CardTemplateType = {
   id: string,

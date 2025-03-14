@@ -1,34 +1,10 @@
 import { Button } from "antd";
 import styles from './styles.module.scss';
-import { LoginOutlined, GithubOutlined } from "@ant-design/icons";
-import { ReactElement } from "react";
 import { AuthModeType } from "../../type";
-
-type renderMethodsType = {
-  name: string;
-  icon: ReactElement;
-  label: string;
-  className: string;
-  // url: string;
-}
-
-const renderMethodsData: renderMethodsType[] = [
-  {
-    name: "github",
-    icon: <GithubOutlined />,
-    label: "Sign in with GitHub",
-    className: "github",
-  },
-  {
-    name: "oidc",
-    icon: <LoginOutlined />,
-    label: "OpenID Connection",
-    className: "oidc",
-  }
-]
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 
 const SocialLogin = ({method}: {method: AuthModeType}) => {
-  const renderData = renderMethodsData.find((el) => (el.name === method.kind) && method.extensions?.redirectURL && (method.extensions.redirectURL.indexOf(window.location.protocol) > -1));
 
   const getRandomString = () => {
     const rnd = Math.floor(Math.random() * Date.now()).toString(36);
@@ -48,15 +24,15 @@ const SocialLogin = ({method}: {method: AuthModeType}) => {
   }
 
   return (
-    (method && renderData) ?
+    (method) ?
       <div className={styles.socialLogin}>
         <Button
-          icon={renderData.icon}
+          icon={method.graphics?.icon && <FontAwesomeIcon icon={method.graphics.icon as IconProp} />}
           onClick={() => onSubmit()}
-          className={styles[renderData.className]}
+          style={method.graphics?.backgroundColor && method.graphics?.textColor ? {backgroundColor: method.graphics.backgroundColor, color: method.graphics.textColor} : undefined}
           size='large'
         >
-          {renderData.label}
+          {method.graphics?.displayName}
         </Button>
       </div>
     :

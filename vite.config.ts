@@ -19,6 +19,7 @@ export default defineConfig({
     }
   },
   server: {
+    port: 30080,
     // https: createServer(),
     
     // proxy: {
