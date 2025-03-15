@@ -6,14 +6,14 @@ import Page404 from "./pages/Page404";
 import LayoutLogin from "./components/LayoutLogin/LayoutLogin";
 import Login from "./pages/Login";
 import { App as AntApp } from "antd";
-import AuthGitHub from "./pages/Auth/AuthGitHub";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
-import AuthOidc from "./pages/Auth/AuthOidc";
+import { fab } from '@fortawesome/free-brands-svg-icons'
 import InitRoutes from "./components/InitRoutes/InitRoutes";
+import Auth from "./pages/Auth/Auth";
 
-library.add(fas, far)
+library.add(fas, far, fab)
 
 function App() {
   const [router, setRouter] = useState<RouteObject[]>([]);
@@ -43,12 +43,8 @@ function App() {
       ]
     },
     {
-      path: "/auth/github",
-      element: <AuthGitHub />,
-    },
-    {
-      path: "/auth/oidc",
-      element: <AuthOidc />,
+      path: "/auth",
+      element: <Auth />,
     },
     {
       path: "*",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLazyGetContentQuery } from "../../../features/common/commonApiSlice";
-import useCatchError from "../../../utils/useCatchError";
+import useCatchError from "../../../hooks/useCatchError";
 import { Select } from "antd";
 
 const SelectWithFilters = ({node}) => {

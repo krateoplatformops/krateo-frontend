@@ -2,16 +2,9 @@ import { apiSlice } from "../../api/apiSlice"
 import { AuthModeType, AuthRequestType, AuthResponseType, LoginFormType } from "../../pages/Login/type"
 import { getBaseUrl } from "../../utils/config"
 
-// const baseAuthUrl = import.meta.env.VITE_AUTHN_API_BASE_URL;
-// const getBaseUrl = async () => {
-//   const configFile = await fetch("/config.json");
-//   const configJson = await configFile.json();
-//   return configJson.api.AUTHN_API_BASE_URL;
-// }
-
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) =>  ({
-    getAuthModes: builder.query<AuthModeType[], string>({
+    getAuthModes: builder.query<AuthModeType[], string | void>({
       query: () => ({
         url: `${getBaseUrl("AUTH")}/strategies`,
         headers: {},
@@ -23,6 +16,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         headers: {
           Authorization: `Basic ${btoa(`${data.body.username}:${data.body.password}`)}`
         },
+      }),
+    }),
+    ldapAuthentication: builder.mutation({
+      query: (data) => ({
+        url: `${getBaseUrl("AUTH")}${data.url}`,
+        method: 'POST',
+        body: data.body,
       }),
     }),
     socialAuthentication: builder.query<AuthResponseType, AuthRequestType>({
@@ -59,7 +59,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetAuthModesQuery,
   useLazyAuthenticationQuery,
-  useLazySocialAuthenticationQuery
+  useLazySocialAuthenticationQuery,
+  useLdapAuthenticationMutation,
   // useGetPageContentQuery,
   // useGetLicenseStateQuery,
   // useUpdateLicenseMutation,

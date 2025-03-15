@@ -7,7 +7,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { formatISODate } from "../../utils/dateTime";
 import { getColorCode } from "../../utils/colors";
 import { useNavigate } from "react-router-dom";
-import useCatchError from "../../utils/useCatchError";
+import useCatchError from "../../hooks/useCatchError";
 import { getBaseUrl } from "../../utils/config";
 
 const CustomProjectCardList = ({data}) => {

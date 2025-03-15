@@ -3,6 +3,8 @@ export type LoginFormType = {
   password: string;
 };
 
+export type FormType = "basic" | "ldap"
+
 export type AuthResponseType = {
   code: number;
   user: {
@@ -46,6 +48,12 @@ export type AuthModeType = {
   name: string;
   kind: string;
   path: string; // krateo backend auth URL
+  graphics?: {
+    icon: string;
+    displayName: string;
+    textColor: string;
+    backgroundColor: string;
+  }
 }
 
 export type AuthRequestType = {

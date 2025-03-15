@@ -1,30 +1,33 @@
 import { useNavigate } from "react-router-dom";
 import Panel from "../../components/Panel/Panel";
-import { useLazyAuthenticationQuery, useGetAuthModesQuery } from "../../features/auth/authApiSlice";
+import { useLazyAuthenticationQuery, useGetAuthModesQuery, useLdapAuthenticationMutation } from "../../features/auth/authApiSlice";
 import { setUser } from "../../features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import LoginForm from "./components/LoginForm/LoginForm";
-import { LoginFormType } from "./type";
+import { FormType, LoginFormType } from "./type";
 import { Divider, Result } from "antd";
-import useCatchError from "../../utils/useCatchError";
+import useCatchError from "../../hooks/useCatchError";
 import Skeleton from "../../components/Skeleton/Skeleton";
-import getClientIdFromPath from "../../utils/getClientIdFromPath";
 import SocialLogin from './components/SocialLogin/SocialLogin';
 
 const Login = () => {
-  const clientId = getClientIdFromPath();
   const [authentication, { isLoading: AuhLoading }] = useLazyAuthenticationQuery();
-  const {data, isLoading, isError, isFetching} = useGetAuthModesQuery(clientId);
+  const [ldapAuthentication] = useLdapAuthenticationMutation();
+  const {data, isLoading, isError, isFetching} = useGetAuthModesQuery();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { catchError } = useCatchError();
 
-  const onBasicSubmit = async (body: LoginFormType) => {
-    const url = data?.find((el) => el.kind === "basic")?.path;
+  const onFormSubmit = async (body: LoginFormType, type: FormType) => {
+    const dataMode = data?.find((el) => el.kind === type);
 
-    if (body.username && body.password && url) {
+    if (body.username && body.password && dataMode?.path) {
       try {
-        const userData = await authentication({body, url}).unwrap();
+        const userData = (type === "basic") ? 
+                            await authentication({body, url: dataMode.path}).unwrap()
+                          :
+                            await ldapAuthentication({body, url: `${dataMode?.path}?name=${dataMode?.name}`}).unwrap()
+                          ;
         dispatch(setUser(userData));
         navigate("/");
       } catch (err) {
@@ -42,9 +45,10 @@ const Login = () => {
     data?.map((el, i) => {
       switch (el.kind) {
         case "basic":
+        case "ldap":
             return <div key={`login_${i}`}>
-              <LoginForm onSubmit={onBasicSubmit} type="basic" isLoading={AuhLoading} />
-              {(data?.length > 1) && <Divider plain>OR</Divider> }
+              <LoginForm onSubmit={(values) => onFormSubmit(values, el.kind as FormType)} type={el.kind} isLoading={AuhLoading} />
+              {((i + 1) < data?.length ) && <Divider plain>OR</Divider> }
             </div>
           break;
 

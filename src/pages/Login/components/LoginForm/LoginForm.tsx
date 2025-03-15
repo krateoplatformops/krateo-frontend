@@ -1,10 +1,10 @@
 import { Button, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
-import { LoginFormType } from '../../type';
+import { FormType, LoginFormType } from '../../type';
 import styles from './styles.module.scss';
 
 type LoginType = {
-  type: "basic",
+  type: FormType,
   onSubmit: (data:LoginFormType) => void,
   isLoading: boolean
 }
@@ -44,9 +44,15 @@ const LoginForm = ({ type, onSubmit, isLoading }: LoginType) => {
         }
         
         <Form.Item>
+        { type === "basic" ?
           <Button size='large' className={styles.loginButton} type="primary" htmlType="submit">
             Sign In
           </Button>
+          :
+          <Button size='large' className={styles.loginLdapButton} type="primary" htmlType="submit">
+            LDAP Sign In 
+          </Button>
+        }
         </Form.Item>
       </Form>
     </section>

@@ -3,15 +3,6 @@
 .socialLogin {
   button {
     width: 100%;
-  }
-
-  .github {
-    background-color: $dark-color;
-    color: $light-color;
-  }
-
-  .oidc {
-    background-color: $warning-color;
-    color: $light-color;
+    margin-bottom: 20px;
   }
 }

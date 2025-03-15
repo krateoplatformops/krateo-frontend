@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import Skeleton from "../Skeleton/Skeleton";
 import { useLazyGetContentQuery } from "../../features/common/commonApiSlice";
 import useParseData from "../../hooks/useParseData";
-import useCatchError from "../../utils/useCatchError";
+import useCatchError from "../../hooks/useCatchError";
 import { useEffect, useMemo, useState} from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 

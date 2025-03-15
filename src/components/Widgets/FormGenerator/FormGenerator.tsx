@@ -7,7 +7,7 @@ import { DataListFilterType, setFilters } from "../../../features/dataList/dataL
 import ListEditor from "../ListEditor/ListEditor";
 import styles from "./styles.module.scss";
 import Skeleton from "../../Skeleton/Skeleton";
-import useCatchError from "../../../utils/useCatchError";
+import useCatchError from "../../../hooks/useCatchError";
 import SelectWithFilters from "./SelectWithFilters";
 import _ from 'lodash';
 import { ButtonType } from "../Button/Button";
