@@ -47,7 +47,7 @@ const Login = () => {
         case "basic":
         case "ldap":
             return <div key={`login_${i}`}>
-              <LoginForm onSubmit={(values) => onFormSubmit(values, el.kind as FormType)} type={el.kind} isLoading={AuhLoading} />
+              <LoginForm onSubmit={(values) => onFormSubmit(values, el.kind as FormType)} method={el} isLoading={AuhLoading}  />
               {((i + 1) < data?.length ) && <Divider plain>OR</Divider> }
             </div>
           break;

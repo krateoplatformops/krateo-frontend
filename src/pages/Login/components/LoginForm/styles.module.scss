@@ -16,12 +16,3 @@
 .loginButton {
   width: 100%;
 }
-
-.loginLdapButton {
-  width: 100%;
-  background: $secondary-color;
-
-  &:hover {
-    background: darken($secondary-color, 10%) !important;
-  }
-}
