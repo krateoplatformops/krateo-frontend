@@ -1,15 +1,15 @@
 import { Button, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
-import { FormType, LoginFormType } from '../../type';
+import { AuthModeType, LoginFormType } from '../../type';
 import styles from './styles.module.scss';
 
 type LoginType = {
-  type: FormType,
+  method: AuthModeType,
   onSubmit: (data:LoginFormType) => void,
   isLoading: boolean
 }
 
-const LoginForm = ({ type, onSubmit, isLoading }: LoginType) => {
+const LoginForm = ({ method, onSubmit, isLoading }: LoginType) => {
 
   return (
     <section className={styles.loginForm}>
@@ -37,20 +37,25 @@ const LoginForm = ({ type, onSubmit, isLoading }: LoginType) => {
           <Input.Password size='large' />
         </Form.Item>
 
-        { type === "basic" &&
+        { method.kind === "basic" &&
           <div className={styles.linkPassword}>
             <Link to="/forgotpassword">Forgot password?</Link>
           </div>
         }
         
         <Form.Item>
-        { type === "basic" ?
+        { method.kind === "basic" ?
           <Button size='large' className={styles.loginButton} type="primary" htmlType="submit">
             Sign In
           </Button>
           :
-          <Button size='large' className={styles.loginLdapButton} type="primary" htmlType="submit">
-            LDAP Sign In 
+          <Button
+            size='large'
+            className={styles.loginButton}
+            style={method.graphics?.backgroundColor && method.graphics?.textColor ? {backgroundColor: method.graphics.backgroundColor, color: method.graphics.textColor} : undefined}  
+            htmlType="submit"
+          >
+            {method.graphics?.displayName || "LDAP Sign In"} 
           </Button>
         }
         </Form.Item>
