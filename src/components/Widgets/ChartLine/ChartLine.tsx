@@ -1,39 +1,67 @@
 import ReactECharts from 'echarts-for-react';
 import styles from "./styles.module.scss";
 import { getColorCode } from '../../../utils/colors';
-// import { theme } from "antd";
-
-// const { useToken } = theme;
+import { Empty } from 'antd';
 
 type ChartLineType = {
 	color: "blue" | "darkBlue" | "orange" | "gray" | "red" | "green",
-	data: {
-		xValue: string | number,
-		yValue: string | number,
-	}[]
+	data: string
+  legendName?: string
+  xAxisName?: string
+  yAxisName?: string
 }
 
-const ChartLine = ({color, data = []}: ChartLineType) => {
-  // const { token } = useToken();
+type ChartLineData = {
+  xValue: string | number,
+  yValue: string | number,
+}[]
+
+const ChartLine = ({color, data = "[]", legendName, xAxisName, yAxisName}: ChartLineType) => {
+  let parsedData: ChartLineData = [];
+
+  try { 
+    parsedData = JSON.parse(data);
+  } catch (error) {
+    console.error("Error parsing ChartLine data:", error);
+  }
+
+  if (!parsedData || parsedData.length === 0) {
+    return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+  }
 
   const optionLine = {
-    xAxis: {
-      data: data.map(el => el.xValue) //['A', 'B', 'C', 'D', 'E']
+    grid: {
+      left: '15%',
+      bottom: '25%',
     },
-    yAxis: {},
+    legend: {
+      data: [legendName],
+      bottom: 0,
+    },
+    xAxis: {
+      name: xAxisName,
+      data: parsedData?.map(el => el.xValue), //['A', 'B', 'C', 'D', 'E'],
+      axisLabel: {
+        rotate: 45,
+      }
+    },
+    yAxis: {
+      name: yAxisName,
+    },
     series: [
       {
-        data: data.map(el => el.yValue), //[10, 22, 28, 23, 19],
+        name: legendName,
+        data: parsedData?.map(el => el.yValue), //[10, 22, 28, 23, 19],
         color: getColorCode(color),
         type: 'line',
-        smooth: true
+        smooth: true,
       }
     ]
   };
 
   return (
     <div className={styles.chart}>
-      <ReactECharts option={optionLine} />
+      <ReactECharts option={optionLine} style={{height: '400px'}} />
     </div>
   )
 }
