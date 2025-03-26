@@ -19,16 +19,11 @@ type ChartLineData = {
 const ChartLine = ({color, data = "[]", legendName, xAxisName, yAxisName}: ChartLineType) => {
   let parsedData: ChartLineData = [];
 
-  try {
+  try { 
     parsedData = JSON.parse(data);
   } catch (error) {
     console.error("Error parsing ChartLine data:", error);
   }
-
-  parsedData = [{
-    xValue: 1,
-    yValue: 2,
-  }]
 
   if (!parsedData) {
     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
