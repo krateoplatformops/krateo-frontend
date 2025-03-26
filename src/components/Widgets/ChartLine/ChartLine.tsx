@@ -25,7 +25,7 @@ const ChartLine = ({color, data = "[]", legendName, xAxisName, yAxisName}: Chart
     console.error("Error parsing ChartLine data:", error);
   }
 
-  if (!parsedData) {
+  if (!parsedData || parsedData.length === 0) {
     return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
   }
 
