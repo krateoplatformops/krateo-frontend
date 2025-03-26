@@ -20,7 +20,7 @@ import YamlViewer from "./YamlViewer/YamlViewer";
 
 const widgets = {
   "chartpie": ChartPie,
-  "chartLine": ChartLine,
+  "chartline": ChartLine,
   "chartBars": ChartBars,
   "chartMultipleBars": ChartMultipleBars,
   "chartflow": ChartFlow,
