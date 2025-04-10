@@ -1,27 +1,30 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 // import basicSsl from '@vitejs/plugin-basic-ssl';
 // import { createServer } from 'https';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), /*basicSsl(),*/ svgr({
-    svgrOptions: {
-      icon: true,
-    },
-  })],
+  plugins: [
+    react(),
+    /*basicSsl(),*/ svgr({
+      svgrOptions: {
+        icon: true,
+      },
+    }),
+  ],
   css: {
     preprocessorOptions: {
       scss: {
         api: "modern-compiler",
-      }
-    }
+      },
+    },
   },
   server: {
-    port: 30080,
+    // port: 6969,
+    port: 30080 /* changed to avoid overlap of exposed for from kind getting started */,
     // https: createServer(),
-    
     // proxy: {
     //   // "/apis": {
     //   //   target: "http://4.209.35.224:8081/apis",
@@ -35,5 +38,5 @@ export default defineConfig({
     //     rewrite: (path) => path.replace(/^\/events/, ''),
     //   }
     // }
-  }
-})
+  },
+});

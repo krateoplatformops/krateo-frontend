@@ -4,44 +4,44 @@ import Skeleton from "../Skeleton/Skeleton";
 import { useLazyGetContentQuery } from "../../features/common/commonApiSlice";
 import useParseData from "../../hooks/useParseData";
 import useCatchError from "../../hooks/useCatchError";
-import { useEffect, useMemo, useState} from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
-const Page = ({endpoint}: PageType) => {
-  const [parseContent] = useParseData()
-  const { catchError } = useCatchError()
-  const params = useParams()
+const Page = ({ endpoint }: PageType) => {
+  const [parseContent] = useParseData();
+  const { catchError } = useCatchError();
+  const params = useParams();
 
-  const [getContent, {data, isLoading, isSuccess, isError, error}] = useLazyGetContentQuery();
+  const [getContent, { data, isLoading, isSuccess, isError, error }] = useLazyGetContentQuery();
   const [searchParams] = useSearchParams();
   const endpointQs = searchParams.get("endpoint");
-  
+
   const [isPageLoading, setIsPageLoading] = useState(true);
 
   useEffect(() => {
     if (endpoint || endpointQs) {
-      let parsedEndpoint = endpoint || ""
+      let parsedEndpoint = endpoint || "";
       if (params) {
         const pattern = new RegExp(
           Object.keys(params)
-              .map(key => `\\{${key.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')}\\}`) // Aggiunge parentesi graffe
-              .join('|'), 
-          'g' // global flag to replace all matches
-      );
-        parsedEndpoint = parsedEndpoint.replace(pattern, match => {
-          const key = match.slice(1, -1)
-          return params[key] || match
-        })
+            .map((key) => `\\{${key.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&")}\\}`) // Aggiunge parentesi graffe
+            .join("|"),
+          "g" // global flag to replace all matches
+        );
+        parsedEndpoint = parsedEndpoint.replace(pattern, (match) => {
+          const key = match.slice(1, -1);
+          return params[key] || match;
+        });
       }
-      
+
       const loadData = async () => {
         try {
-          setIsPageLoading(true)
-          await getContent({ endpoint: endpointQs || parsedEndpoint })
+          setIsPageLoading(true);
+          await getContent({ endpoint: endpointQs || parsedEndpoint });
         } finally {
-          setIsPageLoading(false)
+          setIsPageLoading(false);
         }
-      }
+      };
 
       loadData();
     }
@@ -49,15 +49,16 @@ const Page = ({endpoint}: PageType) => {
 
   const content = useMemo(() => {
     if (isLoading || isPageLoading) {
-      return <Skeleton />
+      return <Skeleton />;
     }
 
     if (isError) {
-      return catchError(error, 'result')
+      return catchError(error, "result");
     }
 
     if (data !== undefined && data.code === undefined && isSuccess) {
-      return parseContent(data, 1)
+      const parsedContent = parseContent(data, 1);
+      return parsedContent;
 
       // TEMP: mock Datalist elements
       // console.log("DATA", data)
@@ -187,14 +188,10 @@ const Page = ({endpoint}: PageType) => {
       // return parseContent(mock, 1)
     }
 
-    return null
-  }, [isLoading, isPageLoading, isError, isSuccess, data])
+    return null;
+  }, [isLoading, isPageLoading, isError, isSuccess, data]);
 
-  return (
-    <section className={styles.page}>
-      {content}
-    </section>
-  );
-}
+  return <section className={styles.page}>{content}</section>;
+};
 
 export default Page;
